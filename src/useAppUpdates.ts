@@ -41,7 +41,7 @@ export function useAppUpdates() {
   async function run(reload: boolean) {
     if (inProgress.current) return;
     inProgress.current = true;
-    setStatus({ phase: 'checking', message: 'We zoeken de nieuwste versie en slaan eventuele nieuwe bestanden op…' });
+    setStatus({ phase: 'checking', message: 'We zoeken de nieuwste versie en slaan nieuwe bestanden op. Een grote update kan enkele minuten duren. Laat de app even open…' });
     try {
       const { registration, available } = await discover();
       setNeedRefresh(available);

@@ -37,6 +37,30 @@ test('Checking waits for the complete installation before offering a new version
   assert.equal(await result, true);
   assert.deepEqual(worker.messages, [], 'Checking must never activate or reload');
 });
+test('A slow audio download can finish after several minutes without timing out', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const reg = new Registration(), worker = new Worker();
+  reg.onUpdate = () => { reg.installing = worker; reg.dispatchEvent(new Event('updatefound')); };
+  let finished = false;
+  const result = checkForAppUpdate(registration(reg)).then(value => { finished = true; return value; });
+  await tick();
+  t.mock.timers.tick(4 * 60_000);
+  await tick(); assert.equal(finished, false, 'Keep waiting while the offline bundle is still downloading');
+  reg.installing = null; reg.waiting = worker; worker.transition('installed');
+  assert.equal(await result, true);
+});
+test('A stalled update still times out after the five-minute download allowance', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const reg = new Registration();
+  reg.onUpdate = () => new Promise(() => {});
+  let failed = false;
+  const result = assert.rejects(checkForAppUpdate(registration(reg)), /duurt te lang/).then(() => { failed = true; });
+  await tick();
+  t.mock.timers.tick(299_999);
+  await tick(); assert.equal(failed, false);
+  t.mock.timers.tick(1);
+  await result; assert.equal(failed, true);
+});
 test('An already waiting update is still checked against the server without activating it', async () => {
   const reg = new Registration(), worker = new Worker();
   worker.state = 'installed'; reg.waiting = worker;
@@ -75,6 +99,21 @@ test('Activation sends skip-waiting and waits for activation to finish', async (
   assert.deepEqual(worker.messages, [{ type: 'SKIP_WAITING' }]);
   worker.transition('activating'); await tick(); assert.equal(finished, false);
   worker.transition('activated'); assert.equal(await result, true);
+});
+test('Activation gets a full minute, allowing a slow activation without waiting forever', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const reg = new Registration(), worker = new Worker();
+  worker.state = 'installed'; reg.waiting = worker;
+  let finished = false;
+  const result = activateAppUpdate(registration(reg)).then(value => { finished = true; return value; });
+  t.mock.timers.tick(30_000);
+  await tick(); assert.equal(finished, false);
+  worker.transition('activated'); assert.equal(await result, true);
+
+  worker.state = 'installed';
+  const stalled = assert.rejects(activateAppUpdate(registration(reg)), /duurt te lang/);
+  t.mock.timers.tick(60_000);
+  await stalled;
 });
 test('Reload without a waiting update does not message the active worker', async () => {
   assert.equal(await activateAppUpdate(registration(new Registration())), false);

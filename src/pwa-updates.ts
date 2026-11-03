@@ -1,5 +1,9 @@
+// A full audio refresh downloads more than a thousand files on slower iPads.
+export const UPDATE_DOWNLOAD_TIMEOUT_MS = 5 * 60_000;
+export const UPDATE_ACTIVATION_TIMEOUT_MS = 60_000;
+
 /** Wait for the complete offline bundle before reporting an update as ready. */
-export function checkForAppUpdate(registration: ServiceWorkerRegistration, timeoutMs = 25_000): Promise<boolean> {
+export function checkForAppUpdate(registration: ServiceWorkerRegistration, timeoutMs = UPDATE_DOWNLOAD_TIMEOUT_MS): Promise<boolean> {
   return new Promise((resolve, reject) => {
     let finished = false;
     let requestComplete = false;
@@ -50,7 +54,7 @@ export function checkForAppUpdate(registration: ServiceWorkerRegistration, timeo
 }
 
 /** Activate only a fully downloaded version; never unregister or delete caches. */
-export function activateAppUpdate(registration: ServiceWorkerRegistration, timeoutMs = 15_000): Promise<boolean> {
+export function activateAppUpdate(registration: ServiceWorkerRegistration, timeoutMs = UPDATE_ACTIVATION_TIMEOUT_MS): Promise<boolean> {
   const worker = registration.waiting;
   if (!worker) return Promise.resolve(false);
   return new Promise((resolve, reject) => {
