@@ -1,26 +1,33 @@
-// Optional authoring utility for macOS. Runtime playback uses the generated files,
-// never a speech service or a system voice on the child's device.
-import { mkdirSync } from 'node:fs';
+// Authoring only: playback on a child's device never uses a speech service.
+// By default create missing files; use --force after changing existing speech text.
+import { existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { questionBank } from '../src/content.ts';
-const directory = new URL('../public/audio/', import.meta.url);
-mkdirSync(directory, { recursive: true });
-const fragments = new Map();
-for (const skill of ['rekenen', 'taal', 'vormen', 'klanken']) {
-  for (const question of questionBank(2, skill)) {
-    fragments.set(question.id, question.prompt);
-    fragments.set(`hint-${question.id}`, question.hint);
-    if (skill === 'taal') for (const word of question.choices) fragments.set(`word-${word}`, word);
+import { GROUPS, activities, audioFragments, questionBank } from '../src/content.ts';
+
+const publicDirectory = new URL('../public/', import.meta.url);
+mkdirSync(new URL('audio/', publicDirectory), { recursive: true });
+const questions=GROUPS.flatMap(group=>activities(group).flatMap(activity=>questionBank(group,activity.id)));
+const fragments=audioFragments(questions);
+const prefix=process.argv.find(arg=>arg.startsWith('--prefix='))?.slice('--prefix='.length);
+const temporary=mkdtempSync(join(tmpdir(),'ontdekkers-audio-'));
+let created=0;
+try {
+  for (const [path, text] of fragments) {
+    if(prefix&&!path.startsWith(`/audio/${prefix}`))continue;
+    const target=new URL(path.slice(1),publicDirectory);
+    if(existsSync(target)&&!process.argv.includes('--force'))continue;
+    const intermediate=join(temporary,'speech.aiff');
+    for (const [command,args] of [
+      ['say', ['-v', 'Xander', '-r', '155', '-o', intermediate, text]],
+      ['ffmpeg', ['-loglevel', 'error', '-y', '-i', intermediate, '-c:a', 'aac', '-b:a', '64k', target.pathname]]
+    ]) {
+      const result=spawnSync(command,args,{encoding:'utf8'});
+      if(result.status!==0) throw new Error(`${command}: ${result.stderr||result.error}`);
+    }
+    created++;
+    if(created%25===0)console.log(`${created} nieuwe luisterfragmenten gemaakt…`);
   }
-}
-for (const [name, text] of fragments) {
-  const temporary = `/private/tmp/ontdekkers-audio-${name}.aiff`;
-  for (const [command,args] of [
-    ['say', ['-v', 'Xander', '-r', '155', '-o', temporary, text]],
-    ['ffmpeg', ['-loglevel', 'error', '-y', '-i', temporary, '-c:a', 'aac', '-b:a', '64k', new URL(`${name}.m4a`, directory).pathname]]
-  ]) {
-    const result=spawnSync(command,args,{encoding:'utf8'});
-    if(result.status!==0) throw new Error(`${command}: ${result.stderr}`);
-  }
-}
-console.log(`${fragments.size} Nederlandse luisterfragmenten gemaakt.`);
+} finally { rmSync(temporary,{recursive:true,force:true}); }
+console.log(`${created} luisterfragmenten gemaakt; ${fragments.size} fragmenten in het volledige aanbod.`);

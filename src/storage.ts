@@ -1,4 +1,4 @@
-import type { Group, Skill } from './content';
+import { GROUPS, SKILLS, type Group, type Skill } from './content.ts';
 export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>> };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
@@ -31,10 +31,10 @@ export function validateProfiles(value:unknown):Profile[]{
   return value.map((p:unknown)=>{
     if(!p||typeof p!=='object')throw new Error('Ongeldig profiel.');
     const item=p as Record<string,unknown>;
-    if(typeof item.id!=='string'||item.id.length>100||!item.id||ids.has(item.id)||typeof item.name!=='string'||!item.name.trim()||item.name.length>24||!avatars.includes(item.avatar as string)||![2,4,5].includes(item.group as number)||!isCount(item.rounds)||!isCount(item.stars)||!item.skills||typeof item.skills!=='object'||Array.isArray(item.skills))throw new Error('Ongeldig profiel.');
+    if(typeof item.id!=='string'||item.id.length>100||!item.id||ids.has(item.id)||typeof item.name!=='string'||!item.name.trim()||item.name.length>24||!avatars.includes(item.avatar as string)||!GROUPS.includes(item.group as Group)||!isCount(item.rounds)||!isCount(item.stars)||!item.skills||typeof item.skills!=='object'||Array.isArray(item.skills))throw new Error('Ongeldig profiel.');
     const skills:Profile['skills']={};
     for(const [key,count] of Object.entries(item.skills)){
-      if(!['rekenen','taal','tafels','lezen','vormen','klanken'].includes(key)||!isCount(count))throw new Error('Ongeldige voortgang.');
+      if(!SKILLS.includes(key as Skill)||!isCount(count))throw new Error('Ongeldige voortgang.');
       skills[key as Skill]=count;
     }
     ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills};

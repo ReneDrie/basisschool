@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { questionBank } from '../src/content.ts';
+import { GROUPS, activities, audioFragments, questionBank } from '../src/content.ts';
 
 const root=new URL('../dist/',import.meta.url);
 const worker=readFileSync(new URL('sw.js',root),'utf8');
@@ -11,10 +11,8 @@ assert.equal(manifest.display,'standalone');
 assert.equal(manifest.start_url,'/');
 for(const icon of manifest.icons)assert.ok(statSync(new URL(icon.src.slice(1),root)).size>1000);
 const required=new Set(['index.html','icon.svg','apple-touch-icon.png']);
-for(const skill of ['rekenen','taal','vormen','klanken'])for(const question of questionBank(2,skill)){
-  required.add(question.audio.slice(1));required.add(`audio/hint-${question.id}.m4a`);
-  if(skill==='taal')for(const choice of question.choices)required.add(`audio/word-${choice}.m4a`);
-}
+const questions=GROUPS.flatMap(group=>activities(group).flatMap(activity=>questionBank(group,activity.id)));
+for(const path of audioFragments(questions).keys())required.add(path.slice(1));
 for(const file of readdirSync(new URL('assets/',root)))if(/\.(js|css)$/.test(file))required.add(`assets/${file}`);
 for(const asset of required){
   assert.ok(statSync(new URL(asset,root)).size>0,`${asset} is empty`);

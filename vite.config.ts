@@ -10,7 +10,7 @@ export default defineConfig({
     includeManifestIcons: false,
     manifest: {
       name: 'Kleine Ontdekkers', short_name: 'Ontdekkers', lang: 'nl',
-      description: 'Spelend wijzer, voor groep 2, 4 en 5.',
+      description: 'Spelend wijzer, voor groep 2, 3, 4 en 5.',
       theme_color: '#f9f8f2', background_color: '#f9f8f2', display: 'standalone',
       start_url: '/', scope: '/',
       icons: [
