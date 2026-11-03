@@ -1,6 +1,6 @@
 # Kleine Ontdekkers
 
-Een Nederlandstalige leerapp voor groep 2, 3, 4 en 5. Kinderen kiezen een profiel en oefenen in rondjes van tien opdrachten. Elk afgerond rondje verdient één ster, ook met hulp. Na 1, 3, 5, 8, 12 en 20 rondjes verschijnt een sticker op hun eiland.
+Een Nederlandstalige leerapp voor groep 2, 3, 4 en 5. Kinderen kiezen een profiel en oefenen in rondjes van tien opdrachten. Elk afgerond rondje verdient één ster, ook met hulp. De eilandenwereld groeit met 36 schatten, verdeeld over zes gebieden tot en met 360 rondjes. Daarna gaat het ontdekken verder met verkennersrangen en edelstenen.
 
 ## Lokaal starten
 
@@ -24,6 +24,27 @@ De app opent op het eiland en heeft drie vaste tabs met grote pictogrammen:
 De nieuwe tabs en schermen zijn bekeken op telefoon- en iPad-formaat. Een volledig rondje met fout antwoord en hint is afgerond met de juiste beloning. In de productieversie zijn na herladen met de server uit de tabs, luisterknop en een volledig rondje getest; de ster bleef na opnieuw herladen behouden.
 
 De kinderschermen hebben geen websitefooter, promotieteksten, bijschriften of zijpanelen. Tijdens een rondje verdwijnen de tabs; alleen de vraag, antwoorden en hulp blijven centraal. Na afloop kun je naar je eiland of nog een rondje doen. Profielen en instellingen staan bovenaan. Installatie, offline status, updates en reservekopieën staan bij het tandwiel voor ouders.
+
+## Een wereld die verder groeit
+
+De Wereldkaart op het eiland toont zes gebieden. Ontgrendelde gebieden zijn te bezoeken; komende gebieden tonen hoeveel rondjes er nog nodig zijn. Elk gebied groeit in zes stappen. De eerste zes schatten en hun mijlpalen zijn behouden, zodat oude profielen meteen dezelfde beloningen terugzien.
+
+| Gebied | Gaat open na | Laatste schat na |
+| --- | ---: | ---: |
+| Groene tuin | 0 | 20 |
+| Strandbaai | 25 | 50 |
+| Bloesembos | 60 | 90 |
+| Sterrenheuvel | 100 | 150 |
+| Sneeuwtoppen | 165 | 240 |
+| Wolkenrijk | 260 | 360 |
+
+Bij het vrijspelen van een nieuw gebied verschijnt een melding na de les. Het eiland opent daarna op dat gebied. Eerdere gebieden en schatten blijven beschikbaar. De Schattentab toont zes beloningen tegelijk, met een eilandkiezer voor de andere gebieden.
+
+Na 360 rondjes blijft er een volgend doel: iedere twintig extra rondjes levert een edelsteen en een nieuwe verkennersrang op. Dit voegt geen oneindig aantal nieuwe eilanden toe; de zes gebieden zijn de huidige inhoud. Nieuwe gebieden en beloningen kunnen later via `src/progression.ts` worden toegevoegd. Voortgang is afgeleid van voltooide rondjes; profielen, sterren, groepskeuzes en reservekopieën blijven compatibel.
+
+Alle eilandonderdelen, beloningen, vriendjes en oefenplaatjes gebruiken dezelfde eigen SVG-illustraties. Telefoonemoji zijn uitsluitend nog interne, bestaande profiel- en inhoudscodes; ze worden als vectorillustratie weergegeven. Er is geen afbeeldingsdienst of extra download nodig tijdens het spelen. De eilanden hebben gelaagde grond, zachte schaduwen en vaste plekken voor elke schat. Contouren worden per plaatsingsschaal gecompenseerd, zodat kleine en grote onderdelen dezelfde lijndikte hebben. Bomen en huisjes delen materiaal- en kleuraccenten. De vaste tabs en de speelknop houden de tekening vrij van zwevende navigatieknoppen.
+
+De overgang van 24 naar 25 rondjes is in de browser getest: Strandbaai en de eerste nieuwe schat komen vrij. Ook de overgang van 379 naar 380 is zonder productieserver doorlopen: een nieuwe verkennersrang en de eerste edelsteen verschijnen. De kaart, eilandkeuze en schatten zijn op telefoon- en iPad-formaat bekeken. De automatische tests controleren alle ontgrendelgrenzen, de oorspronkelijke schatten, doorlopende rangen en lokale illustraties voor alle oefenplaatjes.
 
 ## Wat zit erin?
 
@@ -115,7 +136,10 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/main.tsx`: profielen, niveaukeuze, speelrondjes en ouderfuncties.
 - `src/AppPages.tsx`: Eiland, Lessen, Schatten en de vaste navigatie.
 - `src/app.css`: de app-indeling, grotere knoppen en speelsere kinderschermen.
-- `src/Island.tsx` en `src/styles.css`: illustraties en responsive vormgeving.
+- `src/progression.ts`: gebieden, mijlpalen en verkennersrangen.
+- `src/Art.tsx` en `src/art-catalog.ts`: de gedeelde vectorillustraties en koppeling met bestaande avatars/oefenplaatjes.
+- `src/Island.tsx` en `src/IslandScenery.tsx`: compositie per gebied, landschap en schaalvaste contouren.
+- `src/styles.css` en `src/app.css`: responsive vormgeving.
 
 Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg groepen toe aan `GROUPS`, onderwerpen aan `SKILLS`, en registreer het aanbod in de catalogus. De profielvalidatie gebruikt deze gedeelde lijsten. Voor ieder aangeboden niveau zijn minimaal tien verschillende opdrachten nodig.
 

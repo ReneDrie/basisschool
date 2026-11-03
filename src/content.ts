@@ -30,11 +30,4 @@ export function availableLevels(group: Group, skill: Skill): Difficulty[] {
   return ([1,2] as const).filter(level=>bank.filter(question=>question.difficulty===level).length>=QUESTIONS_PER_ADVENTURE);
 }
 
-export const stickers = [
-  { icon:'🌱', name:'Eerste spruit', description:'Je eerste avontuur!', rounds:1 },
-  { icon:'🦋', name:'Fladdervriend', description:'Drie avonturen ontdekt', rounds:3 },
-  { icon:'🍄', name:'Paddenstoelpaleis', description:'Vijf avonturen ontdekt', rounds:5 },
-  { icon:'🌈', name:'Regenboog', description:'Acht avonturen ontdekt', rounds:8 },
-  { icon:'🦊', name:'Bosvriend', description:'Twaalf avonturen ontdekt', rounds:12 },
-  { icon:'🏰', name:'Droomkasteel', description:'Twintig avonturen ontdekt', rounds:20 }
-];
+export { stickers } from './progression.ts';

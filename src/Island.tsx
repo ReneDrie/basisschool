@@ -1,26 +1,66 @@
-export function Island({discoveries=0}:{discoveries?:number}) {
-  return <svg className="island-art" viewBox="0 0 560 360" role="img" aria-label="Een vrolijk ontdekkereiland met bomen, een huisje en een kronkelpad">
-    <defs><linearGradient id="earth" x2="0" y2="1"><stop stopColor="#d6b393"/><stop offset="1" stopColor="#b88b6e"/></linearGradient></defs>
-    <g className="clouds" fill="#fff" opacity=".8"><path d="M64 80c-18-1-17-22-2-24 4-23 38-22 42-3 25-1 28 26 7 28z"/><path d="M421 46c-16 0-16-17-2-20 5-18 28-18 33-2 21-2 27 22 5 23z"/><path d="M455 133c-14 0-14-16-2-18 6-16 28-16 31 0 20-1 22 18 5 19z"/></g>
-    <ellipse cx="289" cy="316" rx="178" ry="20" fill="#768a69" opacity=".1"/>
-    <path d="M86 230q190-104 391-7l-40 65q-154 67-299-4z" fill="url(#earth)"/>
-    <path d="M85 226q3-76 182-82 171-6 211 79-27 64-184 65-158-1-209-62z" fill="#a4c483"/>
-    <path d="M90 220q64-61 183-57 126-7 194 54-65 50-169 51-128-1-208-48z" fill="#c3dba0"/>
-    <path d="M318 186c-73 13-34 39-74 51-22 7-49 8-67 14l45 18c32-8 80-17 89-33 11-20-34-23 37-42z" fill="#f6e8bc"/>
-    <g stroke="#709057" strokeWidth="2" strokeLinecap="round"><path d="M126 222l2-8m5 10 4-8m254 31 2-9m6 10 4-8m-44-49 3-8m-7 8-1-5"/></g>
-    <g><path d="M161 202v-64" stroke="#8b6e52" strokeWidth="12" strokeLinecap="round"/><path d="M156 164l-16-15m22 3 17-19" stroke="#8b6e52" strokeWidth="5"/><path d="M115 139c-17-27 6-52 27-49 4-39 60-39 65-9 35 0 36 52 12 61-16 24-38 16-45 9-25 17-44 7-59-12" fill="#6b9964"/><path d="M127 120c-4-14 7-23 17-23m18-14c7-7 20-6 24 3" stroke="#91b77b" strokeWidth="7" fill="none" strokeLinecap="round"/></g>
-    <g><path d="M405 215v-64" stroke="#937554" strokeWidth="9"/><path d="M405 101l-36 60h17l-25 29h89l-25-29h17z" fill="#84a970"/><path d="M405 101l-15 44h-11z" fill="#a4c483"/></g>
-    <g><path d="M278 142h75v73h-75z" fill="#fff3d4"/><path d="M266 148l50-46 51 46z" fill="#d98a6f"/><path d="M280 147l36-33 38 33z" fill="#eaa185"/><path d="M306 214v-31a11 11 0 0 1 22 0v31" fill="#8a795d"/><rect x="286" y="163" width="13" height="14" rx="3" fill="#a9cad1"/><path d="M293 164v12m-6-6h11" stroke="#fff3d4" strokeWidth="2"/><path d="M339 118V98h9v29" fill="#a77862"/></g>
-    <g transform="translate(219 211)"><path d="M0 0v-30" stroke="#9e8462" strokeWidth="4"/><path d="M-2-30h29l-7 8 7 8H-2" fill="#dfac52"/><path d="M8-23h9" stroke="#fff4cf" strokeWidth="2"/></g>
-    <g transform="translate(346 240)"><ellipse cx="0" cy="5" rx="17" ry="4" fill="#71955d" opacity=".3"/><path d="M-9 4v-10h16V4" fill="#fff5d6"/><path d="M-18-6c0-24 37-24 37 0z" fill="#cf8271"/><circle cx="-5" cy="-16" r="3" fill="#fff5d6"/><circle cx="8" cy="-13" r="3" fill="#fff5d6"/></g>
-    <g transform="translate(193 239)"><ellipse cy="8" rx="16" ry="4" fill="#8d805c" opacity=".2"/><path d="M-12-6l-2-16 12 7 8-1 10-8-1 20q-9 18-27-2" fill="#cf906b"/><path d="M-10-4q10 4 19-1l-9 12z" fill="#fff0d4"/><circle cx="-6" cy="-5" r="2" fill="#3c493e"/><circle cx="6" cy="-5" r="2" fill="#3c493e"/><circle cy="2" r="2" fill="#3c493e"/></g>
-    <g fill="#edb659"><path d="M246 75l3-9 3 9 10 3-10 3-3 9-3-9-10-3z"/><path d="M462 177l2-6 2 6 6 2-6 2-2 6-2-6-6-2z"/></g>
-    <g fill="#f5d774"><circle cx="125" cy="241" r="3"/><circle cx="364" cy="212" r="3"/><circle cx="427" cy="227" r="3"/></g>
-    <g fontSize="32">{discoveries>=1&&<text x="106" y="222">🌱</text>}{discoveries>=3&&<text x="365" y="132">🦋</text>}{discoveries>=5&&<text x="365" y="267">🍄</text>}{discoveries>=8&&<text x="235" y="108" fontSize="45">🌈</text>}{discoveries>=12&&<text x="225" y="257">🦊</text>}{discoveries>=20&&<text x="225" y="186" fontSize="44">🏰</text>}</g>
-    <g transform="translate(447 82) rotate(12)"><path d="M0-16l5 11 13 1-10 9 3 13-11-7-11 7 3-13-10-9 13-1z" fill="#f2cd69"/><circle cx="-4" cy="1" r="1.5" fill="#735d39"/><circle cx="4" cy="1" r="1.5" fill="#735d39"/><path d="M-4 7q4 4 8 0" stroke="#735d39" fill="none" strokeWidth="1.5"/></g>
+import { useId } from 'react';
+import { islandRegions, type IslandRegion } from './progression';
+import { SceneCottage, SceneObject, SceneTree, SceneryLayer } from './IslandScenery';
+
+type Placement = {x:number;y:number;size:number;grounded?:boolean};
+// Each discovery belongs in the landscape: boats in the water, creatures on the
+// ground, and only flying objects in the sky. The order also gives natural depth.
+const placements:Record<string,Placement[]> = {
+  garden:[{x:154,y:265,size:34},{x:224,y:157,size:34,grounded:false},{x:398,y:267,size:45},{x:289,y:108,size:90,grounded:false},{x:257,y:271,size:43}],
+  bay:[{x:147,y:231,size:108},{x:191,y:276,size:35},{x:393,y:276,size:43},{x:454,y:315,size:69,grounded:false},{x:260,y:262,size:53}],
+  forest:[{x:158,y:260,size:42},{x:226,y:151,size:34,grounded:false},{x:369,y:264,size:83},{x:369,y:271,size:65},{x:250,y:274,size:46}],
+  stars:[{x:155,y:251,size:61},{x:247,y:263,size:52},{x:413,y:113,size:64,grounded:false},{x:231,y:98,size:66,grounded:false},{x:400,y:257,size:65}],
+  snow:[{x:147,y:230,size:103},{x:245,y:264,size:55},{x:384,y:276,size:58},{x:313,y:278,size:46},{x:285,y:110,size:111,grounded:false}],
+  clouds:[{x:162,y:152,size:51,grounded:false},{x:413,y:151,size:70,grounded:false},{x:235,y:91,size:91,grounded:false},{x:344,y:103,size:55,grounded:false},{x:181,y:259,size:73}]
+};
+
+export function Island({discoveries=0,region=islandRegions[0]}:{discoveries?:number;region?:IslandRegion}) {
+  const id=useId(),earned=region.rewards.filter(reward=>reward.rounds<=discoveries),complete=earned.length===region.rewards.length;
+  const bay=region.theme==='bay',snow=region.theme==='snow',stars=region.theme==='stars',clouds=region.theme==='clouds',forest=region.theme==='forest';
+  const scale=.91+earned.length*.015;
+  const objects=earned.slice(0,5).map((reward,index)=>({...placements[region.id][index],kind:reward.art}));
+  const groundObjects=objects.filter(o=>o.grounded!==false).sort((a,b)=>a.y-b.y);
+  const skyObjects=objects.filter(o=>o.grounded===false);
+  return <svg className="island-art" viewBox="0 0 560 360" role="img" aria-label={`${region.name}: ${earned.length} van ${region.rewards.length} schatten ontdekt`}>
+    <defs>
+      <linearGradient id={`${id}-earth`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={region.earth}/><stop offset="1" stopColor={snow?'#849eac':stars||clouds?'#8c829f':'#ab856d'}/></linearGradient>
+      <linearGradient id={`${id}-ground`} x1="0" y1="0" x2=".25" y2="1"><stop stopColor={region.grass}/><stop offset="1" stopColor={region.ground}/></linearGradient>
+      <radialGradient id={`${id}-water`}><stop stopColor={clouds?'#eee3f5':'#8fcbd0'} stopOpacity=".55"/><stop offset="1" stopColor="#b9e1e0" stopOpacity="0"/></radialGradient>
+    </defs>
+    <ellipse cx="281" cy="304" rx="244" ry="45" fill={`url(#${id}-water)`}/>
+    <g fill="none" stroke="#fff" strokeWidth="1.3" opacity=".5" strokeLinecap="round"><path d="M54 295q-23 9 0 16m64 18q37 9 78 8m175-4 46-6m73-36q24 7 8 17"/><path d="M87 322l15 3m326-7 22-4"/></g>
+    {clouds&&<g fill="#fff8ee" opacity=".9"><path d="M63 280c-26-1-22-24-6-25-1-24 39-26 44-6 28-8 43 25 14 30z"/><path d="M422 292c-21-6-18-24 0-25 3-22 35-20 39-3 28-11 48 24 16 27z"/></g>}
+    <ellipse cx="280" cy="309" rx="161" ry="13" fill="#487982" opacity=".09"/>
+    <g transform={`translate(280 0) scale(${scale} 1) translate(-280 0)`}>
+      <path d="M76 227C99 179 453 175 487 228l-24 48c-39 48-305 59-359 0z" fill={`url(#${id}-earth)`}/>
+      <path d="M280 244q119 0 207-16l-24 48c-25 25-85 38-142 38z" fill="#526568" opacity=".1"/>
+      <path d="M97 253c69 43 282 47 376-2l-5 11c-106 45-284 34-367-1z" fill="#fff3d5" opacity=".18"/>
+      <path d="M78 229c13-45 101-72 202-72s189 28 205 72c-24 44-134 65-205 65S101 271 78 229z" fill={`url(#${id}-ground)`}/>
+      <path d="M87 229c43-38 107-58 193-58 83 0 153 20 195 57" fill="none" stroke={snow?'#fffdf3':region.grass} strokeWidth="3" strokeLinecap="round" opacity=".7"/>
+      <path d="M82 235c38 39 123 59 198 59s162-20 202-59" fill="none" stroke={region.ground} strokeWidth="3" strokeLinecap="round"/>
+      <path d="M317 212c-57 3-26 21-41 34-12 11-45 15-70 28l30 7c25-12 63-17 68-32 8-21-15-21 30-28z" fill={snow?'#dcebed':stars?'#e5d6bd':clouds?'#fff0d1':'#f4e0b3'} opacity=".92"/>
+      <g fill="#f8e5c6" opacity=".4"><ellipse cx="193" cy="304" rx="6" ry="2"/><ellipse cx="385" cy="288" rx="4" ry="1.5"/><ellipse cx="153" cy="289" rx="3" ry="1.5"/></g>
+    </g>
+    <SceneryLayer>
+      {snow&&<g stroke="#9ebdc4" strokeWidth="1.25"><path d="M207 207l47-87 55 89z" fill="#b3ced3"/><path d="M254 120l-22 40 20-8 17 9 11-2z" fill="#fff9ed" stroke="none"/><path d="M254 120l-2 32 17 9 11-2z" fill="#e5efed" stroke="none"/></g>}
+      <g fill={bay?'#d8b47d':snow?'#d6e6e3':stars?'#a0a2c2':'#9cbd8a'} opacity=".7"><ellipse cx="173" cy="219" rx="32" ry="9"/><ellipse cx="405" cy="242" rx="37" ry="9"/></g>
+      {!(snow||bay)||earned.length===0?<SceneTree x={155} y={221} size={113} kind={bay?'palm':snow||stars?'pine':forest?'blossom':'round'}/>:null}
+      <SceneTree x={415} y={237} size={76} kind={bay?'palm':snow||stars?'pine':forest?'blossom':'round'}/>
+      {groundObjects.filter(o=>o.y<240).map(o=>o.kind==='palm'||o.kind==='pine'?<SceneTree key={o.kind} x={o.x} y={o.y} size={o.size} kind={o.kind}/>:<SceneObject key={o.kind} {...o}/>)}
+      {complete?<SceneObject kind={region.rewards[5].art} x={321} y={226} size={forest?125:114}/>:<SceneCottage x={319} y={225} size={106} theme={region.theme}/>}
+      <g fill={snow?'#fff9ed':stars?'#c0c0da':bay?'#e4c992':'#7da586'}>
+        <ellipse cx="117" cy="244" rx="15" ry="6"/><ellipse cx="427" cy="258" rx="12" ry="5"/>
+        <ellipse cx="186" cy="216" rx="9" ry="4"/><ellipse cx="349" cy="270" rx="13" ry="4"/>
+      </g>
+      <g stroke={bay?'#bfaa7d':snow?'#9cbfc3':stars?'#8f91b1':'#789e79'} strokeWidth="1.25" fill="none"><path d="M113 243l-2-5m5 6 3-5m282 8 2-5m3 5 2-3m-53 23 2-5m4 5 2-3"/></g>
+      <g fill={snow?'#fffdf5':'#efd29b'}><circle cx="121" cy="242" r="2"/><circle cx="403" cy="244" r="2"/><circle cx="358" cy="267" r="1.8"/></g>
+      <g fill={snow?'#c4d6da':'#b3b7a1'}><ellipse cx="130" cy="268" rx="7" ry="3.4"/><ellipse cx="141" cy="270" rx="4" ry="2.3"/></g>
+      {groundObjects.filter(o=>o.y>=240).map(o=><SceneObject key={o.kind} {...o}/>)}
+      {skyObjects.map(o=><SceneObject key={o.kind} {...o}/>)}
+      <g fill="#fff8e7" opacity=".85"><path d="M94 116v10m-5-5h10m350 55v8m-4-4h8" stroke="#e8c989" strokeWidth="1.25"/><circle cx="445" cy="107" r="2"/><circle cx="203" cy="103" r="1.5"/></g>
+    </SceneryLayer>
   </svg>;
 }
-
 export function ActivityArt({kind}:{kind:string}) {
   return <svg viewBox="0 0 220 125" aria-hidden="true" className="activity-art">
     {kind==='clock'?<><circle cx="110" cy="64" r="47" fill="#fffdf4" stroke="#9db9ca" strokeWidth="7"/><path d="M110 31v34l23 14" stroke="#597d95" strokeWidth="7" strokeLinecap="round" fill="none"/><circle cx="110" cy="65" r="5" fill="#597d95"/><g fill="#597d95"><circle cx="110" cy="24" r="3"/><circle cx="150" cy="64" r="3"/><circle cx="110" cy="104" r="3"/><circle cx="70" cy="64" r="3"/></g></>:kind==='money'?<><circle cx="88" cy="67" r="35" fill="#f3d880" stroke="#c4aa63" strokeWidth="5"/><circle cx="139" cy="69" r="35" fill="#e5d7a7" stroke="#b4b5a1" strokeWidth="7"/><text x="76" y="80" fontSize="36" fill="#958047">€</text><text x="127" y="82" fontSize="36" fill="#958047">€</text></>:kind==='fraction'?<><rect x="48" y="30" width="124" height="72" rx="8" fill="#fffaf2" stroke="#ac9478" strokeWidth="4"/><path d="M52 34h57v64H52z" fill="#d5a265"/><path d="M110 32v68m-60-34h120" stroke="#ac9478" strokeWidth="4"/></>:kind==='chart'?<><path d="M45 24v78h132" stroke="#7f9b96" strokeWidth="4" fill="none"/><rect x="62" y="64" width="24" height="36" rx="4" fill="#aec6d0"/><rect x="100" y="42" width="24" height="58" rx="4" fill="#91b3c5"/><rect x="138" y="24" width="24" height="76" rx="4" fill="#779db4"/></>:kind==='pattern'?<><circle cx="50" cy="65" r="21" fill="#d59691"/><circle cx="93" cy="65" r="21" fill="#91b4c8"/><circle cx="136" cy="65" r="21" fill="#d59691"/><rect x="163" y="44" width="38" height="42" rx="8" fill="#fffdf4" stroke="#b7a3c8" strokeWidth="3" strokeDasharray="5 4"/><text x="173" y="74" fontSize="29" fill="#9b85b2">?</text></>:kind==='compare'?<><rect x="42" y="36" width="62" height="65" rx="11" fill="#f3d197"/><rect x="117" y="22" width="62" height="79" rx="11" fill="#ddab8a"/><g fill="#fffaf0">{[0,1,2].map(i=><circle key={i} cx={59+i%2*24} cy={55+Math.floor(i/2)*25} r="8"/>)}{[0,1,2,3,4].map(i=><circle key={i} cx={135+i%2*24} cy={39+Math.floor(i/2)*24} r="8"/>)}</g></>:kind==='123'?<><rect x="42" y="40" width="52" height="52" rx="12" fill="#f0aa84" transform="rotate(-10 68 65)"/><rect x="83" y="23" width="53" height="53" rx="12" fill="#f7cb72" transform="rotate(8 110 50)"/><rect x="126" y="50" width="52" height="52" rx="12" fill="#e59379" transform="rotate(12 152 76)"/><g fontWeight="800" fontSize="35" fill="#6b4e3e" textAnchor="middle"><text x="68" y="77" transform="rotate(-10 68 65)">1</text><text x="110" y="62" transform="rotate(8 110 50)">2</text><text x="152" y="88" transform="rotate(12 152 76)">3</text></g></>:kind==='Aa'||kind==='abc'?<><path d="M59 94q51 15 100-2" stroke="#b0a3ca" fill="none" strokeWidth="5" strokeLinecap="round"/><text x="43" y="83" fontSize="76" fontWeight="800" fill="#9a87c0" transform="rotate(-8 90 55)">A</text><text x="112" y="90" fontSize="63" fontWeight="700" fill="#ba9dce" transform="rotate(10 140 60)">a</text><path d="M167 25v18m-9-9h18" stroke="#a38cc4" strokeWidth="3" strokeLinecap="round"/></>:kind==='×'?<><rect x="52" y="28" width="62" height="67" rx="12" fill="#8cb8d0" transform="rotate(-9 80 65)"/><text x="66" y="78" fontSize="51" fontWeight="600" fill="#f7fbff">×</text><circle cx="142" cy="72" r="30" fill="#b2cddd"/><text x="122" y="86" fontSize="42" fontWeight="700" fill="#53788d">?</text></>:kind==='shapes'?<><circle cx="72" cy="70" r="29" fill="#92bcd1"/><path d="M116 23l35 58H81z" fill="#f3cf78"/><rect x="130" y="57" width="45" height="45" rx="8" fill="#b3a1ce" transform="rotate(12 150 80)"/></>:<><path d="M108 38q-31-18-65-8v65q34-10 65 8z" fill="#91b98e"/><path d="M110 38q31-18 65-8v65q-34-10-65 8z" fill="#accaa0"/><path d="M110 37v66" stroke="#6c956a" strokeWidth="3"/><g stroke="#eff5de" strokeWidth="3" strokeLinecap="round"><path d="M55 47l35 7m-35 7 35 7m-35 7 25 5m45-25 36-7m-36 21 36-7m-36 21 26-5"/></g><path d="M151 24v-13m-6 7h12" stroke="#7eaa7c" strokeWidth="3" strokeLinecap="round"/></>}

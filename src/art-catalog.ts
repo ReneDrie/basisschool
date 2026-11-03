@@ -1,0 +1,8 @@
+// Stored avatar values stay unchanged for compatibility; only their presentation changes.
+export const avatarKinds:Record<string,string>={'🦊':'fox','🐻':'bear','🐰':'rabbit','🐼':'panda','🐸':'frog','🦁':'lion'};
+export const avatarNames:Record<string,string>={'🦊':'Vos','🐻':'Beer','🐰':'Konijn','🐼':'Panda','🐸':'Kikker','🦁':'Leeuw'};
+export const pictureKinds:Record<string,string>={
+  ...avatarKinds,'🐱':'cat','🐟':'fish','☀️':'sun','☀':'sun','🌙':'moon','🏠':'house','🌳':'tree','📖':'book','🚌':'bus','🐔':'hen','🐭':'mouse','🌹':'rose','🐄':'cow','🍐':'pear','🧦':'sock','🐀':'rat','⭐':'star','🚲':'bike','🍎':'apple','🦋':'butterfly','🌼':'flower','🌱':'sprout',
+  '🔴':'red','🔵':'blue','🟡':'yellow','🟢':'green','●':'circle','▲':'triangle','■':'square','★':'star','♥':'heart'
+};
+export const ART_KINDS=['sprout','butterfly','mushroom','rainbow','fox','castle','palm','shell','crab','boat','sandcastle','lighthouse','flower','bee','pond','bridge','deer','treehouse','tent','telescope','comet','planet','rocket','observatory','pine','snowman','sled','penguin','aurora','igloo','kite','balloon','airship','moon','cloudhouse','sunpalace','bear','rabbit','panda','frog','lion','cat','fish','sun','house','tree','book','bus','hen','mouse','rose','cow','pear','sock','rat','star','bike','apple','gem','red','blue','yellow','green','circle','triangle','square','heart'] as const;
