@@ -21,4 +21,4 @@ for(const asset of required){
   assert.ok(precached.includes(asset),`${asset} is not precached`);
 }
 assert.ok(!/https?:\/\//.test(readFileSync(new URL('index.html',root),'utf8')),'The app shell must not depend on remote assets');
-console.log(`Offline-controle geslaagd: ${required.size} vereiste bestanden, inclusief alle 73 luisterfragmenten, aanwezig in de cachelijst.`);
+console.log(`Offline-controle geslaagd: ${required.size} vereiste bestanden, inclusief alle ${[...required].filter(asset=>asset.startsWith('audio/')).length} luisterfragmenten, aanwezig in de cachelijst.`);

@@ -1,6 +1,6 @@
 # Kleine Ontdekkers
 
-Een Nederlandstalige leerapp voor groep 2, 4 en 5. Kinderen kiezen een profiel en oefenen in rondjes van vijf opdrachten. Elk afgerond rondje verdient één ster, ook met hulp. Na 1, 3, 5, 8, 12 en 20 rondjes verschijnt een sticker op hun eiland.
+Een Nederlandstalige leerapp voor groep 2, 4 en 5. Kinderen kiezen een profiel en oefenen in rondjes van tien opdrachten. Elk afgerond rondje verdient één ster, ook met hulp. Na 1, 3, 5, 8, 12 en 20 rondjes verschijnt een sticker op hun eiland.
 
 ## Lokaal starten
 
@@ -21,14 +21,14 @@ De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitt
 | 4 | Optellen en aftrekken, tafels, spelling en begrijpend lezen |
 | 5 | Rekenen tot 1.000, tafels en delen, spelling en begrijpend lezen |
 
-De inhoud is een eerste oefenaanbod, geen volledige leerlijn. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd. Een nieuw rondje kiest willekeurig vijf verschillende opdrachten uit de bijbehorende oefenbank.
+De inhoud is een eerste oefenaanbod, geen volledige leerlijn. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd. Een nieuw rondje kiest willekeurig tien verschillende opdrachten uit de bijbehorende oefenbank.
 
 - Profielen hebben een voornaam/bijnaam, avatar en groep; namen zijn nog niet achteraf te wijzigen.
 - Voortgang staat in IndexedDB, apart per profiel en per browser/websiteadres.
 - Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties, externe lettertypen of analytics.
-- De voorleesknoppen voor groep 2 gebruiken 73 meegeleverde Nederlandse audiofragmenten. Er is geen online spraakdienst nodig.
+- De voorleesknoppen voor groep 2 gebruiken 105 meegeleverde Nederlandse audiofragmenten. Er is geen online spraakdienst nodig.
 - Kleine geluidseffecten zijn uit te zetten tijdens een spel.
 
 ## Controleren
@@ -42,7 +42,7 @@ npm run preview
 
 De inhoudstests controleren de oefenbanken van alle groepen, de rekenantwoorden, unieke antwoordopties, beloningen en het importeren van reservekopieën. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-De browsercontrole omvat het aanmaken van groep 2- en groep 5-profielen, wisselen tussen gescheiden voortgang, een foute poging met hint, vijf opdrachten afronden, de eerste sticker verdienen en herladen met behouden voortgang. Ook de PWA-updateknop is getest. Met de webserver uit kon de app opnieuw openen, luisterfragmenten afspelen en een volledig groep 2-rondje afronden en opslaan. De vormgeving is bekeken op iPad-portretformaat. Installatie en herstart in vliegtuigstand op een echte iPad moeten nog worden getest.
+In de huidige versie is een volledig avontuur van tien vragen in de browser getest: na vraag vijf gaat het rondje door, pas na vraag tien volgt de beloning en de score toont correct negen van de tien zonder hulp bij één foute poging. De eerdere browsercontrole omvatte het aanmaken van groep 2- en groep 5-profielen, wisselen tussen gescheiden voortgang, stickers verdienen en herladen met behouden voortgang. Ook de PWA-updateknop is getest. Met de webserver uit kon die eerste versie opnieuw openen, luisterfragmenten afspelen en een volledig groep 2-rondje afronden en opslaan. De vormgeving is bekeken op iPad-portretformaat. Installatie en herstart in vliegtuigstand op een echte iPad moeten nog worden getest.
 
 `npm audit` meldt momenteel 2 lage en 8 matige meldingen in de Workbox-buildketen. `npm audit fix` heeft die niet verholpen. Deze pakketten zijn ontwikkelafhankelijkheden; de gepubliceerde app is statisch. Er zijn geen gemelde problemen in de productieafhankelijkheden. Controleer updates van vite-plugin-pwa/Workbox bij onderhoud.
 

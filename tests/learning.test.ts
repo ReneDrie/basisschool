@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activities, makeRound, questionBank, type Group } from '../src/content.ts';
+import { activities, makeRound, questionBank, QUESTIONS_PER_ADVENTURE, type Group } from '../src/content.ts';
 import { parseBackup, reward, validateProfiles, type Profile } from '../src/storage.ts';
 
 test('Every supported group has four complete, unambiguous activities',()=>{
@@ -9,7 +9,7 @@ test('Every supported group has four complete, unambiguous activities',()=>{
     assert.equal(activities(group).length,4);
     for(const activity of activities(group)){
       const questions=questionBank(group,activity.id);
-      assert.ok(questions.length>=5);
+      assert.ok(questions.length>=QUESTIONS_PER_ADVENTURE);
       for(const question of questions){
         assert.ok(!ids.has(question.id),question.id);ids.add(question.id);
         assert.equal(question.choices.length,4);
@@ -19,7 +19,7 @@ test('Every supported group has four complete, unambiguous activities',()=>{
         if(group===2)assert.ok(question.audio);
       }
       const round=makeRound(group,activity.id);
-      assert.equal(round.length,5);assert.equal(new Set(round.map(q=>q.id)).size,5);
+      assert.equal(round.length,10);assert.equal(new Set(round.map(q=>q.id)).size,10);
     }
   }
 });
