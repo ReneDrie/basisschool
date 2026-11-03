@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activities, makeRound, questionBank, QUESTIONS_PER_ADVENTURE, type Group } from '../src/content.ts';
+import { activities, makeRound, questionBank, QUESTIONS_PER_ADVENTURE, isCorrectAnswer, type Group } from '../src/content.ts';
 import { parseBackup, reward, validateProfiles, type Profile } from '../src/storage.ts';
 
 test('Every supported group has four complete, unambiguous activities',()=>{
@@ -22,6 +22,32 @@ test('Every supported group has four complete, unambiguous activities',()=>{
       assert.equal(round.length,10);assert.equal(new Set(round.map(q=>q.id)).size,10);
     }
   }
+});
+test('Mixed adventures spread three suitable open questions across ten unique assignments',()=>{
+  for(const group of [2,4,5] as Group[])for(const activity of activities(group)){
+    const round=makeRound(group,activity.id),open=round.filter(q=>q.answerMode==='open');
+    const expected=Math.min(3,questionBank(group,activity.id).filter(q=>q.openAnswer).length);
+    assert.equal(open.length,expected);
+    assert.equal(round.filter(q=>q.answerMode==='choice').length,10-expected);
+    assert.deepEqual(round.flatMap((q,i)=>q.answerMode==='open'?[i]:[]),[2,5,8].slice(0,expected));
+    for(const q of open){assert.ok(q.openAnswer);assert.ok(isCorrectAnswer(q,q.answer));}
+    if(group===2)assert.ok(open.every(q=>q.openAnswer==='number'),'Young children never need to type words');
+    if(activity.id==='lezen')assert.equal(open.length,0,'Reading questions keep their unambiguous answer choices');
+  }
+});
+test('Typed words accept capitals and surrounding whitespace, but still require correct spelling',()=>{
+  const question=makeRound(4,'taal').find(q=>q.answerMode==='open')!;
+  assert.ok(isCorrectAnswer(question,`  ${question.answer.toUpperCase()}  `));
+  assert.ok(!isCorrectAnswer(question,''));
+  assert.ok(!isCorrectAnswer(question,`${question.answer}x`));
+  assert.ok(!isCorrectAnswer(question,question.answer.split('').join(' ')));
+});
+test('Open numbers accept padded digits and reject blanks, partial numbers and expressions',()=>{
+  const question={...questionBank(4,'rekenen')[0],answerMode:'open' as const};
+  assert.ok(isCorrectAnswer(question,` 00${question.answer} `));
+  for(const invalid of ['', ' ', `${question.answer} appels`, `${question.answer}.0`, `${question.answer}+0`, 'Infinity'])assert.ok(!isCorrectAnswer(question,invalid),invalid);
+  assert.ok(!isCorrectAnswer(question,String(Number(question.answer)+1)));
+  assert.ok(isCorrectAnswer({...question,answer:'0'},'0'));
 });
 test('Generated arithmetic agrees with its displayed answer',()=>{
   for(const group of [4,5] as Group[])for(const skill of ['rekenen','tafels'] as const){

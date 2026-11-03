@@ -1,7 +1,7 @@
 export type Group = 2 | 4 | 5;
 export const QUESTIONS_PER_ADVENTURE = 10;
 export type Skill = 'rekenen' | 'taal' | 'tafels' | 'lezen' | 'vormen' | 'klanken';
-export type Question = { id: string; prompt: string; choices: string[]; answer: string; hint: string; visual?: string; passage?: string; audio?: string };
+export type Question = { id: string; prompt: string; choices: string[]; answer: string; hint: string; visual?: string; passage?: string; audio?: string; openAnswer?: 'number' | 'word'; answerMode?: 'choice' | 'open' };
 export type Activity = { id: Skill; title: string; subtitle: string; tag: string; color: string; symbol: string };
 export const activities = (group: Group): Activity[] => group === 2 ? [
   { id: 'rekenen', title: 'Het Rekenbos', subtitle: 'Tel je met ons mee?', tag: 'Tellen & getallen', color: 'peach', symbol: '123' },
@@ -17,7 +17,7 @@ export const activities = (group: Group): Activity[] => group === 2 ? [
 
 const q = (id: string, prompt: string, choices: string[], answer: string, hint: string, extras: Partial<Question> = {}): Question => ({ id, prompt, choices, answer, hint, ...extras });
 const spoken = (question: Question): Question => ({ ...question, audio: `/audio/${question.id}.m4a` });
-const counts = [3, 5, 2, 7, 4, 8, 6, 9, 1, 10].map((n, i) => spoken(q(`count-${n}`, 'Hoeveel zie je? Tel maar mee.', [String(n), String(n + 1), String(n - 1), String(n + 2)], String(n), 'Tik elk plaatje één keer aan terwijl je telt.', { visual: ['🍎','⭐','🦋','🌼'][i % 4].repeat(n) })));
+const counts = [3, 5, 2, 7, 4, 8, 6, 9, 1, 10].map((n, i) => spoken(q(`count-${n}`, 'Hoeveel zie je? Tel maar mee.', [String(n), String(n + 1), String(n - 1), String(n + 2)], String(n), 'Tik elk plaatje één keer aan terwijl je telt.', { visual: ['🍎','⭐','🦋','🌼'][i % 4].repeat(n), openAnswer: 'number' })));
 const rhymes = [
   ['kat', 'rat', 'vis', 'rat', 'boom', 'zon'], ['maan', 'haan', 'haan', 'boek', 'kip', 'tak'],
   ['huis', 'muis', 'bal', 'muis', 'pet', 'koe'], ['vis', 'mis', 'mis', 'bus', 'roos', 'dak'],
@@ -52,7 +52,7 @@ const spelling4 = [
   ['Je gaat elke dag naar…', ['sgool','school','schoel','schooll'], 'school', 'Het woord begint met sch en heeft een lange oo.'],
   ['Kies het goede woord.', ['stool','stuel','stoel','stoell'], 'stoel', 'Je hoort de oe van boek.'],
   ['Boven je hoofd is de blauwe…', ['lugt','lucht','luggt','luchtt'], 'lucht', 'Je schrijft aan het einde cht.']
-].map(([prompt,choices,answer,hint],i)=>q(`spell4-${i}`,prompt as string,choices as string[],answer as string,hint as string));
+].map(([prompt,choices,answer,hint],i)=>q(`spell4-${i}`,prompt as string,choices as string[],answer as string,hint as string, [2,5,6].includes(i)?{openAnswer:'word'}:{}));
 const spelling5 = [
   ['Kies het goed geschreven woord.', ['ontdeken','ontdekken','ontdeekken','ontdekkken'], 'ontdekken', 'De e in dekken is kort. Daarachter staan twee k’s.'],
   ['Eén verhaal, twee…', ['verhaalen','verhalen','verhalllen','verhallën'], 'verhalen', 'De lange aa staat in een open lettergreep: ver-ha-len.'],
@@ -64,7 +64,7 @@ const spelling5 = [
   ['Wie de waarheid vertelt is…', ['eerlek','eerlijk','eerlik','erlijk'], 'eerlijk', 'Het woord eindigt op -lijk, net als moeilijk.'],
   ['Brood koop je bij de…', ['baker','baakker','bakker','bakkker'], 'bakker', 'De a is kort. Daarna schrijf je twee k’s.'],
   ['Als je blij bent, voel je je…', ['gelukig','gelukkig','gellukkig','gelukkich'], 'gelukkig', 'Je schrijft twee k’s en het woord eindigt op -ig.']
-].map(([prompt,choices,answer,hint],i)=>q(`spell5-${i}`,prompt as string,choices as string[],answer as string,hint as string));
+].map(([prompt,choices,answer,hint],i)=>q(`spell5-${i}`,prompt as string,choices as string[],answer as string,hint as string, [1,4,6].includes(i)?{openAnswer:'word'}:{}));
 
 const passages = {
   4: [
@@ -104,13 +104,13 @@ export function questionBank(group: Group, skill: Skill): Question[] {
     return Array.from({length:24},(_,i)=>{
       const a=group===4 ? [2,5,10,3][i%4] : [3,4,6,7,8,9][i%6]; const b=2+Math.floor(i/4)%8;
       const divide=group===5 && i%2===0; const answer=divide ? b : a*b;
-      return q(`table${group}-${i}`, divide ? `Hoeveel is ${a*b} : ${a}?` : `Hoeveel is ${a} × ${b}?`, [answer,answer+a,Math.max(0,answer-1),answer+1].map(String),String(answer),divide ? `Welke keersom met ${a} geeft ${a*b}?` : `Tel ${b} groepjes van ${a}, of gebruik een tafel die je al kent.`);
+      return q(`table${group}-${i}`, divide ? `Hoeveel is ${a*b} : ${a}?` : `Hoeveel is ${a} × ${b}?`, [answer,answer+a,Math.max(0,answer-1),answer+1].map(String),String(answer),divide ? `Welke keersom met ${a} geeft ${a*b}?` : `Tel ${b} groepjes van ${a}, of gebruik een tafel die je al kent.`, {openAnswer:'number'});
     });
   }
   return Array.from({length:30},(_,i)=>{
     const a=group===4 ? 12+i*2 : 120+i*17; const b=group===4 ? 3+i%16 : 20+i*3;
     const subtract=i%2===0,answer=subtract?a-b:a+b;
-    return q(`math${group}-${i}`,`Hoeveel is ${a} ${subtract?'−':'+'} ${b}?`,[answer,answer+10,answer-1,answer+1].map(String),String(answer),group===4?'Splits het tweede getal in tientallen en eenheden.':'Reken eerst met de honderdtallen, dan de tientallen en de eenheden.');
+    return q(`math${group}-${i}`,`Hoeveel is ${a} ${subtract?'−':'+'} ${b}?`,[answer,answer+10,answer-1,answer+1].map(String),String(answer),group===4?'Splits het tweede getal in tientallen en eenheden.':'Reken eerst met de honderdtallen, dan de tientallen en de eenheden.', {openAnswer:'number'});
   });
 }
 export function shuffle<T>(items: readonly T[]): T[] {
@@ -119,7 +119,21 @@ export function shuffle<T>(items: readonly T[]): T[] {
 export function makeRound(group: Group, skill: Skill): Question[] {
   const bank=questionBank(group,skill);
   if(bank.length<QUESTIONS_PER_ADVENTURE)throw new Error('Er zijn nog niet genoeg opdrachten voor dit avontuur.');
-  return shuffle(bank).slice(0,QUESTIONS_PER_ADVENTURE).map(item=>({...item,choices:shuffle(item.choices)}));
+  const open=shuffle(bank.filter(item=>item.openAnswer)).slice(0,3);
+  const openIds=new Set(open.map(item=>item.id));
+  const choices=shuffle(bank.filter(item=>!openIds.has(item.id))).slice(0,QUESTIONS_PER_ADVENTURE-open.length);
+  return Array.from({length:QUESTIONS_PER_ADVENTURE},(_,index)=>{
+    const isOpen=[2,5,8].includes(index)&&open.length>0;
+    const item=(isOpen?open.shift():choices.shift())!;
+    return {...item,answerMode:isOpen?'open':'choice',choices:shuffle(item.choices)};
+  });
+}
+
+export function isCorrectAnswer(question: Question, input: string): boolean {
+  const value=input.normalize('NFC').trim().toLocaleLowerCase('nl');
+  if(!value)return false;
+  if(question.answerMode==='open'&&question.openAnswer==='number')return /^\d+$/.test(value)&&Number(value)===Number(question.answer);
+  return value===question.answer.normalize('NFC').trim().toLocaleLowerCase('nl');
 }
 
 export const stickers = [

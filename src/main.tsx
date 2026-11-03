@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft, Check, ChevronDown, Compass, Download, Leaf, Plus, Settings2, Sparkles, Star, Volume2, VolumeX, WifiOff, X, RotateCcw, Upload, Trash2, CircleHelp, BookOpen, Flag } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
-import { activities, makeRound, stickers, QUESTIONS_PER_ADVENTURE, type Activity, type Group, type Question } from './content';
+import { activities, makeRound, stickers, QUESTIONS_PER_ADVENTURE, isCorrectAnswer, type Activity, type Group, type Question } from './content';
 import { avatars, emptyProfile, loadProfiles, parseBackup, reward, saveProfiles, type Profile } from './storage';
+import { OpenAnswer } from './OpenAnswer';
 import { ActivityArt, Island } from './Island';
 import './styles.css';
 
@@ -39,9 +40,9 @@ function App(){
     audioRef.current?.pause();finishGuard.current=false;setRound({activity,questions:makeRound(currentGroup,activity.id),index:0,selected:null,mistakes:0,hint:false,correct:0,helped:false,done:false,saved:false,previousRounds:profile.rounds});window.scrollTo({top:0});
   }
   function answer(choice:string){
-    if(!round||round.selected===round.questions[round.index].answer||round.done)return;
-    const question=round.questions[round.index],correct=choice===question.answer;
-    setRound({...round,selected:choice,mistakes:round.mistakes+(correct?0:1),correct:round.correct+(correct&&!round.helped?1:0),helped:round.helped||!correct,hint:round.hint||!correct});
+    if(!round||!choice.trim()||round.selected===round.questions[round.index].answer||round.done)return;
+    const question=round.questions[round.index],correct=isCorrectAnswer(question,choice);
+    setRound({...round,selected:correct?question.answer:choice.trim(),mistakes:round.mistakes+(correct?0:1),correct:round.correct+(correct&&!round.helped?1:0),helped:round.helped||!correct,hint:round.hint||!correct});
     if(correct&&sound){
       try {const Ctx=window.AudioContext;const ctx=new Ctx();const oscillator=ctx.createOscillator(),gain=ctx.createGain();oscillator.connect(gain);gain.connect(ctx.destination);oscillator.type='sine';oscillator.frequency.setValueAtTime(660,ctx.currentTime);oscillator.frequency.setValueAtTime(880,ctx.currentTime+.09);gain.gain.setValueAtTime(.06,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.25);oscillator.start();oscillator.stop(ctx.currentTime+.25);oscillator.onended=()=>void ctx.close();}catch{/* Sound is optional. */}
     }
@@ -89,7 +90,7 @@ function App(){
           {round.questions[round.index].passage&&<div className="passage"><BookOpen size={23}/><p>{round.questions[round.index].passage}</p></div>}
           <div className="question-heading"><h1 tabIndex={-1}>{round.questions[round.index].prompt}</h1>{round.questions[round.index].audio&&<button className="listen-button" aria-label="Luister naar de opdracht" onClick={()=>speak(round.questions[round.index].audio!)}><Volume2 size={23}/></button>}</div>
           {round.questions[round.index].visual&&<div className="counting-objects">{Array.from(round.questions[round.index].visual!).filter(char=>char!=='\ufe0f').map((char,i)=><button key={i} aria-label={`Voorwerp ${i+1}`} onClick={event=>event.currentTarget.classList.toggle('counted')}>{char}</button>)}</div>}
-          <div className={`answer-grid ${round.questions[round.index].passage?'long-answers':''}`}>{round.questions[round.index].choices.map((choice,i)=>{const correct=round.selected===round.questions[round.index].answer;return <div className="answer-wrap" key={choice}><button disabled={correct} className={`answer-button ${round.selected===choice?(correct?'correct':'incorrect'):''}`} onClick={()=>answer(choice)}><span className="answer-letter">{String.fromCharCode(65+i)}</span><span>{choice}</span>{correct&&round.selected===choice&&<Check size={23}/>}</button>{currentGroup===2&&round.activity.id==='taal'&&<button className="choice-listen" onClick={()=>speak(`/audio/word-${choice}.m4a`)} aria-label={`Luister naar antwoord ${String.fromCharCode(65+i)}`}><Volume2 size={20}/></button>}</div>;})}</div>
+          {round.questions[round.index].answerMode==='open'?<OpenAnswer question={round.questions[round.index]} young={currentGroup===2} correct={round.selected===round.questions[round.index].answer} attempt={round.selected} onAnswer={answer}/>:(<div className={`answer-grid ${round.questions[round.index].passage?'long-answers':''}`}>{round.questions[round.index].choices.map((choice,i)=>{const correct=round.selected===round.questions[round.index].answer;return <div className="answer-wrap" key={choice}><button disabled={correct} className={`answer-button ${round.selected===choice?(correct?'correct':'incorrect'):''}`} onClick={()=>answer(choice)}><span className="answer-letter">{String.fromCharCode(65+i)}</span><span>{choice}</span>{correct&&round.selected===choice&&<Check size={23}/>}</button>{currentGroup===2&&round.activity.id==='taal'&&<button className="choice-listen" onClick={()=>speak(`/audio/word-${choice}.m4a`)} aria-label={`Luister naar antwoord ${String.fromCharCode(65+i)}`}><Volume2 size={20}/></button>}</div>;})}</div>)}
           <div className="feedback" aria-live="polite">{round.selected===round.questions[round.index].answer?<div className="success-feedback"><span><Check size={21}/></span><div><strong>{round.helped?'Gelukt! Goed doorgezet.':'Ja, helemaal goed!'}</strong><p>{round.helped?'Van proberen leer je steeds meer.':'Dat heb je mooi ontdekt.'}</p></div><button className="primary-button" onClick={()=>void advance()} disabled={busy}>{busy?'Even bewaren…':round.index===round.questions.length-1?'Rondje afronden':'Volgende'}<ArrowRight size={18}/></button></div>:round.hint?<div className="hint-feedback"><Leaf size={23}/><p><strong>{round.selected?'Probeer het nog eens. ':'Een kleine tip: '}</strong>{round.questions[round.index].hint}</p>{currentGroup===2&&<button className="icon-button" aria-label="Luister naar de hint" onClick={()=>speak(`/audio/hint-${round.questions[round.index].id}.m4a`)}><Volume2 size={20}/></button>}</div>:<button className="hint-button" onClick={()=>setRound({...round,hint:true,helped:true})}><CircleHelp size={18}/> Een kleine hint</button>}</div>
         </section><p className="round-bottom"><Leaf size={15}/> Neem je tijd. Je mag het gewoon proberen.</p>
       </>}

@@ -21,7 +21,7 @@ De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitt
 | 4 | Optellen en aftrekken, tafels, spelling en begrijpend lezen |
 | 5 | Rekenen tot 1.000, tafels en delen, spelling en begrijpend lezen |
 
-De inhoud is een eerste oefenaanbod, geen volledige leerlijn. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd. Een nieuw rondje kiest willekeurig tien verschillende opdrachten uit de bijbehorende oefenbank.
+De inhoud is een eerste oefenaanbod, geen volledige leerlijn. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd. Een nieuw rondje kiest tien verschillende opdrachten uit de bijbehorende oefenbank. Bij rekenen en tafels, en bij geschikte spellingopdrachten in groep 4 en 5, zijn vraag 3, 6 en 9 open vragen. De overige vragen zijn meerkeuze. Bij tellen in groep 2 worden open antwoorden met grote cijfertoetsen ingevoerd; kinderen hoeven daar geen woorden te typen. Leesvragen en de andere groep 2-spellen blijven meerkeuze.
 
 - Profielen hebben een voornaam/bijnaam, avatar en groep; namen zijn nog niet achteraf te wijzigen.
 - Voortgang staat in IndexedDB, apart per profiel en per browser/websiteadres.
@@ -29,6 +29,8 @@ De inhoud is een eerste oefenaanbod, geen volledige leerlijn. De ouder kiest de 
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties, externe lettertypen of analytics.
 - De voorleesknoppen voor groep 2 gebruiken 105 meegeleverde Nederlandse audiofragmenten. Er is geen online spraakdienst nodig.
+- Open getallen worden exact gecontroleerd; voorloopnullen zijn toegestaan. Bij open woorden worden hoofdletters en spaties aan het begin en einde genegeerd, maar spelfouten tellen als een nieuwe poging. Lege antwoorden kunnen niet worden ingestuurd.
+- Hints, opnieuw proberen en dezelfde beloning per afgerond avontuur werken ook bij open vragen.
 - Kleine geluidseffecten zijn uit te zetten tijdens een spel.
 
 ## Controleren
@@ -42,7 +44,7 @@ npm run preview
 
 De inhoudstests controleren de oefenbanken van alle groepen, de rekenantwoorden, unieke antwoordopties, beloningen en het importeren van reservekopieën. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-In de huidige versie is een volledig avontuur van tien vragen in de browser getest: na vraag vijf gaat het rondje door, pas na vraag tien volgt de beloning en de score toont correct negen van de tien zonder hulp bij één foute poging. De eerdere browsercontrole omvatte het aanmaken van groep 2- en groep 5-profielen, wisselen tussen gescheiden voortgang, stickers verdienen en herladen met behouden voortgang. Ook de PWA-updateknop is getest. Met de webserver uit kon die eerste versie opnieuw openen, luisterfragmenten afspelen en een volledig groep 2-rondje afronden en opslaan. De vormgeving is bekeken op iPad-portretformaat. Installatie en herstart in vliegtuigstand op een echte iPad moeten nog worden getest.
+In de huidige versie is een volledig avontuur van tien vragen in de browser getest: na vraag vijf gaat het rondje door, pas na vraag tien volgt de beloning en de score toont correct negen van de tien zonder hulp bij één foute poging. De eerdere browsercontrole omvatte het aanmaken van groep 2- en groep 5-profielen, wisselen tussen gescheiden voortgang, stickers verdienen en herladen met behouden voortgang. Ook de PWA-updateknop is getest. Met de webserver uit kon die eerste versie opnieuw openen, luisterfragmenten afspelen en een volledig groep 2-rondje afronden en opslaan. De vormgeving is bekeken op iPad-portretformaat. Voor open vragen zijn lege invoer, cijfers invoeren en wissen, fout antwoord met hint, opnieuw proberen en woorden met hoofdletters en randspaties in de browser gecontroleerd. Een compleet avontuur met meerkeuze- en open telvragen is zonder webserver afgerond en opgeslagen, met behouden voortgang na herladen. Installatie en herstart in vliegtuigstand op een echte iPad moeten nog worden getest.
 
 `npm audit` meldt momenteel 2 lage en 8 matige meldingen in de Workbox-buildketen. `npm audit fix` heeft die niet verholpen. Deze pakketten zijn ontwikkelafhankelijkheden; de gepubliceerde app is statisch. Er zijn geen gemelde problemen in de productieafhankelijkheden. Controleer updates van vite-plugin-pwa/Workbox bij onderhoud.
 
@@ -72,6 +74,7 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/content.ts`: groepen, spelcategorieën, vragen, antwoordopties, hints en stickermijlpalen.
 - `src/storage.ts`: profielmodel, opslag en controle van reservekopieën.
 - `src/main.tsx`: profielen, speelrondjes, beloningen en ouderfuncties.
+- `src/OpenAnswer.tsx`: getallen en woorden invullen, met cijfertoetsen voor groep 2.
 - `src/Island.tsx`: eigen SVG-illustraties en de groeiende eilandverzameling.
 - `src/styles.css`: responsive vormgeving met ondersteuning voor verminderde beweging.
 
