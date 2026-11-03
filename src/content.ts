@@ -2,12 +2,14 @@ import { activities } from './learning/catalog.ts';
 import { legacyBank } from './learning/legacy.ts';
 import { newTopics } from './learning/new-topics.ts';
 import { group3Bank } from './learning/group3.ts';
+import { variantBank } from './learning/variants.ts';
 import { buildRound } from './learning/rounds.ts';
 import { QUESTIONS_PER_ADVENTURE, type Difficulty, type Group, type Question, type Skill } from './learning/model.ts';
 
 export * from './learning/model.ts';
+export { variantBank } from './learning/variants.ts';
 export { activities, worlds } from './learning/catalog.ts';
-export { isCorrectAnswer, shuffle } from './learning/rounds.ts';
+export { isCorrectAnswer, shuffle, questionKey } from './learning/rounds.ts';
 export { audioFragments, choiceAudioPath, choiceLabel, animalSymbol } from './learning/audio.ts';
 
 export function questionBank(group: Group, skill: Skill): Question[] {
@@ -20,8 +22,8 @@ export function questionBank(group: Group, skill: Skill): Question[] {
     ...(group===2&&skill==='taal'?{choiceAudio:true}:{})
   }));
 }
-export function makeRound(group: Group, skill: Skill, difficulty?: Difficulty): Question[] {
-  return buildRound(questionBank(group,skill),difficulty);
+export function makeRound(group: Group, skill: Skill, difficulty?: Difficulty, recent: readonly string[] = []): Question[] {
+  return buildRound(variantBank(questionBank(group,skill)),difficulty,recent);
 }
 export function availableLevels(group: Group, skill: Skill): Difficulty[] {
   const bank=questionBank(group,skill);

@@ -13,6 +13,18 @@ npm run dev
 
 De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitten in de app. Een backend, API-sleutel en account zijn niet nodig.
 
+## Een app voor kinderen
+
+De app opent op het eiland en heeft drie vaste tabs met grote pictogrammen:
+
+- **Eiland:** je eigen eiland, je sterren en de knop Ga spelen. Het huisje opent Lessen en de schattenknop opent je verzameling.
+- **Lessen:** grote vakknoppen, daarna de onderwerpen met een kort label. Heeft een vak maar één onderwerp, dan opent dat direct. Een onderwerp met één niveau start meteen; bij twee niveaus kies je stap 1, stap 2 of Verras me.
+- **Schatten:** je verdiende stickers en hoeveel rondjes je nog nodig hebt voor de volgende.
+
+De nieuwe tabs en schermen zijn bekeken op telefoon- en iPad-formaat. Een volledig rondje met fout antwoord en hint is afgerond met de juiste beloning. In de productieversie zijn na herladen met de server uit de tabs, luisterknop en een volledig rondje getest; de ster bleef na opnieuw herladen behouden.
+
+De kinderschermen hebben geen websitefooter, promotieteksten, bijschriften of zijpanelen. Tijdens een rondje verdwijnen de tabs; alleen de vraag, antwoorden en hulp blijven centraal. Na afloop kun je naar je eiland of nog een rondje doen. Profielen en instellingen staan bovenaan. Installatie, offline status, updates en reservekopieën staan bij het tandwiel voor ouders.
+
 ## Wat zit erin?
 
 | Groep | Oefeningen |
@@ -22,9 +34,15 @@ De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitt
 | 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken en geld |
 | 5 | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken en tabellen/grafieken |
 
-De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Kinderen kiezen eerst een leerwereld (Rekenen, Taal & lezen of Kijken & ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd.
+De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Onder Lessen kiezen kinderen een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd.
 
 De zes nieuwe onderwerpen (vergelijken, patronen, klokkijken, geld, breuken en tabellen/grafieken) hebben elk twintig opdrachten: tien voor stap 1 en tien voor stap 2. De vier onderwerpen van groep 3 hebben eveneens elk twintig opdrachten op twee niveaus. Dat zijn samen 200 toegevoegde opdrachten. Vóór een rondje kies je stap 1, stap 2 of beide door elkaar. De bestaande onderwerpen bieden voorlopig alleen stap 1.
+
+Rekenen (inclusief tellen en tafels), klokkijken, geld en patronen maken lokaal extra varianten. Groep 3 heeft bijvoorbeeld 400 verschillende sommen tot twintig; klokkijken heeft 48 tijden binnen hele uren, halve uren en kwartieren. Geld wisselt muntcombinaties en patronen wisselen kleuren en herhalingen. Reken- en geldvragen wisselen ook de onjuiste antwoordopties. De moeilijkheid blijft binnen het gekozen niveau. Woorden en leesteksten blijven zorgvuldig samengestelde, vaste inhoud.
+
+Per profiel, groep en onderwerp bewaart de app de laatste dertig aangeboden opdrachten. Een nieuw rondje kiest eerst andere opdrachten. Zijn er te weinig ongeziene opdrachten, dan komen de langst geleden aangeboden vragen eerst terug. Bij een niveau met precies tien vaste vragen blijven dat dezelfde tien vragen. Eindeloos oefenen kan dus, met eindige variatie binnen ieder leerdoel.
+
+De geschiedenis wordt vóór het starten van een rondje opgeslagen en geldt ook als je een rondje verlaat. Ze blijft behouden na herladen en in reservekopieën. Oude reservekopieën zonder geschiedenis blijven bruikbaar. Voorlezen van nieuwe groep 3-sommen gebruikt losse, meegeleverde getallen en rekenwoorden; er is geen online spraakdienst nodig.
 
 Een rondje bevat tien verschillende opdrachten van het gekozen onderwerp en niveau, met maximaal drie geschikte open vragen op willekeurige plekken. Bij rekenen, tafels en geld zijn dat getalantwoorden; bij geschikte spellingvragen in groep 4 en 5 woordantwoorden. Groep 2 en 3 gebruiken grote cijfertoetsen en hoeven geen woorden te typen. Leesvragen blijven meerkeuze. Bij groep 3 worden de leesverhaaltjes en woordopties niet voorgelezen, zodat kinderen die zelf lezen; de opdracht en hint zijn wel te beluisteren.
 
@@ -35,7 +53,7 @@ De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelij
 - Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties, externe lettertypen of analytics.
-- De voorleesknoppen voor groep 2 en 3 gebruiken 353 meegeleverde Nederlandse audiofragmenten. Er is geen online spraakdienst nodig.
+- De voorleesknoppen voor groep 2 en 3 gebruiken 379 meegeleverde Nederlandse audiofragmenten. Er is geen online spraakdienst nodig.
 - Open getallen worden exact gecontroleerd; voorloopnullen zijn toegestaan. Bij open woorden worden hoofdletters en spaties aan het begin en einde genegeerd, maar spelfouten tellen als een nieuwe poging. Lege antwoorden kunnen niet worden ingestuurd.
 - Hints, opnieuw proberen en dezelfde beloning per afgerond avontuur werken ook bij open vragen.
 - Kleine geluidseffecten zijn uit te zetten tijdens een spel.
@@ -50,6 +68,8 @@ npm run preview
 ```
 
 De inhoudstests controleren alle groepen en niveaus, tien unieke opdrachten per ronde, leerdoelen, rekenantwoorden, overeenstemming tussen diagrammen en antwoorden, eenduidige antwoordopties, de audiolijst, beloningen en reservekopieën. Oude reservekopieën (versie 1) blijven leesbaar; groep 3 en de nieuwe onderwerpen worden ook geaccepteerd. Tests voor de PWA-updater controleren het wachten op volledige installatie, bestaande updates, netwerkfouten, time-outs, mislukte downloads en expliciete activatie vóór herladen. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
+
+De variatie is met 24 tests gecontroleerd, waaronder alle gegenereerde antwoorden, niveaus, luisterfragmenten, herhaling bij kleine oefenbanken en behoud van geschiedenis in reservekopieën. Twee volledige groep 3-rondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. De tien sommen verschilden allemaal van het eerste rondje; de twee sterren bleven na herladen behouden.
 
 De uitbreiding met groep 3 en de zes nieuwe onderwerpen is in de browser gecontroleerd op iPad- en telefoonformaat. Een volledig groep 3-rondje met meerkeuze en cijfertoetsen gaf bij één foute poging correct negen van de tien zonder hulp en één ster. De nieuwe klok-, munt-, breuk-, vergelijk- en patroonopdrachten zijn visueel gecontroleerd en nagekeken; ook de grafiekweergave is bekeken. Met de productieserver uit kon de app opnieuw openen, een luisterfragment gebruiken, een volledig groep 3-rondje afronden en de verdiende ster en sticker na herladen behouden.
 
@@ -86,19 +106,22 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/learning/legacy.ts`: de bestaande oefenbanken voor groep 2, 4 en 5.
 - `src/learning/group3.ts`: het startaanbod voor groep 3.
 - `src/learning/new-topics.ts`: de zes nieuwe onderwerpen, ieder met twee niveaus.
-- `src/learning/rounds.ts`: rondjes samenstellen en antwoorden controleren.
+- `src/learning/rounds.ts`: rondjes samenstellen, recente herhaling beperken en antwoorden controleren.
+- `src/learning/variants.ts`: varianten genereren binnen het getalbereik en leerdoel.
 - `src/learning/audio.ts`: gedeelde lijst van instructies, hints en antwoordaudio.
 - `src/QuestionAnswers.tsx` en `src/OpenAnswer.tsx`: meerkeuze en invullen.
 - `src/QuestionVisual.tsx`: klokken, munten, breuken, patronen, vergelijkingen en grafieken.
 - `src/storage.ts`: profielmodel, opslag en controle van reservekopieën.
-- `src/main.tsx`: profielen, leerwereld- en niveaukeuze, speelrondjes en ouderfuncties.
+- `src/main.tsx`: profielen, niveaukeuze, speelrondjes en ouderfuncties.
+- `src/AppPages.tsx`: Eiland, Lessen, Schatten en de vaste navigatie.
+- `src/app.css`: de app-indeling, grotere knoppen en speelsere kinderschermen.
 - `src/Island.tsx` en `src/styles.css`: illustraties en responsive vormgeving.
 
 Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg groepen toe aan `GROUPS`, onderwerpen aan `SKILLS`, en registreer het aanbod in de catalogus. De profielvalidatie gebruikt deze gedeelde lijsten. Voor ieder aangeboden niveau zijn minimaal tien verschillende opdrachten nodig.
 
-Voortgang blijft voorlopig een rondjeteller per onderwerp, ook als een profiel van groep verandert. Er wordt nog geen beheersing per groep of leerdoel afgeleid uit die tellers.
+Naast de recente oefengeschiedenis blijft voortgang voorlopig een rondjeteller per onderwerp, ook als een profiel van groep verandert. Er wordt nog geen beheersing per groep of leerdoel afgeleid uit die tellers.
 
-Alle 353 luisterfragmenten staan in `public/audio`. Nieuwe fragmenten voor groep 2 en 3 worden op macOS gemaakt met de geïnstalleerde Nederlandse stem Xander en FFmpeg:
+Alle 379 luisterfragmenten staan in `public/audio`. Nieuwe fragmenten voor groep 2 en 3 worden op macOS gemaakt met de geïnstalleerde Nederlandse stem Xander en FFmpeg:
 
 ```sh
 node --experimental-strip-types scripts/generate-audio.mjs

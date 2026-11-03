@@ -1,5 +1,6 @@
-import { GROUPS, SKILLS, type Group, type Skill } from './content.ts';
-export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>> };
+import { GROUPS, SKILLS, questionKey, type Question, type Group, type Skill } from './content.ts';
+export type RecentQuestions = Partial<Record<`${Group}:${Skill}`, string[]>>;
+export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
 let dbPromise:Promise<IDBDatabase>|undefined;
@@ -37,7 +38,16 @@ export function validateProfiles(value:unknown):Profile[]{
       if(!SKILLS.includes(key as Skill)||!isCount(count))throw new Error('Ongeldige voortgang.');
       skills[key as Skill]=count;
     }
-    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills};
+    const recentQuestions:RecentQuestions={};
+    if(item.recentQuestions!==undefined){
+      if(!item.recentQuestions||typeof item.recentQuestions!=='object'||Array.isArray(item.recentQuestions))throw new Error('Ongeldige oefengeschiedenis.');
+      for(const [key,entries] of Object.entries(item.recentQuestions)){
+        const [group,skill,...extra]=key.split(':');
+        if(extra.length||!GROUPS.some(g=>String(g)===group)||!SKILLS.includes(skill as Skill)||!Array.isArray(entries)||entries.length>30||entries.some(entry=>typeof entry!=='string'||! /^[0-9a-f]{8}$/.test(entry))||new Set(entries).size!==entries.length)throw new Error('Ongeldige oefengeschiedenis.');
+        recentQuestions[key as keyof RecentQuestions]=[...entries];
+      }
+    }
+    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...(item.recentQuestions!==undefined?{recentQuestions}:{})};
   });
 }
 export function parseBackup(text:string):Profile[]{
@@ -45,4 +55,13 @@ export function parseBackup(text:string):Profile[]{
 }
 export function reward(profile:Profile,skill:Skill):Profile{
   return {...profile,rounds:profile.rounds+1,stars:profile.stars+1,skills:{...profile.skills,[skill]:(profile.skills[skill]??0)+1}};
+}
+
+export function rememberQuestions(profile:Profile, questions:Question[]):Profile {
+  const recentQuestions={...profile.recentQuestions};
+  for(const q of questions){
+    const key=`${q.group}:${q.topic}` as const, id=questionKey(q);
+    recentQuestions[key]=[...(recentQuestions[key]??[]).filter(previous=>previous!==id),id].slice(-30);
+  }
+  return {...profile,recentQuestions};
 }

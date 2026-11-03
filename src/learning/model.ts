@@ -26,6 +26,8 @@ export type Question = {
   diagram?: Diagram;
   passage?: string;
   audio?: string;
+  audioSequence?: string[];
+  hintAudio?: string;
   choiceAudio?: boolean;
   openAnswer?: 'number' | 'word';
   answerMode?: 'choice' | 'open';

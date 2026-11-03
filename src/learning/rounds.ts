@@ -5,15 +5,21 @@ export function shuffle<T>(items: readonly T[]): T[] {
   for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}
   return result;
 }
-export function buildRound(bank: Question[], difficulty?: Difficulty): Question[] {
-  const eligible=bank.filter(question=>!difficulty||question.difficulty===difficulty);
-  if(eligible.length<QUESTIONS_PER_ADVENTURE)throw new Error('Er zijn nog niet genoeg opdrachten voor dit niveau.');
-  const open=shuffle(eligible.filter(question=>question.openAnswer)).slice(0,3);
-  const openIds=new Set(open.map(question=>question.id));
-  const rest=shuffle(eligible.filter(question=>!openIds.has(question.id))).slice(0,QUESTIONS_PER_ADVENTURE-open.length);
-  // Mix only answer modes supported by each question; no fixed positions or repeated questions.
-  return shuffle([...open.map(question=>({...question,answerMode:'open' as const})),...rest.map(question=>({...question,answerMode:'choice' as const}))])
-    .map(question=>({...question,choices:shuffle(question.choices)}));
+// A compact semantic key ignores answer order and choice/open presentation.
+export function questionKey(q: Question): string {
+  const value=JSON.stringify([q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage]);
+  let hash=2166136261;
+  for(let i=0;i<value.length;i++)hash=Math.imul(hash^value.charCodeAt(i),16777619);
+  return (hash>>>0).toString(16).padStart(8,'0');
+}
+export function buildRound(bank: Question[], difficulty?: Difficulty, recent: readonly string[] = []): Question[] {
+  const eligible=bank.filter(q=>!difficulty||q.difficulty===difficulty);
+  const unique=[...new Map(eligible.map(q=>[questionKey(q),q])).values()];
+  if(unique.length<QUESTIONS_PER_ADVENTURE)throw new Error('Er zijn nog niet genoeg opdrachten voor dit niveau.');
+  const rank=new Map(recent.map((key,index)=>[key,index]));
+  const selected=shuffle(unique).sort((a,b)=>(rank.get(questionKey(a))??-1)-(rank.get(questionKey(b))??-1)).slice(0,QUESTIONS_PER_ADVENTURE);
+  const open=new Set(shuffle(selected.filter(q=>q.openAnswer)).slice(0,3).map(q=>q.id));
+  return shuffle(selected).map(q=>({...q,answerMode:open.has(q.id)?'open':'choice',choices:shuffle(q.choices)}));
 }
 export function isCorrectAnswer(question: Question, input: string): boolean {
   const value=input.normalize('NFC').trim().toLocaleLowerCase('nl');

@@ -8,7 +8,12 @@ export function choiceAudioPath(choice: string): string {
   return `/audio/word-${name}.m4a`;
 }
 export function audioFragments(questions: Question[]): Map<string,string> {
-  const fragments=new Map<string,string>();
+  const fragments=new Map<string,string>([
+    ['/audio/sum-start.m4a','Hoeveel is'], ['/audio/sum-plus.m4a','plus'], ['/audio/sum-min.m4a','min'],
+    ['/audio/sum-hint-plus.m4a','Begin bij het eerste getal en tel het tweede getal erbij.'],
+    ['/audio/sum-hint-min.m4a','Begin bij het eerste getal en tel het tweede getal terug.'],
+    ...Array.from({length:21},(_,n):[string,string]=>[`/audio/number-${n}.m4a`,String(n)])
+  ]);
   for(const question of questions){
     if(!question.audio)continue;
     const prompt=question.prompt.startsWith('Hoeveel is ')?question.prompt.replaceAll('−','min').replaceAll('+','plus').replaceAll('×','keer').replaceAll(' : ',' gedeeld door '):question.prompt;
