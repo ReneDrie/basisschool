@@ -1,3 +1,4 @@
+import { shopBank } from './learning/shop.ts';
 import { activities } from './learning/catalog.ts';
 import { legacyBank } from './learning/legacy.ts';
 import { newTopics } from './learning/new-topics.ts';
@@ -15,10 +16,10 @@ export { audioFragments, choiceAudioPath, choiceLabel, animalSymbol } from './le
 export function questionBank(group: Group, skill: Skill): Question[] {
   const activity=activities(group).find(item=>item.id===skill);
   if(!activity)throw new Error('Dit spel hoort niet bij deze groep.');
-  const authored=group===3?group3Bank[skill]!:newTopics[skill]??legacyBank(group,skill);
+  const authored=skill==='winkel'&&(group===2||group===4)?shopBank(group):group===3?group3Bank[skill]!:newTopics[skill]??legacyBank(group,skill);
   return authored.map(question=>({
     ...question,group,topic:skill,difficulty:question.difficulty??1,learningGoal:question.learningGoal??activity.learningGoal,
-    ...(group<=3?{audio:`/audio/${question.id}.m4a`}:{}),
+    ...(group<=3?{audio:question.audio??`/audio/${question.id}.m4a`}:{}),
     ...(group===2&&skill==='taal'?{choiceAudio:true}:{})
   }));
 }

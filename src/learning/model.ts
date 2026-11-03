@@ -1,6 +1,7 @@
+import type { ShopTask } from './shop.ts';
 export const GROUPS = [2, 3, 4, 5] as const;
 export type Group = typeof GROUPS[number];
-export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken'] as const;
+export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel'] as const;
 export type Skill = typeof SKILLS[number];
 export type Difficulty = 1 | 2;
 export type World = 'rekenen' | 'taal' | 'ontdekken';
@@ -24,6 +25,7 @@ export type Question = {
   hint: string;
   visual?: string;
   diagram?: Diagram;
+  shop?: ShopTask;
   passage?: string;
   audio?: string;
   audioSequence?: string[];

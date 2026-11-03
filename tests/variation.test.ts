@@ -45,7 +45,7 @@ test('Every generated candidate has correct answers, bounded numbers, unambiguou
     const bank=questionBank(group,a.id),generated=variantBank(bank);
     assert.equal(new Set(generated.map(questionKey)).size,generated.length,`${group}: ${a.id}`);
     for(const q of generated){
-      assert.equal(new Set(q.choices).size,4,q.id);assert.ok(q.choices.includes(q.answer),q.id);
+      if(!q.shop){assert.equal(new Set(q.choices).size,4,q.id);assert.ok(q.choices.includes(q.answer),q.id);}
       if(a.id==='rekenen'&&group>2||a.id==='tafels'){
         const m=q.prompt.match(/(\d+) ([+−×:]) (\d+)/)!;assert.ok(m);
         const x=Number(m[1]),y=Number(m[3]),expected=m[2]==='+'?x+y:m[2]==='−'?x-y:m[2]==='×'?x*y:x/y;

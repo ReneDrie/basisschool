@@ -46,6 +46,17 @@ Alle eilandonderdelen, beloningen, vriendjes en oefenplaatjes gebruiken dezelfde
 
 De overgang van 24 naar 25 rondjes is in de browser getest: Strandbaai en de eerste nieuwe schat komen vrij. Ook de overgang van 379 naar 380 is zonder productieserver doorlopen: een nieuwe verkennersrang en de eerste edelsteen verschijnen. De kaart, eilandkeuze en schatten zijn op telefoon- en iPad-formaat bekeken. De automatische tests controleren alle ontgrendelgrenzen, de oorspronkelijke schatten, doorlopende rangen en lokale illustraties voor alle oefenplaatjes.
 
+## Eilandwinkel voor groep 2 en 4
+
+Via **Lessen → Rekenen → Eilandwinkel** kunnen kinderen producten pakken en terugleggen, mandjes vergelijken of zelf een betaling samenstellen. Er zijn twee stappen per groep:
+
+- Groep 2: aantallen 1–5 en het meeste herkennen; daarna aantallen 6–10 en het minste herkennen. Veertig verschillende opdrachten per stap.
+- Groep 4: één soort product betalen met hele euro's; daarna de prijzen van twee soorten producten optellen en betalen met euro's en centen. Achtenveertig opdrachten per stap.
+
+Een betaling mag op meerdere manieren worden samengesteld, zolang de munten samen precies het bedrag vormen. Bij het vullen telt zowel het juiste aantal als de juiste soort product. Tikken werkt met muis, aanraking en toetsenbord; spullen of munten kunnen terug en de hele selectie kan opnieuw. De bestaande ronde van tien opdrachten, hints, sterren, eilandschatten en reservekopieën blijven van toepassing. De winkel heeft een eigen oefengeschiedenis; eerdere opdrachten worden zo veel mogelijk vermeden. Bestaande geschiedenissleutels blijven gelijk.
+
+De 49 nieuwe lokale luisterfragmenten omvatten opdrachten en hints, ook voor de winkel in groep 4. De productiecontrole dekt nu 428 luisterfragmenten. Een groep 2-rondje is met een verkeerd product, terugleggen en herstellen getest. Een volledig groep 4-rondje, luisteren, verschillende muntcombinaties en opnieuw openen met behouden voortgang zijn met de productieserver uit getest. Beide spelvormen zijn op telefoon- en tabletformaat bekeken.
+
 ## Wat zit erin?
 
 | Groep | Oefeningen |
@@ -136,6 +147,7 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/main.tsx`: profielen, niveaukeuze, speelrondjes en ouderfuncties.
 - `src/AppPages.tsx`: Eiland, Lessen, Schatten en de vaste navigatie.
 - `src/app.css`: de app-indeling, grotere knoppen en speelsere kinderschermen.
+- `src/ShopGame.tsx` en `src/learning/shop.ts`: winkelbediening, opdrachten en controle van boodschappen/betalingen.
 - `src/progression.ts`: gebieden, mijlpalen en verkennersrangen.
 - `src/Art.tsx` en `src/art-catalog.ts`: de gedeelde vectorillustraties en koppeling met bestaande avatars/oefenplaatjes.
 - `src/Island.tsx` en `src/IslandScenery.tsx`: compositie per gebied, landschap en schaalvaste contouren.

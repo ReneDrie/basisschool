@@ -12,9 +12,11 @@ test('Every advertised topic has a complete bank with unique IDs, answers and le
     for(const question of questions){
       assert.equal(question.group,group);assert.equal(question.topic,activity.id);
       assert.ok(question.learningGoal.length>10);assert.ok([1,2].includes(question.difficulty));
-      assert.equal(question.choices.length,4,question.id);
-      assert.equal(new Set(question.choices).size,4,question.id);
-      assert.equal(question.choices.filter(choice=>choice===question.answer).length,1,question.id);
+      if(!question.shop){
+        assert.equal(question.choices.length,4,question.id);
+        assert.equal(new Set(question.choices).size,4,question.id);
+        assert.equal(question.choices.filter(choice=>choice===question.answer).length,1,question.id);
+      }else assert.equal(question.choices.length,0);
       assert.ok(question.hint.length>5);
       if(group<=3){assert.ok(question.audio);assert.notEqual(question.openAnswer,'word');}
     }
@@ -114,7 +116,7 @@ test('Audio manifest covers every spoken prompt, hint and enabled answer option,
     assert.equal(merged.get(path),text);
     assert.ok(path.startsWith('/audio/'));assert.ok(path.endsWith('.m4a'));
   }
-  for(const group of [2,3] as const)for(const a of activities(group))for(const q of questionBank(group,a.id))assert.ok(merged.has(`/audio/hint-${q.id}.m4a`));
+  for(const group of [2,3] as const)for(const a of activities(group))for(const q of questionBank(group,a.id))assert.ok(merged.has(q.hintAudio??`/audio/hint-${q.id}.m4a`));
 });
 const profile:Profile={id:'test-1',name:'Ontdekker',avatar:'🦊',group:5,rounds:2,stars:2,skills:{rekenen:2}};
 test('An adventure rewards effort and preserves existing progress without mutation',()=>{

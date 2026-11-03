@@ -7,7 +7,8 @@ export function shuffle<T>(items: readonly T[]): T[] {
 }
 // A compact semantic key ignores answer order and choice/open presentation.
 export function questionKey(q: Question): string {
-  const value=JSON.stringify([q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage]);
+  // Append interactive content only when present, preserving existing saved keys.
+  const value=JSON.stringify([q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[])]);
   let hash=2166136261;
   for(let i=0;i<value.length;i++)hash=Math.imul(hash^value.charCodeAt(i),16777619);
   return (hash>>>0).toString(16).padStart(8,'0');

@@ -6,6 +6,7 @@ export const worlds: { id: World; title: string; symbol: string }[] = [
   { id: 'ontdekken', title: 'Kijken & ontdekken', symbol: '✦' }
 ];
 const catalog: Record<Skill, Activity> = {
+  winkel: {id:'winkel',title:'De Eilandwinkel',subtitle:'Vul je mandje',tag:'Boodschappen doen',color:'peach',symbol:'shop',world:'rekenen',learningGoal:'Hoeveelheden verzamelen en vergelijken, of een aankoop precies betalen.'},
   rekenen: { id:'rekenen', title:'Het Rekenbos', subtitle:'Op avontuur met sommen', tag:'Optellen & aftrekken', color:'peach', symbol:'123', world:'rekenen', learningGoal:'Optellen en aftrekken binnen het getalbereik van je groep.' },
   taal: { id:'taal', title:'De Lettertuin', subtitle:'Laat je woorden groeien', tag:'Woorden & spelling', color:'purple', symbol:'Aa', world:'taal', learningGoal:'Woorden herkennen en correct spellen.' },
   tafels: { id:'tafels', title:'De Tafeltuin', subtitle:'Word een tafelontdekker', tag:'Keersommen', color:'blue', symbol:'×', world:'rekenen', learningGoal:'Vermenigvuldigen met de tafels.' },
@@ -20,9 +21,9 @@ const catalog: Record<Skill, Activity> = {
   grafieken: { id:'grafieken', title:'Het Speurbureau', subtitle:'Wat vertellen de getallen?', tag:'Tabellen & grafieken', color:'blue', symbol:'chart', world:'rekenen', learningGoal:'Gegevens aflezen en vergelijken in tabellen en staafgrafieken.' }
 };
 const groupTopics: Record<Group, Skill[]> = {
-  2: ['rekenen','taal','vormen','klanken','vergelijken','patronen'],
+  2: ['rekenen','taal','vormen','klanken','vergelijken','patronen','winkel'],
   3: ['rekenen','taal','klanken','lezen'],
-  4: ['rekenen','taal','tafels','lezen','klok','geld'],
+  4: ['rekenen','taal','tafels','lezen','klok','geld','winkel'],
   5: ['rekenen','taal','tafels','lezen','breuken','grafieken']
 };
 export function activities(group: Group): Activity[] {

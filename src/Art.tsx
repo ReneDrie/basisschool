@@ -26,6 +26,7 @@ export function ArtShape({kind}:{kind:string}):ReactNode {
 function ShapeDrawing({kind}:{kind:string}):ReactNode {
   if(['fox','bear','rabbit','panda','frog','lion','cat','mouse','rat','deer','cow'].includes(kind))return <Animal kind={kind}/>;
   if(['red','blue','yellow','green','circle'].includes(kind))return <circle cx="50" cy="50" r="33" fill={{red:'#d98278',blue:'#82afca',yellow:gold,green, circle:blue}[kind]} stroke={ink} strokeWidth="2"/>;
+  if(kind==='shop')return <><rect x="12" y="34" width="76" height="55" rx="5" fill={cream} stroke={ink} strokeWidth="2"/><path d="M12 15h76l8 23H4z" fill={rose} stroke={ink} strokeWidth="2"/><g fill={cream}><path d="M23 16h12l-3 21H18zm29 0h12l5 21H53zm25 0h10l7 21H80z"/></g><path d="M19 52h36v23H19z" fill={blue} stroke={ink} strokeWidth="2"/><path d="M65 89V54h16v35" fill={green} stroke={ink} strokeWidth="2"/><path d="M14 78h45" stroke={gold} strokeWidth="5" strokeLinecap="round"/><circle cx="71" cy="72" r="2" fill={cream}/></>;
   if(kind==='triangle')return <path d="M50 12L90 82H10z" fill={gold} stroke={ink} strokeWidth="3" strokeLinejoin="round"/>;
   if(kind==='square')return <rect x="17" y="17" width="66" height="66" rx="6" fill={purple} stroke={ink} strokeWidth="3"/>;
   if(kind==='heart')return <path d="M50 84L16 51C-5 19 34 3 50 29 66 3 105 19 84 51z" fill={rose} stroke={ink} strokeWidth="3"/>;

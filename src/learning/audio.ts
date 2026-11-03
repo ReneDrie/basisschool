@@ -18,7 +18,7 @@ export function audioFragments(questions: Question[]): Map<string,string> {
     if(!question.audio)continue;
     const prompt=question.prompt.startsWith('Hoeveel is ')?question.prompt.replaceAll('−','min').replaceAll('+','plus').replaceAll('×','keer').replaceAll(' : ',' gedeeld door '):question.prompt;
     fragments.set(question.audio,prompt);
-    fragments.set(`/audio/hint-${question.id}.m4a`,question.hint);
+    fragments.set(question.hintAudio??`/audio/hint-${question.id}.m4a`,question.hint);
     if(question.choiceAudio)for(const choice of question.choices)fragments.set(choiceAudioPath(choice),choiceLabel(choice));
   }
   return fragments;
