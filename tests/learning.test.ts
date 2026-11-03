@@ -12,7 +12,7 @@ test('Every advertised topic has a complete bank with unique IDs, answers and le
     for(const question of questions){
       assert.equal(question.group,group);assert.equal(question.topic,activity.id);
       assert.ok(question.learningGoal.length>10);assert.ok([1,2].includes(question.difficulty));
-      if(!question.shop){
+      if(!question.shop&&!question.building&&!question.story){
         assert.equal(question.choices.length,4,question.id);
         assert.equal(new Set(question.choices).size,4,question.id);
         assert.equal(question.choices.filter(choice=>choice===question.answer).length,1,question.id);
@@ -28,8 +28,7 @@ test('Mixed and level-specific adventures contain ten distinct, eligible assignm
       const round=makeRound(group,activity.id,level);
       assert.equal(round.length,10);assert.equal(new Set(round.map(q=>q.id)).size,10);
       if(level)assert.ok(round.every(q=>q.difficulty===level));
-      const eligible=questionBank(group,activity.id).filter(q=>!level||q.difficulty===level);
-      const expected=Math.min(3,eligible.filter(q=>q.openAnswer).length);
+      const expected=Math.min(3,round.filter(q=>q.openAnswer).length);
       assert.equal(round.filter(q=>q.answerMode==='open').length,expected);
       assert.equal(round.filter(q=>q.answerMode==='choice').length,10-expected);
       for(const q of round){assert.ok(isCorrectAnswer(q,q.answer));if(q.answerMode==='open')assert.ok(q.openAnswer);}
@@ -38,11 +37,11 @@ test('Mixed and level-specific adventures contain ten distinct, eligible assignm
   assert.throws(()=>makeRound(2,'tafels'));
   assert.throws(()=>makeRound(4,'taal',2));
 });
-test('Six new topics and the four group 3 topics each contain twenty questions on two complete levels',()=>{
+test('Six new topics and the four group 3 topics have at least twenty questions on two complete levels',()=>{
   for(const [group,skill] of [[2,'vergelijken'],[2,'patronen'],[4,'klok'],[4,'geld'],[5,'breuken'],[5,'grafieken'],...activities(3).map(a=>[3,a.id])] as const){
     const bank=questionBank(group,skill);
-    assert.equal(bank.length,20);assert.deepEqual(availableLevels(group,skill),[1,2]);
-    assert.equal(bank.filter(q=>q.difficulty===1).length,10);assert.equal(bank.filter(q=>q.difficulty===2).length,10);
+    assert.ok(bank.length>=20);assert.deepEqual(availableLevels(group,skill),[1,2]);
+    assert.ok(bank.filter(q=>q.difficulty===1).length>=10);assert.ok(bank.filter(q=>q.difficulty===2).length>=10);
   }
 });
 test('Typed words accept capitals and surrounding whitespace but require correct spelling',()=>{

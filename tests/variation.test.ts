@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activities, GROUPS, makeRound, questionBank, questionKey, variantBank, audioFragments, type Question } from '../src/content.ts';
-import { rememberQuestions, validateProfiles, parseBackup, type Profile } from '../src/storage.ts';
+import { activities, GROUPS, makeRound, questionBank, questionKey, variantBank, audioFragments, repetitionKey, type Question } from '../src/content.ts';
+import { rememberQuestions, validateProfiles, parseBackup, HISTORY_PER_TOPIC, type Profile } from '../src/storage.ts';
 const profile:Profile={id:'variation',name:'Proef',avatar:'🦊',group:3,rounds:0,stars:0,skills:{}};
 
 test('Successive adventures avoid the previous three rounds whenever the pool permits it',()=>{
@@ -9,12 +9,13 @@ test('Successive adventures avoid the previous three rounds whenever the pool pe
     let p={...profile,group};
     for(let i=0;i<12;i++){
       const history=p.recentQuestions?.[`${group}:${topic}`]??[];
-      const round=makeRound(group,topic,level,history);
+      const pool=variantBank(questionBank(group,topic)).filter(q=>q.difficulty===level),unseen=pool.filter(q=>!history.includes(questionKey(q))).length;
+      const round=makeRound(group,topic,level,history,p.recentConcepts?.[`${group}:${topic}`]);
       assert.equal(round.length,10);
       assert.equal(new Set(round.map(questionKey)).size,10);
-      assert.ok(round.every(q=>!history.includes(questionKey(q))),`${group}: ${topic}`);
+      assert.equal(round.filter(q=>history.includes(questionKey(q))).length,Math.max(0,10-unseen),`${group}: ${topic}`);
       p=rememberQuestions(p,round);
-      assert.ok(p.recentQuestions![`${group}:${topic}`]!.length<=30);
+      assert.ok(p.recentQuestions![`${group}:${topic}`]!.length<=HISTORY_PER_TOPIC);
     }
   }
 });
@@ -24,7 +25,8 @@ test('Small pools reuse the least recently offered questions and never block pla
   assert.ok(second.every(q=>!first.map(questionKey).includes(questionKey(q))));
   const history=rememberQuestions(p,second).recentQuestions!['4:klok']!;
   const third=makeRound(4,'klok',1,history);
-  assert.equal(third.filter(q=>first.map(questionKey).includes(questionKey(q))).length,6);
+  assert.ok(third.every(q=>!history.includes(questionKey(q))));
+  assert.equal(new Set(third.map(repetitionKey)).size,10);
   const fixed=makeRound(3,'lezen',1),fixedNext=makeRound(3,'lezen',1,fixed.map(questionKey));
   assert.equal(fixedNext.length,10);
 });
@@ -36,7 +38,7 @@ test('History persists without changing rewards, remains separate per group/topi
   assert.deepEqual(validateProfiles([profile]),[profile]);
   const other=rememberQuestions(remembered,makeRound(4,'geld',2));
   assert.deepEqual(other.recentQuestions!['3:rekenen'],remembered.recentQuestions!['3:rekenen']);
-  for(const bad of [null,[],{'3:unknown':[]},{'3:lezen':['bogus']},{'3:lezen':Array(31).fill('12345678')},{'3:lezen':['12345678','12345678']}])assert.throws(()=>validateProfiles([{...profile,recentQuestions:bad}]));
+  for(const bad of [null,[],{'3:unknown':[]},{'3:lezen':['bogus']},{'3:lezen':Array(HISTORY_PER_TOPIC+1).fill('12345678')},{'3:lezen':['12345678','12345678']}])assert.throws(()=>validateProfiles([{...profile,recentQuestions:bad}]));
   assert.equal(questionKey(round[0]),questionKey({...round[0],choices:[...round[0].choices].reverse(),answerMode:'choice'}));
 });
 test('Every generated candidate has correct answers, bounded numbers, unambiguous options and valid offline speech',()=>{
@@ -45,8 +47,9 @@ test('Every generated candidate has correct answers, bounded numbers, unambiguou
     const bank=questionBank(group,a.id),generated=variantBank(bank);
     assert.equal(new Set(generated.map(questionKey)).size,generated.length,`${group}: ${a.id}`);
     for(const q of generated){
-      if(!q.shop){assert.equal(new Set(q.choices).size,4,q.id);assert.ok(q.choices.includes(q.answer),q.id);}
-      if(a.id==='rekenen'&&group>2||a.id==='tafels'){
+      if(!q.shop&&!q.building&&!q.story){assert.equal(new Set(q.choices).size,4,q.id);assert.ok(q.choices.includes(q.answer),q.id);}
+      if(q.missing){const {a:x,b:y,result,operation}=q.missing;assert.equal(result,operation==='+'?x+y:operation==='−'?x-y:x*y);assert.equal(Number(q.answer),y);assert.ok(q.choices.includes(String(y)));}
+      if(!q.missing&&(a.id==='rekenen'&&group>2||a.id==='tafels')){
         const m=q.prompt.match(/(\d+) ([+−×:]) (\d+)/)!;assert.ok(m);
         const x=Number(m[1]),y=Number(m[3]),expected=m[2]==='+'?x+y:m[2]==='−'?x-y:m[2]==='×'?x*y:x/y;
         assert.equal(Number(q.answer),expected);assert.ok(expected>=0);
@@ -66,7 +69,7 @@ test('Every generated candidate has correct answers, bounded numbers, unambiguou
         for(const path of q.audioSequence??[q.audio!])assert.ok(audio.has(path),`${q.id}: ${path}`);
         const hintPath=q.hintAudio??`/audio/hint-${q.id}.m4a`;
         assert.equal(audio.get(hintPath),q.hint,q.id);
-        if(q.audioSequence){
+        if(q.audioSequence&&!q.missing){
           assert.equal(audio.get(q.audioSequence[1]),q.prompt.match(/\d+/)![0]);
           assert.equal(audio.get(q.audioSequence[3]),q.prompt.match(/\d+/g)![1]);
         }

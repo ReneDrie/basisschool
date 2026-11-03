@@ -1,16 +1,19 @@
+import type { StoryTask } from './stories.ts';
+import type { BuildingTask } from './building.ts';
 import type { ShopTask } from './shop.ts';
 export const GROUPS = [2, 3, 4, 5] as const;
 export type Group = typeof GROUPS[number];
-export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel'] as const;
+export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel', 'bouwen', 'verhalen'] as const;
 export type Skill = typeof SKILLS[number];
 export type Difficulty = 1 | 2;
 export type World = 'rekenen' | 'taal' | 'ontdekken';
 export type Diagram =
   | { kind: 'comparison'; rows: { label: string; objects: string[] }[] }
   | { kind: 'pattern'; items: string[] }
-  | { kind: 'clock'; hour: number; minute: number }
+  | { kind:'shapes';target:string;items:string[] }
+  | { kind: 'clock'; hour: number; minute: number;face?:number }
   | { kind: 'money'; cents: number[] }
-  | { kind: 'fraction'; parts: number; filled: number }
+  | { kind: 'fraction'; parts: number; filled: number;style?:'grid'|'bar'|'pie';reverse?:boolean }
   | { kind: 'chart'; title: string; style: 'table' | 'bars'; rows: { label: string; value: number }[] }
   | { kind: 'picture'; symbol: string; label: string };
 export type Question = {
@@ -24,8 +27,12 @@ export type Question = {
   answer: string;
   hint: string;
   visual?: string;
+  missing?:{operation:'+'|'−'|'×';a:number;b:number;result:number};
+  visualLayout?:'rows'|'pairs'|'scatter';
   diagram?: Diagram;
   shop?: ShopTask;
+  building?: BuildingTask;
+  story?: StoryTask;
   passage?: string;
   audio?: string;
   audioSequence?: string[];

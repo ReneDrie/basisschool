@@ -13,9 +13,10 @@ test('The island shop has two varied levels for groups 2 and 4 and stays separat
     let profile=emptyProfile('Winkelvriend','🦊',group);
     for(const level of [1,2] as const)for(let round=0;round<6;round++){
       const recent=profile.recentQuestions?.[`${group}:winkel`]??[];
-      const questions=makeRound(group,'winkel',level,recent);
+      const bankForLevel=bank.filter(q=>q.difficulty===level),unseen=bankForLevel.filter(q=>!recent.includes(questionKey(q))).length;
+      const questions=makeRound(group,'winkel',level,recent,profile.recentConcepts?.[`${group}:winkel`]);
       assert.equal(questions.length,10);assert.ok(questions.every(q=>q.shop&&q.difficulty===level));
-      assert.ok(questions.every(q=>!recent.includes(questionKey(q))));
+      assert.equal(questions.filter(q=>recent.includes(questionKey(q))).length,Math.max(0,10-unseen));
       profile=rememberQuestions(profile,questions);
     }
     const earned=reward(profile,'winkel');

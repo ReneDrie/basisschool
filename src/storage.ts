@@ -1,6 +1,6 @@
-import { GROUPS, SKILLS, questionKey, type Question, type Group, type Skill } from './content.ts';
+import { GROUPS, SKILLS, questionKey, repetitionKey, type Question, type Group, type Skill } from './content.ts';
 export type RecentQuestions = Partial<Record<`${Group}:${Skill}`, string[]>>;
-export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions };
+export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
 let dbPromise:Promise<IDBDatabase>|undefined;
@@ -25,6 +25,7 @@ export async function saveProfiles(profiles:Profile[]):Promise<void>{
     transaction.oncomplete=()=>resolve();transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error);
   });
 }
+export const HISTORY_PER_TOPIC=1000, HISTORY_PER_PROFILE=5000, MAX_BACKUP_BYTES=8_000_000;
 const isCount=(n:unknown):n is number=>typeof n==='number' && Number.isSafeInteger(n) && n>=0 && n<=1_000_000;
 export function validateProfiles(value:unknown):Profile[]{
   if(!Array.isArray(value)||value.length>20)throw new Error('Ongeldige profielen.');
@@ -38,16 +39,21 @@ export function validateProfiles(value:unknown):Profile[]{
       if(!SKILLS.includes(key as Skill)||!isCount(count))throw new Error('Ongeldige voortgang.');
       skills[key as Skill]=count;
     }
-    const recentQuestions:RecentQuestions={};
-    if(item.recentQuestions!==undefined){
-      if(!item.recentQuestions||typeof item.recentQuestions!=='object'||Array.isArray(item.recentQuestions))throw new Error('Ongeldige oefengeschiedenis.');
-      for(const [key,entries] of Object.entries(item.recentQuestions)){
+    const histories:Partial<Record<'recentQuestions'|'recentConcepts',RecentQuestions>>={};
+    for(const field of ['recentQuestions','recentConcepts'] as const){
+      if(item[field]===undefined)continue;
+      const value=item[field];
+      if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('Ongeldige oefengeschiedenis.');
+      const history:RecentQuestions={};let total=0;
+      for(const [key,entries] of Object.entries(value)){
         const [group,skill,...extra]=key.split(':');
-        if(extra.length||!GROUPS.some(g=>String(g)===group)||!SKILLS.includes(skill as Skill)||!Array.isArray(entries)||entries.length>30||entries.some(entry=>typeof entry!=='string'||! /^[0-9a-f]{8}$/.test(entry))||new Set(entries).size!==entries.length)throw new Error('Ongeldige oefengeschiedenis.');
-        recentQuestions[key as keyof RecentQuestions]=[...entries];
+        if(extra.length||!GROUPS.some(g=>String(g)===group)||!SKILLS.includes(skill as Skill)||!Array.isArray(entries)||entries.length>HISTORY_PER_TOPIC||entries.some(entry=>typeof entry!=='string'||! /^[0-9a-f]{8}$/.test(entry))||new Set(entries).size!==entries.length)throw new Error('Ongeldige oefengeschiedenis.');
+        total+=entries.length;history[key as keyof RecentQuestions]=[...entries];
       }
+      if(total>HISTORY_PER_PROFILE)throw new Error('Ongeldige oefengeschiedenis.');
+      histories[field]=history;
     }
-    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...(item.recentQuestions!==undefined?{recentQuestions}:{})};
+    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories};
   });
 }
 export function parseBackup(text:string):Profile[]{
@@ -57,11 +63,20 @@ export function reward(profile:Profile,skill:Skill):Profile{
   return {...profile,rounds:profile.rounds+1,stars:profile.stars+1,skills:{...profile.skills,[skill]:(profile.skills[skill]??0)+1}};
 }
 
-export function rememberQuestions(profile:Profile, questions:Question[]):Profile {
-  const recentQuestions={...profile.recentQuestions};
+function appendHistory(previous:RecentQuestions|undefined,questions:Question[],keyOf:(q:Question)=>string):RecentQuestions {
+  const history={...previous};
   for(const q of questions){
-    const key=`${q.group}:${q.topic}` as const, id=questionKey(q);
-    recentQuestions[key]=[...(recentQuestions[key]??[]).filter(previous=>previous!==id),id].slice(-30);
+    const key=`${q.group}:${q.topic}` as const,id=keyOf(q),entries=[...(history[key]??[]).filter(old=>old!==id),id].slice(-HISTORY_PER_TOPIC);
+    delete history[key];history[key]=entries;
   }
-  return {...profile,recentQuestions};
+  let excess=Object.values(history).reduce((sum,entries)=>sum+(entries?.length??0),0)-HISTORY_PER_PROFILE;
+  for(const key of Object.keys(history) as (keyof RecentQuestions)[]){
+    if(excess<=0)break;
+    const entries=history[key]!,remove=Math.min(excess,entries.length);history[key]=entries.slice(remove);excess-=remove;
+    if(!history[key]!.length)delete history[key];
+  }
+  return history;
+}
+export function rememberQuestions(profile:Profile, questions:Question[]):Profile {
+  return {...profile,recentQuestions:appendHistory(profile.recentQuestions,questions,questionKey),recentConcepts:appendHistory(profile.recentConcepts,questions,repetitionKey)};
 }

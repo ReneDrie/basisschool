@@ -23,6 +23,8 @@ De app opent op het eiland en heeft drie vaste tabs met grote pictogrammen:
 
 De nieuwe tabs en schermen zijn bekeken op telefoon- en iPad-formaat. Een volledig rondje met fout antwoord en hint is afgerond met de juiste beloning. In de productieversie zijn na herladen met de server uit de tabs, luisterknop en een volledig rondje getest; de ster bleef na opnieuw herladen behouden.
 
+De aanraakbediening laat scrollen toe en voorkomt knijpzoomen, dubbel tikken om te zoomen, tekstselectie en het menu bij lang indrukken. De instellingen gelden ook in de geïnstalleerde PWA. Namen en geschreven antwoorden blijven normaal te bewerken; naam- en groepsvelden hebben minstens 16-pixeltekst om automatisch inzoomen bij invoer te voorkomen. CSS, viewportinstellingen en aanvullende Safari-gebarenafhandeling werken samen, omdat [Safari alleen viewportlimieten kan negeren](https://webkit.org/blog/7367/new-interaction-behaviors-in-ios-10/). Er wordt geen snelle tweede antwoordtik weggefilterd. Een volledig rekenrondje en de invoervelden zijn in de browser gecontroleerd; knijpgebaren en lang indrukken moeten nog op een echte iPad worden gecontroleerd.
+
 De kinderschermen hebben geen websitefooter, promotieteksten, bijschriften of zijpanelen. Tijdens een rondje verdwijnen de tabs; alleen de vraag, antwoorden en hulp blijven centraal. Na afloop kun je naar je eiland of nog een rondje doen. Profielen en instellingen staan bovenaan. Installatie, offline status, updates en reservekopieën staan bij het tandwiel voor ouders.
 
 ## Een wereld die verder groeit
@@ -50,42 +52,62 @@ De overgang van 24 naar 25 rondjes is in de browser getest: Strandbaai en de eer
 
 Via **Lessen → Rekenen → Eilandwinkel** kunnen kinderen producten pakken en terugleggen, mandjes vergelijken of zelf een betaling samenstellen. Er zijn twee stappen per groep:
 
-- Groep 2: aantallen 1–5 en het meeste herkennen; daarna aantallen 6–10 en het minste herkennen. Veertig verschillende opdrachten per stap.
-- Groep 4: één soort product betalen met hele euro's; daarna de prijzen van twee soorten producten optellen en betalen met euro's en centen. Achtenveertig opdrachten per stap.
+- Groep 2: aantallen 1–5 en het meeste herkennen; daarna aantallen 6–10 en het minste herkennen. Honderd opdrachten over beide stappen, met zes soorten producten.
+- Groep 4: één soort product betalen met hele euro's; daarna de prijzen van twee soorten producten optellen en betalen met euro's en centen. 480 opdrachten: 120 met hele euro's en 360 met twee producten, wisselende prijzen en aantallen.
 
 Een betaling mag op meerdere manieren worden samengesteld, zolang de munten samen precies het bedrag vormen. Bij het vullen telt zowel het juiste aantal als de juiste soort product. Tikken werkt met muis, aanraking en toetsenbord; spullen of munten kunnen terug en de hele selectie kan opnieuw. De bestaande ronde van tien opdrachten, hints, sterren, eilandschatten en reservekopieën blijven van toepassing. De winkel heeft een eigen oefengeschiedenis; eerdere opdrachten worden zo veel mogelijk vermeden. Bestaande geschiedenissleutels blijven gelijk.
 
-De 49 nieuwe lokale luisterfragmenten omvatten opdrachten en hints, ook voor de winkel in groep 4. De productiecontrole dekt nu 428 luisterfragmenten. Een groep 2-rondje is met een verkeerd product, terugleggen en herstellen getest. Een volledig groep 4-rondje, luisteren, verschillende muntcombinaties en opnieuw openen met behouden voortgang zijn met de productieserver uit getest. Beide spelvormen zijn op telefoon- en tabletformaat bekeken.
+De 49 nieuwe lokale luisterfragmenten omvatten opdrachten en hints, ook voor de winkel in groep 4. Een groep 2-rondje is met een verkeerd product, terugleggen en herstellen getest. Een volledig groep 4-rondje, luisteren, verschillende muntcombinaties en opnieuw openen met behouden voortgang zijn met de productieserver uit getest. Beide spelvormen zijn op telefoon- en tabletformaat bekeken.
+
+## Bouwplaats voor groep 2 en 4
+
+De Bouwplaats staat bij **Lessen → Ontdekken**. Groep 2 heeft twee stappen: drie planken van kort naar lang leggen en blokken bij twee vormen sorteren; daarna vier planken van lang naar kort leggen en blokken bij drie vormen sorteren. Kleur bepaalt niet het juiste vak. Tik op een plank om die aan de volgorde toe te voegen; tik op een geplaatste plank om die terug te pakken. Bij sorteren tik je eerst op een blok en daarna op het vak. Ook geplaatste blokken kunnen terug.
+
+Groep 4 maakt een brug af door met een liniaal de opening te meten en een passende plank te kiezen. Stap 1 begint bij nul; stap 2 begint op verschillende plaatsen op de liniaal en bevat ook planklabels in decimeters. Slechts één van de vier planken past precies. De gekozen plank wordt over de opening gelegd, zodat een te korte of lange plank zichtbaar wordt. De liniaal gebruikt gelijke afstand tussen centimeterstreepjes en grotere cijfers voor telefoonweergave.
+
+Alle opdrachten worden lokaal samengesteld. De bestaande afwisseling tussen rondjes, tien opdrachten per ronde, hints, sterren, eilandschatten en reservekopieën blijven werken. Negen nieuwe lokale luisterfragmenten worden mee opgeslagen voor offline gebruik. Er zijn automatische controles op volgordes, volledige vormsortering, liniaalgrenzen, eenheden, unieke passende planken, variatie en bewaarde voortgang.
+
+Een groep 2-rondje is op telefoonformaat doorlopen met een verkeerd geplaatst blok en een verkeerde plankvolgorde, inclusief terugpakken en herstellen. Een volledig groep 4-rondje is met de productieserver uit afgerond, inclusief luisteren, meten vanaf een ander beginpunt, decimeters en herstel van een te korte plank. Beide rondjes leverden één ster op.
+
+## Verhalenpad voor groep 2 en 4
+
+Het Verhalenpad staat bij **Lessen → Taal & lezen**. Er zijn dertig korte, zelfgeschreven verhalen met Vos of Haas als hoofdpersoon. Elke groep heeft twee stappen: drie gebeurtenissen op de eerste stap, vier op de tweede. Een rondje bevat tien verschillende verhaalsoorten; varianten met een ander vriendje of niveau verdringen elkaar binnen hetzelfde rondje. De geschiedenis herkent hetzelfde verhaal ook met een ander vriendje of niveau. Zo kunnen de dertig verhalen over drie rondjes worden verdeeld voordat een verhaal terugkomt.
+
+Groep 2 luistert naar het verhaal en zet eigen SVG-plaatjes op volgorde. Het hele verhaal en ieder plaatje zijn apart te beluisteren. Groep 4 ordent zinnen en krijgt daarna een vraag over de tekst: op stap 1 over een concreet detail, op stap 2 over een oorzaak of gevolg. Zowel de volgorde als het antwoord moeten kloppen voordat de opdracht klaar is. De tekst blijft bij de vraag zichtbaar en kan worden voorgelezen. Antwoordopties hebben ook lokale audio.
+
+Kaarten komen in een gemengde volgorde in beeld. Tik op een kaart om die aan je verhaal toe te voegen; een geplaatste stap kan terug en de hele volgorde kan opnieuw. Iedere illustratie toont de bijbehorende gebeurtenis met dezelfde kleuren en vectorstijl als de app. Alle vertellingen, vragen en antwoordopties worden mee opgeslagen voor offline gebruik. Sterren, hints, eilandschatten en reservekopieën gebruiken de bestaande werkwijze. Een volledig groep 2-rondje is met een verkeerde volgorde, terugpakken en opnieuw leggen getest. Een volledig groep 4-rondje met tien verschillende verhalen is zonder productieserver afgerond, inclusief voorlezen, begripsvragen en herstel van een fout antwoord. Beide rondjes leverden één ster op. Ook het groep 2-niveau met drie plaatjes is offline volledig afgerond, inclusief de gesproken vertelling en de volgende eilandschat.
 
 ## Wat zit erin?
 
 | Groep | Oefeningen |
 | --- | --- |
-| 2 | Tellen, rijmen, vormen herkennen, beginklanken, vergelijken en patronen |
+| 2 | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats en Verhalenpad |
 | 3 | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters en korte leesvragen |
-| 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken en geld |
+| 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats en Verhalenpad |
 | 5 | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken en tabellen/grafieken |
 
 De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Onder Lessen kiezen kinderen een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd.
 
-De zes nieuwe onderwerpen (vergelijken, patronen, klokkijken, geld, breuken en tabellen/grafieken) hebben elk twintig opdrachten: tien voor stap 1 en tien voor stap 2. De vier onderwerpen van groep 3 hebben eveneens elk twintig opdrachten op twee niveaus. Dat zijn samen 200 toegevoegde opdrachten. Vóór een rondje kies je stap 1, stap 2 of beide door elkaar. De bestaande onderwerpen bieden voorlopig alleen stap 1.
+Veel onderwerpen hebben twee niveaus. Vóór een rondje kies je stap 1, stap 2 of beide door elkaar. De oorspronkelijke onderwerpen voor groep 4 en 5 bieden voorlopig alleen stap 1. De moeilijkheid blijft binnen het gekozen niveau.
 
-Rekenen (inclusief tellen en tafels), klokkijken, geld en patronen maken lokaal extra varianten. Groep 3 heeft bijvoorbeeld 400 verschillende sommen tot twintig; klokkijken heeft 48 tijden binnen hele uren, halve uren en kwartieren. Geld wisselt muntcombinaties en patronen wisselen kleuren en herhalingen. Reken- en geldvragen wisselen ook de onjuiste antwoordopties. De moeilijkheid blijft binnen het gekozen niveau. Woorden en leesteksten blijven zorgvuldig samengestelde, vaste inhoud.
+Rekenen maakt lokaal grote oefenbanken: 499 vragen voor groep 3, 5.226 voor groep 4 en 10.803 voor groep 5. Naast gewone sommen zijn er ontbrekende getallen en bij tafels vragen over groepjes. Groep 2 telt verschillende voorwerpen in rijtjes, verspreid of in tweetallen. Ook vergelijken, vormen tellen, patronen, muntcombinaties, klokken, breuken en grafieken hebben extra varianten. Patronen gebruiken kleuren, voorwerpen en vormen; breuken wisselen stroken, roosters en taartpunten. Antwoordopties wisselen mee.
 
-Per profiel, groep en onderwerp bewaart de app de laatste dertig aangeboden opdrachten. Een nieuw rondje kiest eerst andere opdrachten. Zijn er te weinig ongeziene opdrachten, dan komen de langst geleden aangeboden vragen eerst terug. Bij een niveau met precies tien vaste vragen blijven dat dezelfde tien vragen. Eindeloos oefenen kan dus, met eindige variatie binnen ieder leerdoel.
+Woorden, leesteksten en verhalen hebben extra samengestelde inhoud. Groep 2 heeft veertig rijmvragen en zeventig beginklankvragen. Groep 3 heeft 51 plaatjeswoorden, 135 lettervragen en 52 leesvragen. Groep 4 heeft 51 spellingvragen en 106 leesvragen; groep 5 heeft 91 spellingvragen en 106 leesvragen. De Bouwplaats heeft 1.091 opdrachten voor groep 2 en 409 metingen voor groep 4. De dertig verhalen hebben elk een variant met Vos en Haas op beide niveaus.
 
-De geschiedenis wordt vóór het starten van een rondje opgeslagen en geldt ook als je een rondje verlaat. Ze blijft behouden na herladen en in reservekopieën. Oude reservekopieën zonder geschiedenis blijven bruikbaar. Voorlezen van nieuwe groep 3-sommen gebruikt losse, meegeleverde getallen en rekenwoorden; er is geen online spraakdienst nodig.
+Per profiel, groep en onderwerp bewaart de app maximaal duizend aangeboden vragen, met een totaal van vijfduizend per profiel. Een aparte geschiedenis met dezelfde grenzen onthoudt de onderliggende oefening: bijvoorbeeld 12 + 15 en 15 + 12, hetzelfde spellingwoord, dezelfde kloktijd of hetzelfde verhaal met een ander vriendje. Een rondje kiest eerst ongeziene vragen en spreidt de onderliggende oefeningen zo veel mogelijk. Bij verhalen krijgt afwisseling van verhaalsoorten voorrang op het wisselen van hoofdpersoon. Als de voorraad opraakt, keren oudere oefeningen terug. Eindeloos oefenen kan dus; een leerdoel heeft een eindig aantal inhoudelijk verschillende vragen.
+
+De geschiedenis wordt vóór het starten van een rondje opgeslagen en geldt ook als je een rondje verlaat. Ze blijft behouden na herladen en in reservekopieën. Oude reservekopieën zonder geschiedenis blijven bruikbaar. Bij bestaande geschiedenissen met alleen vraagsleutels wordt waar mogelijk de onderliggende oefening teruggevonden. Reservekopieën mogen maximaal 8 MB zijn, zodat ook grotere geschiedenissen teruggezet kunnen worden. Voorlezen van nieuwe groep 3-sommen gebruikt losse, meegeleverde getallen en rekenwoorden; er is geen online spraakdienst nodig.
 
 Een rondje bevat tien verschillende opdrachten van het gekozen onderwerp en niveau, met maximaal drie geschikte open vragen op willekeurige plekken. Bij rekenen, tafels en geld zijn dat getalantwoorden; bij geschikte spellingvragen in groep 4 en 5 woordantwoorden. Groep 2 en 3 gebruiken grote cijfertoetsen en hoeven geen woorden te typen. Leesvragen blijven meerkeuze. Bij groep 3 worden de leesverhaaltjes en woordopties niet voorgelezen, zodat kinderen die zelf lezen; de opdracht en hint zijn wel te beluisteren.
 
-De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelijken, kleurpatronen aanvullen, analoge klokken aflezen, muntwaarden optellen in centen, gekleurde of ontbrekende breukdelen herkennen en tabellen/staafgrafieken aflezen. Slepen, koppelen en sorteren zijn vervolgstappen; deze versie gebruikt tikken en invullen.
+De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelijken, patronen aanvullen, analoge klokken aflezen, muntwaarden optellen in centen, gekleurde of ontbrekende breukdelen herkennen en tabellen/staafgrafieken aflezen. De winkel, Bouwplaats en het Verhalenpad gebruiken tikken om spullen te pakken, vormen te sorteren en gebeurtenissen op volgorde te leggen.
 
 - Profielen hebben een voornaam/bijnaam, avatar en groep; namen zijn nog niet achteraf te wijzigen.
 - Voortgang staat in IndexedDB, apart per profiel en per browser/websiteadres.
 - Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties, externe lettertypen of analytics.
-- De voorleesknoppen voor groep 2 en 3 gebruiken 379 meegeleverde Nederlandse audiofragmenten. Er is geen online spraakdienst nodig.
+- De voorleesknoppen gebruiken 1.232 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.
 - Open getallen worden exact gecontroleerd; voorloopnullen zijn toegestaan. Bij open woorden worden hoofdletters en spaties aan het begin en einde genegeerd, maar spelfouten tellen als een nieuwe poging. Lege antwoorden kunnen niet worden ingestuurd.
 - Hints, opnieuw proberen en dezelfde beloning per afgerond avontuur werken ook bij open vragen.
 - Kleine geluidseffecten zijn uit te zetten tijdens een spel.
@@ -101,7 +123,9 @@ npm run preview
 
 De inhoudstests controleren alle groepen en niveaus, tien unieke opdrachten per ronde, leerdoelen, rekenantwoorden, overeenstemming tussen diagrammen en antwoorden, eenduidige antwoordopties, de audiolijst, beloningen en reservekopieën. Oude reservekopieën (versie 1) blijven leesbaar; groep 3 en de nieuwe onderwerpen worden ook geaccepteerd. Tests voor de PWA-updater controleren het wachten op volledige installatie, bestaande updates, netwerkfouten, time-outs, mislukte downloads en expliciete activatie vóór herladen. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-De variatie is met 24 tests gecontroleerd, waaronder alle gegenereerde antwoorden, niveaus, luisterfragmenten, herhaling bij kleine oefenbanken en behoud van geschiedenis in reservekopieën. Twee volledige groep 3-rondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. De tien sommen verschilden allemaal van het eerste rondje; de twee sterren bleven na herladen behouden.
+De 49 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
+
+Twee volledige groep 4-rekenrondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. Alle twintig vragen verschilden en beide sterren bleven bewaard. Ook volledige rondjes met de nieuwe vormtelvragen en breuken zijn offline afgerond en op telefoonformaat bekeken; de taartpunten, stroken en roosters gaven de juiste antwoorden.
 
 De uitbreiding met groep 3 en de zes nieuwe onderwerpen is in de browser gecontroleerd op iPad- en telefoonformaat. Een volledig groep 3-rondje met meerkeuze en cijfertoetsen gaf bij één foute poging correct negen van de tien zonder hulp en één ster. De nieuwe klok-, munt-, breuk-, vergelijk- en patroonopdrachten zijn visueel gecontroleerd en nagekeken; ook de grafiekweergave is bekeken. Met de productieserver uit kon de app opnieuw openen, een luisterfragment gebruiken, een volledig groep 3-rondje afronden en de verdiende ster en sticker na herladen behouden.
 
@@ -140,13 +164,19 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/learning/new-topics.ts`: de zes nieuwe onderwerpen, ieder met twee niveaus.
 - `src/learning/rounds.ts`: rondjes samenstellen, recente herhaling beperken en antwoorden controleren.
 - `src/learning/variants.ts`: varianten genereren binnen het getalbereik en leerdoel.
+- `src/learning/repetition.ts`: herkenning van inhoudelijk dezelfde oefening, los van vormgeving en antwoordvolgorde.
+- `src/learning/extended-content.ts`: extra rijm-, letter-, spelling- en leesvragen.
+- `src/learning/variation-assets.ts`: gedeelde patronen en vormnamen voor oefeningen en audio.
 - `src/learning/audio.ts`: gedeelde lijst van instructies, hints en antwoordaudio.
 - `src/QuestionAnswers.tsx` en `src/OpenAnswer.tsx`: meerkeuze en invullen.
 - `src/QuestionVisual.tsx`: klokken, munten, breuken, patronen, vergelijkingen en grafieken.
 - `src/storage.ts`: profielmodel, opslag en controle van reservekopieën.
 - `src/main.tsx`: profielen, niveaukeuze, speelrondjes en ouderfuncties.
+- `src/touch-controls.ts`: Safari-gebaren en lange-drukmenu's beperken, met behoud van normale invoer en snelle antwoordtikken.
 - `src/AppPages.tsx`: Eiland, Lessen, Schatten en de vaste navigatie.
 - `src/app.css`: de app-indeling, grotere knoppen en speelsere kinderschermen.
+- `src/StoryGame.tsx`, `src/StoryScene.tsx`, `src/ExtraStoryScene.tsx` en `src/learning/stories.ts`: verhaalvolgordes, illustraties, begripsvragen en lokale vertellingen.
+- `src/BuildingGame.tsx` en `src/learning/building.ts`: blokken sorteren, plankvolgordes en brugmetingen.
 - `src/ShopGame.tsx` en `src/learning/shop.ts`: winkelbediening, opdrachten en controle van boodschappen/betalingen.
 - `src/progression.ts`: gebieden, mijlpalen en verkennersrangen.
 - `src/Art.tsx` en `src/art-catalog.ts`: de gedeelde vectorillustraties en koppeling met bestaande avatars/oefenplaatjes.
@@ -157,12 +187,12 @@ Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg gro
 
 Naast de recente oefengeschiedenis blijft voortgang voorlopig een rondjeteller per onderwerp, ook als een profiel van groep verandert. Er wordt nog geen beheersing per groep of leerdoel afgeleid uit die tellers.
 
-Alle 379 luisterfragmenten staan in `public/audio`. Nieuwe fragmenten voor groep 2 en 3 worden op macOS gemaakt met de geïnstalleerde Nederlandse stem Xander en FFmpeg:
+Alle 1.232 luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
 
 ```sh
 node --experimental-strip-types scripts/generate-audio.mjs
 ```
 
-De generator maakt standaard alleen ontbrekende bestanden. Gebruik `--force` wanneer bestaande gesproken tekst verandert. De offline-controle gebruikt dezelfde audiolijst, zodat ook nieuwe onderwerpen automatisch worden gecontroleerd.
+De generator maakt standaard alleen ontbrekende bestanden. Gebruik `--force` wanneer bestaande gesproken tekst of de stem verandert. `--voice=Ellen` en `--rate=125` stellen stem en tempo in; `--prefix=story-` beperkt de selectie. Voor parallel genereren kunnen afzonderlijke processen `--shard=0/4` tot en met `--shard=3/4` gebruiken. Bestanden worden pas na een geslaagde omzetting vervangen. De offline-controle gebruikt dezelfde audiolijst, zodat ook nieuwe onderwerpen automatisch worden gecontroleerd.
 
 De eigen appiconen zijn reproduceerbaar met `python3 scripts/generate-icons.py` (Pillow vereist). Beide hulpprogramma's zijn uitsluitend voor het maken van assets en draaien niet bij publicatie of op de iPad.

@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft, Check, Download, Leaf, Plus, Settings2, Sparkles, Star, Volume2, VolumeX, WifiOff, X, RotateCcw, Upload, Trash2, CircleHelp, BookOpen, RefreshCw } from 'lucide-react';
 import { useAppUpdates } from './useAppUpdates';
+import { installTouchControls } from './touch-controls';
 import { availableLevels, makeRound, stickers, GROUPS, isCorrectAnswer, type Difficulty, type Activity, type Group, type Question } from './content';
-import { avatars, emptyProfile, loadProfiles, parseBackup, rememberQuestions, reward, saveProfiles, type Profile } from './storage';
+import { avatars, emptyProfile, loadProfiles, parseBackup, rememberQuestions, MAX_BACKUP_BYTES, reward, saveProfiles, type Profile } from './storage';
 import { QuestionAnswers } from './QuestionAnswers';
 import { QuestionVisual } from './QuestionVisual';
 import { AppTabs, IslandHome, LessonsPage, TreasuresPage, topicLabel, type AppPage } from './AppPages';
@@ -18,6 +19,7 @@ type Dialog = 'profiles'|'parents'|'install'|'activity'|null;
 
 
 function App(){
+  useEffect(()=>installTouchControls(document),[]);
   const [profiles,setProfiles]=useState<Profile[]>([]),[activeId,setActiveId]=useState(''),[loaded,setLoaded]=useState(false);
   const [page,setPage]=useState<AppPage>('island'),[dialog,setDialog]=useState<Dialog>(null),[round,setRound]=useState<Round|null>(null);
   const [selectedActivity,setSelectedActivity]=useState<Activity|null>(null);
@@ -56,7 +58,7 @@ function App(){
     if(!profile){setDialog('profiles');setMessage('Maak eerst je eigen profiel. Dan bewaren we je ontdekkingen.');return;}
     setBusy(true);
     try {
-      const questions=makeRound(currentGroup,activity.id,difficulty,profile.recentQuestions?.[`${currentGroup}:${activity.id}`]);
+      const questions=makeRound(currentGroup,activity.id,difficulty,profile.recentQuestions?.[`${currentGroup}:${activity.id}`],profile.recentConcepts?.[`${currentGroup}:${activity.id}`]);
       await persist(profiles.map(p=>p.id===profile.id?rememberQuestions(p,questions):p));
       audioRef.current?.pause();finishGuard.current=false;setDialog(null);
       setRound({activity,difficulty,questions,index:0,selected:null,mistakes:0,hint:false,correct:0,helped:false,done:false,saved:false,previousRounds:profile.rounds});window.scrollTo({top:0});
@@ -87,7 +89,7 @@ function App(){
   async function changeGroup(value:Group){if(!profile)return;setBusy(true);try{await persist(profiles.map(p=>p.id===profile.id?{...p,group:value}:p));}catch{setMessage('De groep kon niet worden opgeslagen.');}finally{setBusy(false);}}
   function exportBackup(){const blob=new Blob([JSON.stringify({app:'kleine-ontdekkers',version:1,profiles},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ontdekkers-reservekopie-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   async function importBackup(file?:File){
-    if(!file||busy)return;setBusy(true);try{if(file.size>1_000_000)throw new Error('Dit bestand is te groot.');const next=parseBackup(await file.text());if(!window.confirm(`Deze reservekopie bevat ${next.length} profiel(en) en vervangt alle huidige profielen op dit apparaat. Doorgaan?`))return;await persist(next);setActiveId(next[0]?.id??'');setMessage('Je reservekopie is teruggezet.');}catch(error){setMessage(error instanceof Error?error.message:'Terugzetten is niet gelukt.');}finally{setBusy(false);if(fileRef.current)fileRef.current.value='';}}
+    if(!file||busy)return;setBusy(true);try{if(file.size>MAX_BACKUP_BYTES)throw new Error('Dit bestand is te groot.');const next=parseBackup(await file.text());if(!window.confirm(`Deze reservekopie bevat ${next.length} profiel(en) en vervangt alle huidige profielen op dit apparaat. Doorgaan?`))return;await persist(next);setActiveId(next[0]?.id??'');setMessage('Je reservekopie is teruggezet.');}catch(error){setMessage(error instanceof Error?error.message:'Terugzetten is niet gelukt.');}finally{setBusy(false);if(fileRef.current)fileRef.current.value='';}}
   async function deleteProfile(){if(!profile||busy||!window.confirm(`Profiel van ${profile.name} en alle bijbehorende voortgang op dit apparaat verwijderen?`))return;setBusy(true);try{const next=profiles.filter(p=>p.id!==profile.id);await persist(next);setActiveId(next[0]?.id??'');}catch{setMessage('Verwijderen is niet gelukt.');}finally{setBusy(false);}}
 
   function navigate(next:AppPage){setPage(next);window.scrollTo({top:0});}
@@ -118,7 +120,7 @@ function App(){
           <span className="question-number">OPDRACHT {round.index+1}</span>
           {round.questions[round.index].passage&&<div className="passage"><BookOpen size={23}/><p>{round.questions[round.index].passage}</p></div>}
           <div className="question-heading"><h1 tabIndex={-1}>{round.questions[round.index].prompt}</h1>{(round.questions[round.index].audio||round.questions[round.index].audioSequence)&&<button className="listen-button" aria-label="Luister naar de opdracht" onClick={()=>speak(round.questions[round.index].audioSequence??round.questions[round.index].audio!)}><Volume2 size={23}/></button>}</div>
-          {round.questions[round.index].visual&&<div className="counting-objects">{Array.from(round.questions[round.index].visual!).filter(char=>char!=='\ufe0f').map((char,i)=><button key={i} aria-label={`Voorwerp ${i+1}`} onClick={event=>event.currentTarget.classList.toggle('counted')}><Picture symbol={char}/></button>)}</div>}
+          {round.questions[round.index].visual&&<div className={`counting-objects layout-${round.questions[round.index].visualLayout??'rows'}`}>{Array.from(round.questions[round.index].visual!).filter(char=>char!=='\ufe0f').map((char,i)=><button key={i} aria-label={`Voorwerp ${i+1}`} onClick={event=>event.currentTarget.classList.toggle('counted')}><Picture symbol={char}/></button>)}</div>}
           {round.questions[round.index].diagram&&<QuestionVisual diagram={round.questions[round.index].diagram!}/>}
           <QuestionAnswers question={round.questions[round.index]} young={currentGroup<=3} selected={round.selected} onAnswer={answer} onSpeak={speak}/>
           <div className="feedback" aria-live="polite">{round.selected===round.questions[round.index].answer?<div className="success-feedback"><span><Check size={21}/></span><div><strong>{round.helped?'Gelukt! Goed doorgezet.':'Ja, helemaal goed!'}</strong></div><button className="primary-button" onClick={()=>void advance()} disabled={busy||updating}>{busy?'Even bewaren…':round.index===round.questions.length-1?'Rondje afronden':'Volgende'}<ArrowRight size={18}/></button></div>:round.hint?<div className="hint-feedback"><Leaf size={23}/><p><strong>{round.selected?'Probeer het nog eens. ':'Een kleine tip: '}</strong>{round.questions[round.index].hint}</p>{(round.questions[round.index].audio||round.questions[round.index].audioSequence)&&<button className="icon-button" aria-label="Luister naar de hint" onClick={()=>speak(round.questions[round.index].hintAudio??`/audio/hint-${round.questions[round.index].id}.m4a`)}><Volume2 size={20}/></button>}</div>:<button className="hint-button" onClick={()=>setRound({...round,hint:true,helped:true})}><CircleHelp size={18}/> Een kleine hint</button>}</div>

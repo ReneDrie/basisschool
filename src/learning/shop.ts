@@ -4,7 +4,9 @@ export const shopProducts = [
   {id:'apple',name:'appel',plural:'appels',art:'apple'},
   {id:'pear',name:'peer',plural:'peren',art:'pear'},
   {id:'flower',name:'bloem',plural:'bloemen',art:'flower'},
-  {id:'book',name:'boek',plural:'boeken',art:'book'}
+  {id:'book',name:'boek',plural:'boeken',art:'book'},
+  {id:'boat',name:'bootje',plural:'bootjes',art:'boat'},
+  {id:'fish',name:'vis',plural:'vissen',art:'fish'}
 ] as const;
 export type ShopProduct = typeof shopProducts[number];
 export type ShopTask =
@@ -35,14 +37,13 @@ export function shopBank(group:2|4):AuthoredQuestion[]{
         result.push(question(`shop-2-compare-${difficulty}-${left}-${right}`,difficulty,`Welk mandje heeft de ${most?'meeste':'minste'} spullen?`,'Tel de spullen in elk mandje. Kies daarna een mandje.',(most?a>b:a<b)?'links':'rechts',{kind:'compare',product,left:a,right:b,most},`/audio/shop-compare-${most?'most':'least'}.m4a`,'/audio/shop-hint-compare.m4a'));
       }
     }else{
-      for(let n=0;n<48;n++){
-        const product=shopProducts[n%4],second=shopProducts[(n+1)%4];
-        const items=difficulty===1?[{product,cents:(1+Math.floor(n/4)%8)*100,quantity:1+(Math.floor(n/32))}]:[
-          {product,cents:50+(Math.floor(n/4)%6)*30,quantity:1+n%2},
-          {product:second,cents:70+(Math.floor(n/8)%6)*40,quantity:1}
-        ];
-        const task:ShopTask={kind:'pay',items,coins:difficulty===1?[200,100]:[200,100,50,20,10]};
-        result.push(question(`shop-4-pay-${difficulty}-${n}`,difficulty,'Betaal precies voor je boodschappen.','Tel de prijzen van alle producten bij elkaar op. Kies munten die samen precies dat bedrag zijn.',String(shopTotal(task)),task,'/audio/shop-pay.m4a','/audio/shop-hint-pay.m4a'));
+      for(const [productIndex,product] of shopProducts.entries())for(let price=1;price<=(difficulty===1?10:6);price++)for(let quantity=1;quantity<=2;quantity++){
+        const seconds=difficulty===1?[null]:shopProducts.filter(p=>p.id!==product.id);
+        for(const second of seconds){
+          const items=[{product,cents:difficulty===1?price*100:20+price*30,quantity},...(second?[{product:second,cents:70+((productIndex+price+quantity+shopProducts.indexOf(second))%9)*30,quantity:1}]:[])];
+          const task:ShopTask={kind:'pay',items,coins:difficulty===1?[200,100]:[200,100,50,20,10]};
+          result.push(question(`shop-4-pay-${difficulty}-${product.id}-${price}-${quantity}-${second?.id??'one'}`,difficulty,'Betaal precies voor je boodschappen.','Tel de prijzen van alle producten bij elkaar op. Kies munten die samen precies dat bedrag zijn.',String(shopTotal(task)),task,'/audio/shop-pay.m4a','/audio/shop-hint-pay.m4a'));
+        }
       }
     }
   }
