@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { avatarKinds, pictureKinds } from './art-catalog';
+import { WordDrawing } from './WordArt';
 
 const ink='#526568',cream='#fff1d2',gold='#efc56e',rose='#d98f79',green='#85aa7d',blue='#8ebac5',purple='#b1a1cf';
 const Eyes=()=> <g fill={ink}><circle cx="39" cy="52" r="3"/><circle cx="61" cy="52" r="3"/><path d="M44 63q6 6 12 0" fill="none" stroke={ink} strokeWidth="2.5" strokeLinecap="round"/></g>;
@@ -24,6 +25,7 @@ export function ArtShape({kind}:{kind:string}):ReactNode {
   return <g className="art-shape" strokeLinejoin="round" strokeLinecap="round"><ShapeDrawing kind={kind}/></g>;
 }
 function ShapeDrawing({kind}:{kind:string}):ReactNode {
+  if(kind.startsWith('word-'))return <g stroke={ink} strokeWidth="2.4" fill={cream}><WordDrawing kind={kind}/></g>;
   if(['fox','bear','rabbit','panda','frog','lion','cat','mouse','rat','deer','cow'].includes(kind))return <Animal kind={kind}/>;
   if(['red','blue','yellow','green','circle'].includes(kind))return <circle cx="50" cy="50" r="33" fill={{red:'#d98278',blue:'#82afca',yellow:gold,green, circle:blue}[kind]} stroke={ink} strokeWidth="2"/>;
   if(kind==='story')return <><path d="M49 28Q29 13 9 23v61q20-10 40 5 20-15 42-5V23q-22-10-42 5z" fill="#b9acd2" stroke={ink} strokeWidth="2"/><path d="M49 28v61" stroke={cream} strokeWidth="2"/><path d="M19 48l9-15 9 15m-18 10h18m-18 9h12" fill="none" stroke={cream} strokeWidth="3" strokeLinecap="round"/><g transform="translate(56 36) scale(.25)"><ArtShape kind="star"/></g><path d="M61 69h19" stroke={cream} strokeWidth="3" strokeLinecap="round"/></>;

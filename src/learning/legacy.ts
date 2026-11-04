@@ -1,15 +1,10 @@
 import type { AuthoredQuestion, Skill } from './model.ts';
+import { rhymesBank } from './rhymes.ts';
 
 const q = (id: string, prompt: string, choices: string[], answer: string, hint: string, extras: Partial<AuthoredQuestion> = {}): AuthoredQuestion => ({ id, prompt, choices, answer, hint, ...extras });
 const spoken = (question: AuthoredQuestion): AuthoredQuestion => ({ ...question, audio: `/audio/${question.id}.m4a` });
 const counts = [3, 5, 2, 7, 4, 8, 6, 9, 1, 10].map((n, i) => spoken(q(`count-${n}`, 'Hoeveel zie je? Tel maar mee.', [String(n), String(n + 1), String(n - 1), String(n + 2)], String(n), 'Tik elk plaatje één keer aan terwijl je telt.', { visual: ['🍎','⭐','🦋','🌼'][i % 4].repeat(n), openAnswer: 'number' })));
-const rhymes = [
-  ['kat', 'rat', 'vis', 'rat', 'boom', 'zon'], ['maan', 'haan', 'haan', 'boek', 'kip', 'tak'],
-  ['huis', 'muis', 'bal', 'muis', 'pet', 'koe'], ['vis', 'mis', 'mis', 'bus', 'roos', 'dak'],
-  ['beer', 'peer', 'koek', 'tak', 'peer', 'vis'], ['boek', 'koek', 'koek', 'maan', 'wip', 'das'],
-  ['bal', 'val', 'zon', 'val', 'kip', 'huis'], ['sok', 'rok', 'rok', 'muis', 'pet', 'koe'],
-  ['pet', 'net', 'tak', 'vis', 'net', 'boom'], ['kip', 'wip', 'maan', 'boek', 'wip', 'rat']
-].map(([word, answer, ...choices], i) => spoken(q(`rhyme-${i}`, `Wat rijmt op ${word}?`, choices, answer, `Luister naar het einde van ${word} en van de andere woorden.`)));
+const rhymes = rhymesBank();
 const shapes = [
   ['cirkel','●','●','▲','■','★'], ['driehoek','▲','■','▲','●','♥'], ['vierkant','■','●','★','■','▲'],
   ['ster','★','★','♥','●','■'], ['hart','♥','■','▲','♥','★']

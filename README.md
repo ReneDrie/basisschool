@@ -92,7 +92,7 @@ Veel onderwerpen hebben twee niveaus. Vóór een rondje kies je stap 1, stap 2 o
 
 Rekenen maakt lokaal grote oefenbanken: 499 vragen voor groep 3, 5.226 voor groep 4 en 10.803 voor groep 5. Naast gewone sommen zijn er ontbrekende getallen en bij tafels vragen over groepjes. Groep 2 telt verschillende voorwerpen in rijtjes, verspreid of in tweetallen. Ook vergelijken, vormen tellen, patronen, muntcombinaties, klokken, breuken en grafieken hebben extra varianten. Patronen gebruiken kleuren, voorwerpen en vormen; breuken wisselen stroken, roosters en taartpunten. Antwoordopties wisselen mee.
 
-Woorden, leesteksten en verhalen hebben extra samengestelde inhoud. Groep 2 heeft veertig rijmvragen en zeventig beginklankvragen. Groep 3 heeft 51 plaatjeswoorden, 135 lettervragen en 52 leesvragen. Groep 4 heeft 51 spellingvragen en 106 leesvragen; groep 5 heeft 91 spellingvragen en 106 leesvragen. De Bouwplaats heeft 1.091 opdrachten voor groep 2 en 409 metingen voor groep 4. De dertig verhalen hebben elk een variant met Vos en Haas op beide niveaus.
+Woorden, leesteksten en verhalen hebben extra samengestelde inhoud. Groep 2 heeft veertig rijmvragen en zeventig beginklankvragen. In het rijmspel hebben zowel het vraagwoord als alle vier de antwoorden een eigen SVG-illustratie. Er zijn 73 herkenbare woorden; abstracte rijmwoorden zijn vervangen door af te beelden woorden, bijvoorbeeld haas–vaas en doek–broek. De grote antwoordkaarten hebben een aparte luisterknop onderaan. De illustraties werken offline en blijven beperkt tot het rijmspel; woordkeuzes bij lezen en spelling blijven tekst. Op telefoonformaat is een volledig rondje met luisteren, een fout antwoord, herstel en een verdiende ster doorlopen. Alle 73 illustraties zijn visueel gecontroleerd. Ook een volledig rondje met luisterknoppen en een verdiende ster is zonder productieserver afgerond. Groep 3 heeft 51 plaatjeswoorden, 135 lettervragen en 52 leesvragen. Groep 4 heeft 51 spellingvragen en 106 leesvragen; groep 5 heeft 91 spellingvragen en 106 leesvragen. De Bouwplaats heeft 1.091 opdrachten voor groep 2 en 409 metingen voor groep 4. De dertig verhalen hebben elk een variant met Vos en Haas op beide niveaus.
 
 Per profiel, groep en onderwerp bewaart de app maximaal duizend aangeboden vragen, met een totaal van vijfduizend per profiel. Een aparte geschiedenis met dezelfde grenzen onthoudt de onderliggende oefening: bijvoorbeeld 12 + 15 en 15 + 12, hetzelfde spellingwoord, dezelfde kloktijd of hetzelfde verhaal met een ander vriendje. Een rondje kiest eerst ongeziene vragen en spreidt de onderliggende oefeningen zo veel mogelijk. Bij verhalen krijgt afwisseling van verhaalsoorten voorrang op het wisselen van hoofdpersoon. Als de voorraad opraakt, keren oudere oefeningen terug. Eindeloos oefenen kan dus; een leerdoel heeft een eindig aantal inhoudelijk verschillende vragen.
 
@@ -107,7 +107,7 @@ De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelij
 - Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties, externe lettertypen of analytics.
-- De voorleesknoppen gebruiken 1.232 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.
+- De voorleesknoppen gebruiken 1.250 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.
 - Open getallen worden exact gecontroleerd; voorloopnullen zijn toegestaan. Bij open woorden worden hoofdletters en spaties aan het begin en einde genegeerd, maar spelfouten tellen als een nieuwe poging. Lege antwoorden kunnen niet worden ingestuurd.
 - Hints, opnieuw proberen en dezelfde beloning per afgerond avontuur werken ook bij open vragen.
 - Kleine geluidseffecten zijn uit te zetten tijdens een spel.
@@ -123,7 +123,7 @@ npm run preview
 
 De inhoudstests controleren alle groepen en niveaus, tien unieke opdrachten per ronde, leerdoelen, rekenantwoorden, overeenstemming tussen diagrammen en antwoorden, eenduidige antwoordopties, de audiolijst, beloningen en reservekopieën. Oude reservekopieën (versie 1) blijven leesbaar; groep 3 en de nieuwe onderwerpen worden ook geaccepteerd. Tests voor de PWA-updater controleren het wachten op volledige installatie, bestaande updates, netwerkfouten, time-outs, mislukte downloads en expliciete activatie vóór herladen. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-De 52 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
+De 55 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
 
 Twee volledige groep 4-rekenrondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. Alle twintig vragen verschilden en beide sterren bleven bewaard. Ook volledige rondjes met de nieuwe vormtelvragen en breuken zijn offline afgerond en op telefoonformaat bekeken; de taartpunten, stroken en roosters gaven de juiste antwoorden.
 
@@ -165,7 +165,8 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/learning/rounds.ts`: rondjes samenstellen, recente herhaling beperken en antwoorden controleren.
 - `src/learning/variants.ts`: varianten genereren binnen het getalbereik en leerdoel.
 - `src/learning/repetition.ts`: herkenning van inhoudelijk dezelfde oefening, los van vormgeving en antwoordvolgorde.
-- `src/learning/extended-content.ts`: extra rijm-, letter-, spelling- en leesvragen.
+- `src/learning/extended-content.ts`: extra letter-, spelling- en leesvragen.
+- `src/learning/rhymes.ts`, `src/RhymeWord.tsx` en `src/WordArt.tsx`: veertig rijmvragen met geïllustreerde vraagwoorden en antwoordkaarten.
 - `src/learning/variation-assets.ts`: gedeelde patronen en vormnamen voor oefeningen en audio.
 - `src/learning/audio.ts`: gedeelde lijst van instructies, hints en antwoordaudio.
 - `src/QuestionAnswers.tsx` en `src/OpenAnswer.tsx`: meerkeuze en invullen.
@@ -187,7 +188,7 @@ Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg gro
 
 Naast de recente oefengeschiedenis blijft voortgang voorlopig een rondjeteller per onderwerp, ook als een profiel van groep verandert. Er wordt nog geen beheersing per groep of leerdoel afgeleid uit die tellers.
 
-Alle 1.232 luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
+Alle 1.250 luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
 
 ```sh
 node --experimental-strip-types scripts/generate-audio.mjs

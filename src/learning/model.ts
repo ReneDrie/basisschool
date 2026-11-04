@@ -26,6 +26,7 @@ export type Question = {
   choices: string[];
   answer: string;
   hint: string;
+  rhyme?: { word: string };
   visual?: string;
   missing?:{operation:'+'|'−'|'×';a:number;b:number;result:number};
   visualLayout?:'rows'|'pairs'|'scatter';

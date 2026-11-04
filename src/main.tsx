@@ -7,6 +7,7 @@ import { availableLevels, makeRound, stickers, GROUPS, isCorrectAnswer, type Dif
 import { avatars, emptyProfile, loadProfiles, parseBackup, rememberQuestions, MAX_BACKUP_BYTES, reward, saveProfiles, type Profile } from './storage';
 import { QuestionAnswers } from './QuestionAnswers';
 import { QuestionVisual } from './QuestionVisual';
+import { RhymeWord } from './RhymeWord';
 import { AppTabs, IslandHome, LessonsPage, TreasuresPage, topicLabel, type AppPage } from './AppPages';
 import { Art, AvatarArt, Picture } from './Art';
 import { avatarNames } from './art-catalog';
@@ -116,10 +117,11 @@ function App(){
         <div className="result-actions"><button className="primary-button" onClick={()=>{setRound(null);setPage('island');}}>Bekijk mijn eiland <ArrowRight size={18}/></button><button className="text-button" onClick={()=>start(round.activity,round.difficulty)}><RotateCcw size={17}/>Nog een rondje</button></div>
       </section>:<>
         <div className="round-progress"><span aria-hidden="true">✦</span><span>{round.index+1} van {round.questions.length}</span><div><i style={{width:`${round.index/round.questions.length*100}%`}}/></div></div>
-        <section className={`question-card ${round.activity.color}`} key={round.index}>
+        <section className={`question-card ${round.activity.color} ${round.questions[round.index].rhyme?'rhyme-question':''}`} key={round.index}>
           <span className="question-number">OPDRACHT {round.index+1}</span>
           {round.questions[round.index].passage&&<div className="passage"><BookOpen size={23}/><p>{round.questions[round.index].passage}</p></div>}
           <div className="question-heading"><h1 tabIndex={-1}>{round.questions[round.index].prompt}</h1>{(round.questions[round.index].audio||round.questions[round.index].audioSequence)&&<button className="listen-button" aria-label="Luister naar de opdracht" onClick={()=>speak(round.questions[round.index].audioSequence??round.questions[round.index].audio!)}><Volume2 size={23}/></button>}</div>
+          {round.questions[round.index].rhyme&&<div className="rhyme-prompt"><RhymeWord word={round.questions[round.index].rhyme!.word}/></div>}
           {round.questions[round.index].visual&&<div className={`counting-objects layout-${round.questions[round.index].visualLayout??'rows'}`}>{Array.from(round.questions[round.index].visual!).filter(char=>char!=='\ufe0f').map((char,i)=><button key={i} aria-label={`Voorwerp ${i+1}`} onClick={event=>event.currentTarget.classList.toggle('counted')}><Picture symbol={char}/></button>)}</div>}
           {round.questions[round.index].diagram&&<QuestionVisual diagram={round.questions[round.index].diagram!}/>}
           <QuestionAnswers question={round.questions[round.index]} young={currentGroup<=3} selected={round.selected} onAnswer={answer} onSpeak={speak}/>

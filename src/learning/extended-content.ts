@@ -1,6 +1,5 @@
 import type { AuthoredQuestion, Group, Skill } from './model.ts';
 
-const rhymePairs=[['dak','zak'],['tak','pak'],['neus','reus'],['doek','hoek'],['pen','hen'],['tas','jas'],['deur','kleur'],['boot','noot'],['raam','naam'],['rook','ook'],['ring','ding'],['steen','been'],['trein','klein'],['bos','vos'],['bek','hek'],['pot','slot'],['muur','vuur'],['bloem','zoem'],['gras','jas'],['pan','kan'],['bel','spel'],['mus','kus'],['pop','sop'],['lat','gat'],['hoed','goed'],['voet','zoet'],['kroon','zoon'],['peer','veer'],['geit','krijt'],['roos','doos']];
 export const extraPictures=[
   ['flower','bloem'],['fox','vos'],['frog','kikker'],['lion','leeuw'],['tent','tent'],['boat','boot'],['shell','schelp'],['crab','krab'],['rocket','raket'],['palm','palm'],['mushroom','paddenstoel'],['kite','vlieger'],['balloon','ballon'],['lighthouse','vuurtoren'],['penguin','pinguïn'],['snowman','sneeuwpop'],['bridge','brug'],['castle','kasteel'],['bee','bij'],['pond','vijver'],['sprout','plant'],['treehouse','boomhut'],['butterfly','vlinder'],['heart','hart'],['square','vierkant'],['triangle','driehoek'],['circle','cirkel'],['planet','planeet'],['igloo','iglo'],['sled','slee'],['comet','komeet']
 ] as const;
@@ -13,9 +12,6 @@ const spelling5=[
 ];
 const clean=(word:string)=>word.replaceAll(' ','');
 const rotate=<T,>(items:readonly T[],offset:number):T[]=>[...items.slice(offset%items.length),...items.slice(0,offset%items.length)];
-// These short rhyme words use regular endings. Treat final d/t and ij/ei alike
-// so another valid rhyme never becomes a distractor.
-const rhymeEnding=(word:string)=>word.match(/[aeiouy]+[^aeiouy]*$/)?.[0].replaceAll('ij','ei').replace(/d$/,'t');
 function spell(group:4|5):AuthoredQuestion[]{
   const pluralQuestions=plurals.map(([word,answer,...others],i)=>({id:`extra-spell-${group}-plural-${i}`,prompt:`Eén ${word}, twee…`,choices:[answer,...others.map(clean)],answer,hint:'Zeg het meervoud rustig in stukjes. Let op de lange of korte klank en op de medeklinkers.',openAnswer:'word' as const}));
   return group===4?pluralQuestions:[...pluralQuestions,...spelling5.map(([answer,...others],i)=>({id:`extra-spell-5-word-${i}`,prompt:'Kies het goed geschreven woord.',choices:[answer,...others.map(clean)],answer,hint:'Lees het woord in stukjes. Let ook op het begin en het einde van het woord.'}))];
@@ -50,7 +46,6 @@ function reading(group:3|4|5):AuthoredQuestion[]{
   return result;
 }
 export function extendedContent(group:Group,skill:Skill):AuthoredQuestion[]{
-  if(skill==='taal'&&group===2)return rhymePairs.map(([word,answer],i)=>({id:`extra-rhyme-${i}`,prompt:`Wat rijmt op ${word}?`,choices:[answer,...rotate(rhymePairs.map(pair=>pair[1]),i*7).filter(s=>rhymeEnding(s)!==rhymeEnding(word)).slice(0,3)],answer,hint:'Luister goed naar het einde van de woorden. Welke woorden klinken aan het einde hetzelfde?',hintAudio:'/audio/extra-rhyme-hint.m4a'}));
   if(skill==='taal'&&(group===4||group===5))return spell(group);
   if(skill==='taal'&&group===3)return extraPictures.map(([symbol,answer],i)=>({id:`extra-word3-${i}`,difficulty:answer.length<=5?1:2,prompt:'Welk woord hoort bij het plaatje?',choices:[answer,...rotate(extraPictures.map(pair=>pair[1]),i*7).filter(word=>word!==answer&&(answer.length>5||word.length<=5)).slice(0,3)],answer,hint:'Lees elk woord rustig. Kijk naar de eerste letter en lees dan het hele woord.',audio:'/audio/word3-0.m4a',hintAudio:'/audio/hint-word3-0.m4a',diagram:{kind:'picture',symbol,label:`Plaatje bij de leesopdracht`}}));
   if(skill==='klanken'&&(group===2||group===3))return soundWords.flatMap((word,i)=>(group===2?[false]:[false,true]).map(last=>{const answer=last?word.at(-1)!:word[0];return {id:`extra-sound-${group}-${i}-${last}`,difficulty:last?2:1,prompt:`Welke letter staat ${last?'achteraan':'vooraan'} in ${word}?`,choices:[answer,...['m','s','k','p','t','b','r','v','n','l'].filter(letter=>letter!==answer).slice(i%6,i%6+3)],answer,hint:last?'Zeg het woord rustig. Luister naar de laatste letter.':'Zeg het woord rustig. Luister naar de eerste letter.',hintAudio:`/audio/extra-sound-hint-${last?'last':'first'}.m4a`};}));

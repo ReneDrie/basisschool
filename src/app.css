@@ -66,3 +66,18 @@ html{background:#e7f4f4}body{color:var(--app-ink)}.app-shell{min-height:100dvh;b
 .counting-objects.layout-pairs{display:grid;grid-template-columns:repeat(2,58px);justify-content:center;gap:8px 24px}.counting-objects.layout-scatter{gap:17px 21px;padding:14px 9px 23px}.counting-objects.layout-scatter>button:nth-child(3n){translate:0 10px;rotate:8deg}.counting-objects.layout-scatter>button:nth-child(3n + 1){translate:0 -7px;rotate:-7deg}.learning-shapes{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:18px;padding:15px;max-width:530px;margin:0 auto 25px}.learning-shapes .story-art{width:53px;height:53px}.learning-fraction-pie{display:block;width:230px;max-width:85%;height:auto;margin:8px auto 28px}.learning-clock.face-1>circle:first-child{fill:#f7f5e6;stroke:#9db8a6}.learning-clock.face-2>circle:first-child{fill:#fbf2ee;stroke:#c7a8b4}.learning-clock.face-2>line:last-of-type{stroke:#aa7397}.fraction-bar{max-width:520px}@media(max-width:540px){.counting-objects.layout-pairs{grid-template-columns:repeat(2,50px);gap:8px 20px}.learning-shapes{gap:12px;padding:10px}.learning-shapes .story-art{width:43px;height:43px}}
 
 .shop-stock:has(>button:nth-child(6)){grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* Picture cards let children name the rhyme words before they can read. */
+.rhyme-word{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.rhyme-word>.story-art{width:85px;height:85px}
+.rhyme-word>span{font-size:18px;line-height:1.25;font-weight:750}
+.rhyme-prompt{display:flex;justify-content:center;margin:0 auto 20px}
+.rhyme-prompt>.rhyme-word{background:#fffaf4b3;border:2px solid #fff;border-radius:22px;padding:9px 28px 11px}
+.rhyme-prompt .story-art{width:100px;height:100px}
+.rhyme-prompt .rhyme-word>span{font-size:21px}
+.rhyme-answers .answer-wrap{display:grid;grid-template-rows:1fr 44px}
+.rhyme-answers .answer-wrap .answer-button{position:relative;min-height:126px;border-radius:19px 19px 4px 4px;padding:11px 8px;box-shadow:none}
+.rhyme-answers .answer-button>svg{position:absolute;right:7px;top:7px;width:21px;height:21px}
+.rhyme-answers .choice-listen{min-height:44px;border:2px solid #fff;border-top:0;border-radius:4px 4px 17px 17px;display:flex;align-items:center;justify-content:center;padding:0;background:#fff9ed;box-shadow:0 4px 0 #b8cbd048}
+.rhyme-answers .choice-listen:hover{background:#f5efdf}
+@media(max-width:540px){.rhyme-question .question-heading{margin-bottom:14px}.rhyme-question .question-heading h1{font-size:24px}.rhyme-prompt{margin-bottom:16px}.rhyme-prompt>.rhyme-word{padding:5px 25px 8px;border-radius:19px}.rhyme-prompt .story-art{width:78px;height:78px}.rhyme-prompt .rhyme-word>span{font-size:19px}.rhyme-answers .answer-wrap .answer-button{min-height:106px;padding:7px 8px}.rhyme-answers .rhyme-word>.story-art{width:66px;height:66px}.rhyme-answers .rhyme-word>span{font-size:17px}.rhyme-answers{gap:12px}}
