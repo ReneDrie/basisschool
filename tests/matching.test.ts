@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { statSync } from 'node:fs';
-import { GROUPS, activities, availableLevels, questionBank, questionKey, repetitionKey, makeRound, isCorrectAnswer, audioFragments } from '../src/content.ts';
+import { QUESTIONS_PER_ADVENTURE, GROUPS, activities, availableLevels, questionBank, questionKey, repetitionKey, makeRound, isCorrectAnswer, audioFragments } from '../src/content.ts';
 import { matchingBank, matchingCards, matches, faceLabel, MATCH_COMPLETE } from '../src/learning/matching.ts';
 import { ART_KINDS } from '../src/art-catalog.ts';
 import { emptyProfile, rememberQuestions, reward, parseBackup, validateProfiles } from '../src/storage.ts';
@@ -68,13 +68,13 @@ test('Varied matching rounds avoid previous boards and remain in the chosen game
     let p=emptyProfile('Koppelvriend','🦊',group);const offered=new Set<string>();
     for(const level of [1,2] as const)for(let n=0;n<6;n++){
       const round=makeRound(group,'koppelen',level,p.recentQuestions?.[`${group}:koppelen`],p.recentConcepts?.[`${group}:koppelen`]);
-      assert.equal(round.length,10);assert.ok(round.every(q=>q.matching&&q.difficulty===level));
+      assert.equal(round.length,QUESTIONS_PER_ADVENTURE[group]);assert.ok(round.every(q=>q.matching&&q.difficulty===level));
       const counts=[...new Set(questionBank(group,'koppelen').map(q=>q.matching!.category))].map(category=>round.filter(q=>q.matching!.category===category).length);
       assert.ok(Math.max(...counts)-Math.min(...counts)<=1,'Each round spreads the group-specific exercise types evenly');
       for(const q of round){assert.ok(!offered.has(questionKey(q)));offered.add(questionKey(q));}
       p=rememberQuestions(p,round);
     }
-    assert.equal(offered.size,120);
+    assert.equal(offered.size,12*QUESTIONS_PER_ADVENTURE[group]);
   }
 });
 test('Memory and face-up versions recognise the same underlying exercise and keep separate exact keys',()=>{

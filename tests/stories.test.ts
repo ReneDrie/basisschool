@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activities, availableLevels, questionBank, makeRound, questionKey, audioFragments, isCorrectAnswer } from '../src/content.ts';
+import { QUESTIONS_PER_ADVENTURE, activities, availableLevels, questionBank, makeRound, questionKey, audioFragments, isCorrectAnswer } from '../src/content.ts';
 import { storySpecs, storyOrderResponse, storyResponse } from '../src/learning/stories.ts';
 import { emptyProfile, rememberQuestions, reward, parseBackup } from '../src/storage.ts';
 
@@ -15,7 +15,7 @@ test('The story trail has two levels for groups 2 and 4, with varied rounds and 
       let previous:string[]=[];
       for(let run=0;run<8;run++){
         const round=makeRound(group,'verhalen',level,profile.recentQuestions?.[`${group}:verhalen`]);
-        assert.equal(round.length,10);assert.equal(new Set(round.map(q=>q.story!.steps[0].scene)).size,10);assert.ok(round.every(q=>q.story&&q.difficulty===level&&!previous.includes(questionKey(q))));
+        assert.equal(round.length,QUESTIONS_PER_ADVENTURE[group]);assert.equal(new Set(round.map(q=>q.story!.steps[0].scene)).size,QUESTIONS_PER_ADVENTURE[group]);assert.ok(round.every(q=>q.story&&q.difficulty===level&&!previous.includes(questionKey(q))));
         previous=round.map(questionKey);profile=rememberQuestions(profile,round);
       }
     }

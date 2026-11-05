@@ -46,4 +46,4 @@ export type Question = {
 };
 export type AuthoredQuestion = Omit<Question, 'group' | 'topic' | 'learningGoal' | 'difficulty'> & Partial<Pick<Question, 'learningGoal' | 'difficulty'>>;
 export type Activity = { id: Skill; title: string; subtitle: string; tag: string; color: string; symbol: string; world: World; learningGoal: string };
-export const QUESTIONS_PER_ADVENTURE = 10;
+export const QUESTIONS_PER_ADVENTURE = { 2: 6, 3: 8, 4: 10, 5: 10 } as const satisfies Record<Group, number>;

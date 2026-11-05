@@ -33,13 +33,17 @@ test('Every rhyme prompt and all four answers have native illustrations and matc
     assert.deepEqual(q.choices.filter(word=>family.includes(word)),[q.answer],q.prompt);
   }
 });
-test('Four picture-rhyme adventures offer forty distinct questions and preserve existing semantic keys',()=>{
+test('Picture-rhyme adventures exhaust fresh questions before reusing them and preserve existing semantic keys',()=>{
   let profile=emptyProfile('Rijmer','🦊',2);const seen=new Set<string>();
-  for(let i=0;i<4;i++){
+  for(let i=0;i<6;i++){
     const round=makeRound(2,'taal',1,profile.recentQuestions?.['2:taal'],profile.recentConcepts?.['2:taal']);
     for(const q of round){assert.ok(q.rhyme);assert.equal(q.answerMode,'choice');assert.ok(!seen.has(questionKey(q)));seen.add(questionKey(q));}
     profile=rememberQuestions(profile,round);
   }
+  assert.equal(seen.size,36);
+  const next=makeRound(2,'taal',1,profile.recentQuestions?.['2:taal'],profile.recentConcepts?.['2:taal']);
+  assert.equal(next.filter(q=>!seen.has(questionKey(q))).length,4);
+  for(const q of next)seen.add(questionKey(q));
   assert.equal(seen.size,40);
   const kat=questionBank(2,'taal').find(q=>q.rhyme!.word==='kat')!;
   assert.equal(questionKey(kat),questionKey({...kat,rhyme:undefined}),'Adding a picture must not erase the earlier question history');

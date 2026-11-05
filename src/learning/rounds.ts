@@ -13,9 +13,10 @@ export function questionKey(q: Question): string {
   return hashKey(value);
 }
 export function buildRound(bank: Question[], difficulty?: Difficulty, recent: readonly string[] = [], recentConcepts:readonly string[]=[]): Question[] {
+  const questionCount=bank.length?QUESTIONS_PER_ADVENTURE[bank[0].group]:0;
   const eligible=bank.filter(q=>!difficulty||q.difficulty===difficulty);
   const unique=[...new Map(eligible.map(q=>[questionKey(q),q])).values()];
-  if(unique.length<QUESTIONS_PER_ADVENTURE)throw new Error('Er zijn nog niet genoeg opdrachten voor dit niveau.');
+  if(!questionCount||unique.length<questionCount)throw new Error('Er zijn nog niet genoeg opdrachten voor dit niveau.');
   const rank=new Map(recent.map((key,index)=>[key,index]));
   const concepts=new Map(recentConcepts.map((key,index)=>[key,index]));
   const ranked=shuffle(unique).map(q=>({q,key:questionKey(q),concept:repetitionKey(q)})).sort((a,b)=>(concepts.get(a.concept)??-1)-(concepts.get(b.concept)??-1)||(rank.get(a.key)??-1)-(rank.get(b.key)??-1));
@@ -28,7 +29,7 @@ export function buildRound(bank: Question[], difficulty?: Difficulty, recent: re
   };
   const take=(entries:typeof ranked,distinctOnly:boolean)=>{
     if(ranked[0]?.q.matching){
-      while(selected.length<QUESTIONS_PER_ADVENTURE){
+      while(selected.length<questionCount){
         const candidates=entries.filter(e=>!chosen.has(e.key)&&(!distinctOnly||!used.has(e.concept)));
         if(!candidates.length)break;
         const next=candidates.reduce((best,e)=>(categoryCounts.get(e.q.matching!.category)??0)<(categoryCounts.get(best.q.matching!.category)??0)?e:best);
@@ -37,7 +38,7 @@ export function buildRound(bank: Question[], difficulty?: Difficulty, recent: re
       return;
     }
     for(const entry of entries){
-    if(selected.length===QUESTIONS_PER_ADVENTURE)break;
+    if(selected.length===questionCount)break;
     if(chosen.has(entry.key)||(distinctOnly&&used.has(entry.concept)))continue;
     add(entry);
   }};

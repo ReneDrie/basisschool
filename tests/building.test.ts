@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activities, availableLevels, questionBank, makeRound, questionKey, audioFragments, isCorrectAnswer } from '../src/content.ts';
+import { QUESTIONS_PER_ADVENTURE, activities, availableLevels, questionBank, makeRound, questionKey, audioFragments, isCorrectAnswer } from '../src/content.ts';
 import { orderedPlanks, orderResponse, sortResponse } from '../src/learning/building.ts';
 import { emptyProfile, rememberQuestions, reward, parseBackup } from '../src/storage.ts';
 
@@ -13,7 +13,7 @@ test('Construction has two varied levels for groups 2 and 4, with independent pe
     let profile=emptyProfile('Bouwer','🦊',group);
     for(const level of [1,2] as const)for(let n=0;n<6;n++){
       const recent=profile.recentQuestions?.[`${group}:bouwen`]??[],round=makeRound(group,'bouwen',level,recent);
-      assert.equal(round.length,10);assert.ok(round.every(q=>q.building&&q.difficulty===level&&!recent.includes(questionKey(q))));
+      assert.equal(round.length,QUESTIONS_PER_ADVENTURE[group]);assert.ok(round.every(q=>q.building&&q.difficulty===level&&!recent.includes(questionKey(q))));
       profile=rememberQuestions(profile,round);
     }
     const updated=reward(profile,'bouwen');assert.equal(updated.stars,1);assert.equal(updated.skills.bouwen,1);

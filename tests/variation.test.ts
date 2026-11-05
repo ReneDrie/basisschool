@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activities, GROUPS, makeRound, questionBank, questionKey, variantBank, audioFragments, repetitionKey, type Question } from '../src/content.ts';
+import { QUESTIONS_PER_ADVENTURE, activities, GROUPS, makeRound, questionBank, questionKey, variantBank, audioFragments, repetitionKey, type Question } from '../src/content.ts';
 import { rememberQuestions, validateProfiles, parseBackup, HISTORY_PER_TOPIC, type Profile } from '../src/storage.ts';
 const profile:Profile={id:'variation',name:'Proef',avatar:'🦊',group:3,rounds:0,stars:0,skills:{}};
 
@@ -11,9 +11,9 @@ test('Successive adventures avoid the previous three rounds whenever the pool pe
       const history=p.recentQuestions?.[`${group}:${topic}`]??[];
       const pool=variantBank(questionBank(group,topic)).filter(q=>q.difficulty===level),unseen=pool.filter(q=>!history.includes(questionKey(q))).length;
       const round=makeRound(group,topic,level,history,p.recentConcepts?.[`${group}:${topic}`]);
-      assert.equal(round.length,10);
-      assert.equal(new Set(round.map(questionKey)).size,10);
-      assert.equal(round.filter(q=>history.includes(questionKey(q))).length,Math.max(0,10-unseen),`${group}: ${topic}`);
+      assert.equal(round.length,QUESTIONS_PER_ADVENTURE[group]);
+      assert.equal(new Set(round.map(questionKey)).size,QUESTIONS_PER_ADVENTURE[group]);
+      assert.equal(round.filter(q=>history.includes(questionKey(q))).length,Math.max(0,QUESTIONS_PER_ADVENTURE[group]-unseen),`${group}: ${topic}`);
       p=rememberQuestions(p,round);
       assert.ok(p.recentQuestions![`${group}:${topic}`]!.length<=HISTORY_PER_TOPIC);
     }
@@ -28,7 +28,7 @@ test('Small pools reuse the least recently offered questions and never block pla
   assert.ok(third.every(q=>!history.includes(questionKey(q))));
   assert.equal(new Set(third.map(repetitionKey)).size,10);
   const fixed=makeRound(3,'lezen',1),fixedNext=makeRound(3,'lezen',1,fixed.map(questionKey));
-  assert.equal(fixedNext.length,10);
+  assert.equal(fixedNext.length,8);
 });
 test('History persists without changing rewards, remains separate per group/topic/profile, and old backups still load',()=>{
   const round=makeRound(3,'rekenen',1),remembered=rememberQuestions(profile,round);

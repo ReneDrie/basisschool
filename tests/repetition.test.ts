@@ -56,9 +56,9 @@ test('History stays bounded per topic and profile, and even full twenty-profile 
   const json=JSON.stringify({app:'kleine-ontdekkers',version:1,profiles});assert.ok(Buffer.byteLength(json)<MAX_BACKUP_BYTES);assert.equal(parseBackup(json).length,20);
   assert.throws(()=>validateProfiles([{...profile,recentConcepts:{'4:lezen':['not-a-hash']}}]));
 });
-test('Three story adventures have thirty distinct plots, independent of actor or level',()=>{
+test('Five group 2 story adventures have thirty distinct plots, independent of actor or level',()=>{
   let profile=emptyProfile('Verhalen','🦊',2);const plots=new Set<string>();
-  for(let i=0;i<3;i++){
+  for(let i=0;i<5;i++){
     const round=makeRound(2,'verhalen',1,profile.recentQuestions?.['2:verhalen'],profile.recentConcepts?.['2:verhalen']);
     for(const q of round){const plot=q.story!.plotId??q.story!.steps[0].scene;assert.ok(!plots.has(plot));plots.add(plot);}
     profile=rememberQuestions(profile,round);

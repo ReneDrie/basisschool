@@ -48,7 +48,7 @@ export function makeRound(group: Group, skill: Skill, difficulty?: Difficulty, r
 }
 export function availableLevels(group: Group, skill: Skill): Difficulty[] {
   const bank=questionBank(group,skill);
-  return ([1,2] as const).filter(level=>bank.filter(question=>question.difficulty===level).length>=QUESTIONS_PER_ADVENTURE);
+  return ([1,2] as const).filter(level=>bank.filter(question=>question.difficulty===level).length>=QUESTIONS_PER_ADVENTURE[group]);
 }
 
 export { stickers } from './progression.ts';

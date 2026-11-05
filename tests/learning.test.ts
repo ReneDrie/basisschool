@@ -2,13 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { GROUPS, activities, availableLevels, makeRound, questionBank, QUESTIONS_PER_ADVENTURE, isCorrectAnswer, audioFragments } from '../src/content.ts';
 import { parseBackup, reward, validateProfiles, type Profile } from '../src/storage.ts';
+import { buildRound } from '../src/learning/rounds.ts';
 
 const allQuestions=GROUPS.flatMap(group=>activities(group).flatMap(activity=>questionBank(group,activity.id)));
 test('Every advertised topic has a complete bank with unique IDs, answers and learning metadata',()=>{
   assert.equal(new Set(allQuestions.map(q=>q.id)).size,allQuestions.length);
   for(const group of GROUPS)for(const activity of activities(group)){
     const questions=questionBank(group,activity.id);
-    assert.ok(questions.length>=QUESTIONS_PER_ADVENTURE);
+    assert.ok(questions.length>=QUESTIONS_PER_ADVENTURE[group]);
     for(const question of questions){
       assert.equal(question.group,group);assert.equal(question.topic,activity.id);
       assert.ok(question.learningGoal.length>10);assert.ok([1,2].includes(question.difficulty));
@@ -22,20 +23,30 @@ test('Every advertised topic has a complete bank with unique IDs, answers and le
     }
   }
 });
-test('Mixed and level-specific adventures contain ten distinct, eligible assignments',()=>{
-  for(const group of GROUPS)for(const activity of activities(group))for(const level of [undefined,...availableLevels(group,activity.id)]){
+test('Mixed and level-specific adventures contain the group-specific number of distinct, eligible assignments',()=>{
+  for(const [group,count] of [[2,6],[3,8],[4,10],[5,10]] as const)for(const activity of activities(group))for(const level of [undefined,...availableLevels(group,activity.id)]){
     for(let run=0;run<10;run++){
       const round=makeRound(group,activity.id,level);
-      assert.equal(round.length,10);assert.equal(new Set(round.map(q=>q.id)).size,10);
+      assert.equal(round.length,count);assert.equal(new Set(round.map(q=>q.id)).size,count);
       if(level)assert.ok(round.every(q=>q.difficulty===level));
       const expected=Math.min(3,round.filter(q=>q.openAnswer).length);
       assert.equal(round.filter(q=>q.answerMode==='open').length,expected);
-      assert.equal(round.filter(q=>q.answerMode==='choice').length,10-expected);
+      assert.equal(round.filter(q=>q.answerMode==='choice').length,count-expected);
       for(const q of round){assert.ok(isCorrectAnswer(q,q.answer));if(q.answerMode==='open')assert.ok(q.openAnswer);}
     }
   }
   assert.throws(()=>makeRound(2,'tafels'));
   assert.throws(()=>makeRound(4,'taal',2));
+});
+test('Small banks require a full group-specific round of unique eligible questions',()=>{
+  assert.throws(()=>buildRound([]),/niet genoeg opdrachten/);
+  for(const [group,count] of [[2,6],[3,8],[4,10],[5,10]] as const){
+    const bank=questionBank(group,'rekenen').filter(q=>q.difficulty===1).slice(0,count);
+    assert.equal(buildRound(bank,1).length,count);
+    assert.throws(()=>buildRound(bank.slice(1),1),/niet genoeg opdrachten/);
+    assert.throws(()=>buildRound([...bank.slice(1),bank[1]],1),/niet genoeg opdrachten/);
+    assert.throws(()=>buildRound(bank,2),/niet genoeg opdrachten/);
+  }
 });
 test('Six new topics and the four group 3 topics have at least twenty questions on two complete levels',()=>{
   for(const [group,skill] of [[2,'vergelijken'],[2,'patronen'],[4,'klok'],[4,'geld'],[5,'breuken'],[5,'grafieken'],...activities(3).map(a=>[3,a.id])] as const){

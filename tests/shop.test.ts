@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { shopTotal, shopProducts, shopResponse } from '../src/learning/shop.ts';
-import { activities, availableLevels, questionBank, questionKey, makeRound, audioFragments, isCorrectAnswer } from '../src/content.ts';
+import { QUESTIONS_PER_ADVENTURE, activities, availableLevels, questionBank, questionKey, makeRound, audioFragments, isCorrectAnswer } from '../src/content.ts';
 import { emptyProfile, rememberQuestions, reward, parseBackup } from '../src/storage.ts';
 
 test('The island shop has two varied levels for groups 2 and 4 and stays separate from other groups',()=>{
@@ -15,8 +15,8 @@ test('The island shop has two varied levels for groups 2 and 4 and stays separat
       const recent=profile.recentQuestions?.[`${group}:winkel`]??[];
       const bankForLevel=bank.filter(q=>q.difficulty===level),unseen=bankForLevel.filter(q=>!recent.includes(questionKey(q))).length;
       const questions=makeRound(group,'winkel',level,recent,profile.recentConcepts?.[`${group}:winkel`]);
-      assert.equal(questions.length,10);assert.ok(questions.every(q=>q.shop&&q.difficulty===level));
-      assert.equal(questions.filter(q=>recent.includes(questionKey(q))).length,Math.max(0,10-unseen));
+      assert.equal(questions.length,QUESTIONS_PER_ADVENTURE[group]);assert.ok(questions.every(q=>q.shop&&q.difficulty===level));
+      assert.equal(questions.filter(q=>recent.includes(questionKey(q))).length,Math.max(0,QUESTIONS_PER_ADVENTURE[group]-unseen));
       profile=rememberQuestions(profile,questions);
     }
     const earned=reward(profile,'winkel');
