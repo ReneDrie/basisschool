@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft, Check, Download, Leaf, Plus, Settings2, Sparkles, Star, Volume2, VolumeX, WifiOff, X, RotateCcw, Upload, Trash2, CircleHelp, BookOpen, RefreshCw } from 'lucide-react';
 import { useAppUpdates } from './useAppUpdates';
 import { installTouchControls } from './touch-controls';
+import { muteTestAudio } from './audio-settings';
 import { availableLevels, makeRound, stickers, GROUPS, isCorrectAnswer, type Difficulty, type Activity, type Group, type Question } from './content';
 import { avatars, emptyProfile, loadProfiles, parseBackup, rememberQuestions, MAX_BACKUP_BYTES, reward, saveProfiles, type Profile } from './storage';
 import { QuestionAnswers } from './QuestionAnswers';
@@ -18,6 +19,7 @@ import './app.css';
 type Round = { difficulty?:Difficulty; activity:Activity; questions:Question[]; index:number; selected:string|null; mistakes:number; hint:boolean; correct:number; helped:boolean; done:boolean; saved:boolean; previousRounds:number };
 type Dialog = 'profiles'|'parents'|'install'|'activity'|null;
 
+const silentTestAudio=muteTestAudio(import.meta.env.DEV,window.location.search);
 
 function App(){
   useEffect(()=>installTouchControls(document),[]);
@@ -41,7 +43,7 @@ function App(){
     if(!sound){setMessage('Zet het geluid aan om te luisteren.');return;}
     audioRef.current?.pause();
     const paths=typeof source==='string'?[source]:[...source];
-    const audio=new Audio();audioRef.current=audio;
+    const audio=new Audio();audio.muted=silentTestAudio;audioRef.current=audio;
     const playNext=()=>{const path=paths.shift();if(!path)return;audio.src=path;audio.play().catch(()=>setMessage('Dit geluidsfragment is nog niet beschikbaar. Open de app een keer met internet.'));};
     audio.onended=playNext;playNext();
   }
@@ -70,7 +72,7 @@ function App(){
     if(!round||!choice.trim()||round.selected===round.questions[round.index].answer||round.done)return;
     const question=round.questions[round.index],correct=isCorrectAnswer(question,choice);
     setRound({...round,selected:correct?question.answer:choice.trim(),mistakes:round.mistakes+(correct?0:1),correct:round.correct+(correct&&!round.helped?1:0),helped:round.helped||!correct,hint:round.hint||!correct});
-    if(correct&&sound){
+    if(correct&&sound&&!silentTestAudio){
       try {const Ctx=window.AudioContext;const ctx=new Ctx();const oscillator=ctx.createOscillator(),gain=ctx.createGain();oscillator.connect(gain);gain.connect(ctx.destination);oscillator.type='sine';oscillator.frequency.setValueAtTime(660,ctx.currentTime);oscillator.frequency.setValueAtTime(880,ctx.currentTime+.09);gain.gain.setValueAtTime(.06,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.25);oscillator.start();oscillator.stop(ctx.currentTime+.25);oscillator.onended=()=>void ctx.close();}catch{/* Sound is optional. */}
     }
   }

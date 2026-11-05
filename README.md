@@ -138,9 +138,13 @@ npm run check:offline
 npm run preview
 ```
 
+Browsercontroles draaien stil. De ontwikkelserver (`npm run dev`) dempt zowel voorleesfragmenten als de geluidjes bij goede antwoorden. Gebruik bij automatische browsercontroles altijd `?test=1`, ook op een productiepreview, bijvoorbeeld `http://127.0.0.1:4173/?test=1`. Deze testmodus blijft stil wanneer een test de geluidsknop aanzet. De luisterfragmenten worden wel geladen en stil afgespeeld, zodat laadfouten en afspeelvolgordes gecontroleerd kunnen worden.
+
+De normale productie-URL heeft standaard geluid. Er wordt geen stille productiebuild gemaakt en de testmodus verandert geen opgeslagen voorkeuren of profielen. Voor een bewuste luistercontrole in ontwikkeling kan `?audio=on` worden gebruikt; `test=1` heeft altijd voorrang. De browserafspraken staan ook in `AGENTS.md`.
+
 De inhoudstests controleren alle groepen en niveaus, tien unieke opdrachten per ronde, leerdoelen, rekenantwoorden, overeenstemming tussen diagrammen en antwoorden, eenduidige antwoordopties, de audiolijst, beloningen en reservekopieën. Oude reservekopieën (versie 1) blijven leesbaar; groep 3 en de nieuwe onderwerpen worden ook geaccepteerd. Tests voor de PWA-updater controleren het wachten op volledige installatie, bestaande updates, netwerkfouten, time-outs, mislukte downloads en expliciete activatie vóór herladen. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-De 62 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
+De 65 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
 
 Twee volledige groep 4-rekenrondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. Alle twintig vragen verschilden en beide sterren bleven bewaard. Ook volledige rondjes met de nieuwe vormtelvragen en breuken zijn offline afgerond en op telefoonformaat bekeken; de taartpunten, stroken en roosters gaven de juiste antwoorden.
 
