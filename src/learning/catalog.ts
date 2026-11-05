@@ -6,6 +6,7 @@ export const worlds: { id: World; title: string; symbol: string }[] = [
   { id: 'ontdekken', title: 'Kijken & ontdekken', symbol: '✦' }
 ];
 const catalog: Record<Skill, Activity> = {
+  koppelen:{id:'koppelen',title:'Het Koppelplein',subtitle:'Zoek wat bij elkaar hoort',tag:'Koppelen & memory',color:'blue',symbol:'matching',world:'ontdekken',learningGoal:'Verbanden herkennen, passende kaarten koppelen en paren onthouden.'},
   verhalen:{id:'verhalen',title:'Het Verhalenpad',subtitle:'Elk plaatje vertelt iets',tag:'Luisteren & verhalen',color:'purple',symbol:'story',world:'taal',learningGoal:'Gebeurtenissen ordenen en een kort verhaal begrijpen.'},
   bouwen:{id:'bouwen',title:'De Bouwplaats',subtitle:'Bouw je mee?',tag:'Sorteren & meten',color:'blue',symbol:'building',world:'ontdekken',learningGoal:'Vormen sorteren, lengtes ordenen en meten met een liniaal.'},
   winkel: {id:'winkel',title:'De Eilandwinkel',subtitle:'Vul je mandje',tag:'Boodschappen doen',color:'peach',symbol:'shop',world:'rekenen',learningGoal:'Hoeveelheden verzamelen en vergelijken, of een aankoop precies betalen.'},
@@ -23,10 +24,10 @@ const catalog: Record<Skill, Activity> = {
   grafieken: { id:'grafieken', title:'Het Speurbureau', subtitle:'Wat vertellen de getallen?', tag:'Tabellen & grafieken', color:'blue', symbol:'chart', world:'rekenen', learningGoal:'Gegevens aflezen en vergelijken in tabellen en staafgrafieken.' }
 };
 const groupTopics: Record<Group, Skill[]> = {
-  2: ['rekenen','taal','vormen','klanken','vergelijken','patronen','winkel','bouwen','verhalen'],
-  3: ['rekenen','taal','klanken','lezen'],
-  4: ['rekenen','taal','tafels','lezen','klok','geld','winkel','bouwen','verhalen'],
-  5: ['rekenen','taal','tafels','lezen','breuken','grafieken']
+  2: ['rekenen','taal','vormen','klanken','vergelijken','patronen','winkel','bouwen','verhalen','koppelen'],
+  3: ['rekenen','taal','klanken','lezen','koppelen'],
+  4: ['rekenen','taal','tafels','lezen','klok','geld','winkel','bouwen','verhalen','koppelen'],
+  5: ['rekenen','taal','tafels','lezen','breuken','grafieken','koppelen']
 };
 export function activities(group: Group): Activity[] {
   return groupTopics[group].map(id => {

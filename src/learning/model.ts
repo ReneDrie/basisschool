@@ -1,9 +1,10 @@
 import type { StoryTask } from './stories.ts';
 import type { BuildingTask } from './building.ts';
 import type { ShopTask } from './shop.ts';
+import type { MatchingTask } from './matching.ts';
 export const GROUPS = [2, 3, 4, 5] as const;
 export type Group = typeof GROUPS[number];
-export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel', 'bouwen', 'verhalen'] as const;
+export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel', 'bouwen', 'verhalen', 'koppelen'] as const;
 export type Skill = typeof SKILLS[number];
 export type Difficulty = 1 | 2;
 export type World = 'rekenen' | 'taal' | 'ontdekken';
@@ -34,6 +35,7 @@ export type Question = {
   shop?: ShopTask;
   building?: BuildingTask;
   story?: StoryTask;
+  matching?: MatchingTask;
   passage?: string;
   audio?: string;
   audioSequence?: string[];

@@ -13,6 +13,7 @@ export function repetitionKey(q:Question):string {
   if(q.missing)concept=['missing',q.missing.operation,q.missing.a,q.missing.result];
   else if(sum){let a=Number(sum[1]),b=Number(sum[3]);if(sum[2]==='+'||sum[2]==='×')[a,b]=[a,b].sort((x,y)=>x-y);concept=[sum[2],a,b];}
   else if(q.story)concept=['story',q.story.plotId??q.story.steps[0].scene];
+  else if(q.matching)concept=['matching',q.matching.category,q.matching.pairs.map(p=>p.id).sort()];
   else if(q.passage)concept=['passage',q.passage];
   else if(q.topic==='klanken'){const word=q.prompt.match(/(?:begint|in)\s+([\p{L}]+)/u)?.[1];concept=['letter',word??q.prompt,/achteraan|laatste/.test(q.prompt)];}
   else if(q.topic==='taal'&&q.group===3)concept=['picture-word',q.answer];

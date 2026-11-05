@@ -13,6 +13,8 @@ const fragments=audioFragments(questions);
 const prefix=process.argv.find(arg=>arg.startsWith('--prefix='))?.slice('--prefix='.length);
 const voice=process.argv.find(arg=>arg.startsWith('--voice='))?.slice('--voice='.length)??'Ellen';
 const rate=Number(process.argv.find(arg=>arg.startsWith('--rate='))?.slice('--rate='.length)??125);
+const encoder=process.argv.find(arg=>arg.startsWith('--encoder='))?.slice('--encoder='.length)??'ffmpeg';
+if(!['ffmpeg','afconvert'].includes(encoder))throw new Error('Gebruik --encoder=ffmpeg of --encoder=afconvert.');
 if(!voice||!Number.isInteger(rate)||rate<80||rate>220)throw new Error('Kies een stem en een geheel spreektempo tussen 80 en 220 woorden per minuut.');
 // Independent shards can be generated in parallel without sharing temporary files.
 const shard=process.argv.find(arg=>arg.startsWith('--shard='))?.slice('--shard='.length)??'0/1';
@@ -30,9 +32,11 @@ try {
     if(existsSync(target)&&!process.argv.includes('--force'))continue;
     const intermediate=join(temporary,'speech.aiff');
     const encoded=join(temporary,'speech.m4a');
+    const spokenText=encoder==='afconvert'?`[[slnc 180]] ${text} [[slnc 320]]`:text;
     for (const [command,args] of [
-      ['say', ['-v', voice, '-r', String(rate), '-o', intermediate, text]],
-      ['ffmpeg', ['-loglevel', 'error', '-y', '-i', intermediate, '-af', 'adelay=180:all=1,apad=pad_dur=0.32', '-c:a', 'aac', '-b:a', '64k', encoded]]
+      ['say', ['-v', voice, '-r', String(rate), '-o', intermediate, spokenText]],
+      encoder==='afconvert'?['afconvert',['-f','m4af','-d','aac','-b','64000',intermediate,encoded]]:
+        ['ffmpeg', ['-loglevel', 'error', '-y', '-i', intermediate, '-af', 'adelay=180:all=1,apad=pad_dur=0.32', '-c:a', 'aac', '-b:a', '64k', encoded]]
     ]) {
       const result=spawnSync(command,args,{encoding:'utf8'});
       if(result.status!==0) throw new Error(`${command}: ${result.stderr||result.error}`);

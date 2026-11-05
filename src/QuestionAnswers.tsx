@@ -6,9 +6,11 @@ import { Check, Volume2 } from 'lucide-react';
 import { choiceAudioPath, choiceLabel, animalSymbol, type Question } from './content';
 import { OpenAnswer } from './OpenAnswer';
 import { RhymeWord } from './RhymeWord';
+import { MatchingGame } from './MatchingGame';
 
 export function QuestionAnswers({question,young,selected,onAnswer,onSpeak}:{question:Question;young:boolean;selected:string|null;onAnswer:(value:string)=>void;onSpeak:(source:string|string[])=>void}){
   const correct=selected===question.answer;
+  if(question.matching)return <MatchingGame key={question.id} task={question.matching} correct={correct} onAnswer={onAnswer}/>;
   if(question.story)return <StoryGame key={question.id} task={question.story} correct={correct} onAnswer={onAnswer} onSpeak={onSpeak}/>;
   if(question.building)return <BuildingGame key={question.id} task={question.building} correct={correct} onAnswer={onAnswer}/>;
   if(question.shop)return <ShopGame key={question.id} task={question.shop} correct={correct} onAnswer={onAnswer}/>;

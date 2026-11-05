@@ -25,6 +25,7 @@ export function ArtShape({kind}:{kind:string}):ReactNode {
   return <g className="art-shape" strokeLinejoin="round" strokeLinecap="round"><ShapeDrawing kind={kind}/></g>;
 }
 function ShapeDrawing({kind}:{kind:string}):ReactNode {
+  if(kind==='matching')return <><g transform="rotate(-10 33 48)"><rect x="8" y="12" width="48" height="70" rx="8" fill={cream} stroke={ink} strokeWidth="2.5"/><circle cx="32" cy="45" r="14" fill={blue} stroke={ink} strokeWidth="2"/></g><g transform="rotate(10 68 54)"><rect x="44" y="20" width="48" height="70" rx="8" fill="#e4e9cf" stroke={ink} strokeWidth="2.5"/><circle cx="68" cy="53" r="14" fill={blue} stroke={ink} strokeWidth="2"/></g><path d="M35 81l10 9 19-20" stroke={green} strokeWidth="6" fill="none"/></>;
   if(kind.startsWith('word-'))return <g stroke={ink} strokeWidth="2.4" fill={cream}><WordDrawing kind={kind}/></g>;
   if(['fox','bear','rabbit','panda','frog','lion','cat','mouse','rat','deer','cow'].includes(kind))return <Animal kind={kind}/>;
   if(['red','blue','yellow','green','circle'].includes(kind))return <circle cx="50" cy="50" r="33" fill={{red:'#d98278',blue:'#82afca',yellow:gold,green, circle:blue}[kind]} stroke={ink} strokeWidth="2"/>;

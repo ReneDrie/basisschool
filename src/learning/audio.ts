@@ -22,7 +22,7 @@ export function audioFragments(questions: Question[]): Map<string,string> {
   ]);
   for(const question of questions){
     if(!question.audio)continue;
-    const prompt=question.prompt.startsWith('Hoeveel is ')?question.prompt.replaceAll('−','min').replaceAll('+','plus').replaceAll('×','keer').replaceAll(' : ',' gedeeld door '):question.prompt;
+    const prompt=question.matching?(question.matching.mode==='pairs'?'Zoek twee kaarten die bij elkaar horen. Maak alle vier de paren.':'Draai twee kaarten om. Zoek wat bij elkaar hoort. Maak alle vier de paren.'):question.prompt.startsWith('Hoeveel is ')?question.prompt.replaceAll('−','min').replaceAll('+','plus').replaceAll('×','keer').replaceAll(' : ',' gedeeld door '):question.prompt;
     fragments.set(question.audio,prompt);
     fragments.set(question.hintAudio??`/audio/hint-${question.id}.m4a`,question.hint);
     if(question.story){

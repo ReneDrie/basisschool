@@ -77,14 +77,31 @@ Groep 2 luistert naar het verhaal en zet eigen SVG-plaatjes op volgorde. Het hel
 
 Kaarten komen in een gemengde volgorde in beeld. Tik op een kaart om die aan je verhaal toe te voegen; een geplaatste stap kan terug en de hele volgorde kan opnieuw. Iedere illustratie toont de bijbehorende gebeurtenis met dezelfde kleuren en vectorstijl als de app. Alle vertellingen, vragen en antwoordopties worden mee opgeslagen voor offline gebruik. Sterren, hints, eilandschatten en reservekopieën gebruiken de bestaande werkwijze. Een volledig groep 2-rondje is met een verkeerde volgorde, terugpakken en opnieuw leggen getest. Een volledig groep 4-rondje met tien verschillende verhalen is zonder productieserver afgerond, inclusief voorlezen, begripsvragen en herstel van een fout antwoord. Beide rondjes leverden één ster op. Ook het groep 2-niveau met drie plaatjes is offline volledig afgerond, inclusief de gesproken vertelling en de volgende eilandschat.
 
+## Koppelplein voor alle groepen
+
+Via **Lessen → Ontdekken → Koppelplein** zijn er twee nieuwe spelvormen: **Koppelen**, met de kaarten zichtbaar, en **Memory**, met acht dichte kaarten. Bij groep 3 en 5 opent Ontdekken direct de spelkeuze, omdat dit daar het enige onderwerp is. Een bord heeft vier paren; na tien borden volgt de gebruikelijke ster.
+
+| Groep | Wat hoort bij elkaar? | Borden per spelvorm |
+| --- | --- | ---: |
+| 2 | Aantallen en cijfers; voorwerpen en hun schaduwen | 140 |
+| 3 | Plaatjes en gelezen woorden; sommen en uitkomsten | 140 |
+| 4 | Keersommen en uitkomsten; enkelvoud en meervoud; klokken en tijden | 210 |
+| 5 | Breukplaatjes en breuken; lengtematen en inhoudsmaten; woorden en betekenissen | 210 |
+
+Dit zijn samen 1.400 verschillende borden. Iedere ronde verdeelt de oefensoorten gelijkmatig. De kaarten worden opnieuw gemengd en de bestaande vraag- en begripsgeschiedenis spreidt eerdere borden, ook wanneer hetzelfde bord met een andere spelvorm terugkomt. Profielen en reservekopieën blijven compatibel.
+
+Een gevonden paar blijft zichtbaar. Bij een verkeerd paar blijven de kaarten liggen tot het kind op **Nog eens** tikt; er is geen tijdsdruk en de andere gevonden paren blijven bewaard. Bij open kaarten telt een fout paar als een nieuwe poging. Bij memory hoort het ontdekken van verschillende kaarten bij het spel en kost dat geen score; een expliciet gebruikte hint telt wel als hulp. De kaartinhoud en namen van dichte memorykaarten staan nog niet in de zichtbare of voorgelezen kaartinhoud.
+
+Alle plaatjes zijn bestaande eigen vectorillustraties. Drie nieuwe luisterfragmenten gebruiken Ellen en werken ook offline. Automatische tests controleren alle koppelingen, reken- en breukantwoorden, maten, niveaus, geheugenkaarten, afwisseling, beloningen en reservekopieën. Een volledig groep 2-koppelrondje is met een verkeerd paar, herstel en de juiste sterbeloning afgerond. Groep 3-memory is gecontroleerd op omdraaien, opnieuw proberen en het resetten van het volgende bord. Een volledig groep 4-koppelrondje bevatte tafels, meervouden en klokken. Een volledig groep 5-memoryrondje met breuken, maten en woordbetekenissen is zonder productieserver gespeeld, inclusief luisteren; de verdiende ster bleef na offline herladen behouden. De weergave is op telefoon- en iPad-formaat gecontroleerd.
+
 ## Wat zit erin?
 
 | Groep | Oefeningen |
 | --- | --- |
-| 2 | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats en Verhalenpad |
-| 3 | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters en korte leesvragen |
-| 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats en Verhalenpad |
-| 5 | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken en tabellen/grafieken |
+| 2 | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
+| 3 | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters, korte leesvragen en Koppelplein |
+| 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
+| 5 | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken, tabellen/grafieken en Koppelplein |
 
 De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Onder Lessen kiezen kinderen een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd.
 
@@ -107,7 +124,7 @@ De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelij
 - Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties, externe lettertypen of analytics.
-- De voorleesknoppen gebruiken 1.250 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.
+- De voorleesknoppen gebruiken 1.253 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.
 - Open getallen worden exact gecontroleerd; voorloopnullen zijn toegestaan. Bij open woorden worden hoofdletters en spaties aan het begin en einde genegeerd, maar spelfouten tellen als een nieuwe poging. Lege antwoorden kunnen niet worden ingestuurd.
 - Hints, opnieuw proberen en dezelfde beloning per afgerond avontuur werken ook bij open vragen.
 - Kleine geluidseffecten zijn uit te zetten tijdens een spel.
@@ -123,7 +140,7 @@ npm run preview
 
 De inhoudstests controleren alle groepen en niveaus, tien unieke opdrachten per ronde, leerdoelen, rekenantwoorden, overeenstemming tussen diagrammen en antwoorden, eenduidige antwoordopties, de audiolijst, beloningen en reservekopieën. Oude reservekopieën (versie 1) blijven leesbaar; groep 3 en de nieuwe onderwerpen worden ook geaccepteerd. Tests voor de PWA-updater controleren het wachten op volledige installatie, bestaande updates, netwerkfouten, time-outs, mislukte downloads en expliciete activatie vóór herladen. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-De 55 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
+De 62 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Drie verhalenrondjes bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
 
 Twee volledige groep 4-rekenrondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. Alle twintig vragen verschilden en beide sterren bleven bewaard. Ook volledige rondjes met de nieuwe vormtelvragen en breuken zijn offline afgerond en op telefoonformaat bekeken; de taartpunten, stroken en roosters gaven de juiste antwoorden.
 
@@ -162,7 +179,8 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/learning/legacy.ts`: de bestaande oefenbanken voor groep 2, 4 en 5.
 - `src/learning/group3.ts`: het startaanbod voor groep 3.
 - `src/learning/new-topics.ts`: de zes nieuwe onderwerpen, ieder met twee niveaus.
-- `src/learning/rounds.ts`: rondjes samenstellen, recente herhaling beperken en antwoorden controleren.
+- `src/learning/rounds.ts`: rondjes samenstellen, recente herhaling beperken, oefensoorten spreiden en antwoorden controleren.
+- `src/MatchingGame.tsx` en `src/learning/matching.ts`: open paren en memory, met leeftijdsspecifieke kaarten en controle van koppelingen.
 - `src/learning/variants.ts`: varianten genereren binnen het getalbereik en leerdoel.
 - `src/learning/repetition.ts`: herkenning van inhoudelijk dezelfde oefening, los van vormgeving en antwoordvolgorde.
 - `src/learning/extended-content.ts`: extra letter-, spelling- en leesvragen.
@@ -188,12 +206,12 @@ Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg gro
 
 Naast de recente oefengeschiedenis blijft voortgang voorlopig een rondjeteller per onderwerp, ook als een profiel van groep verandert. Er wordt nog geen beheersing per groep of leerdoel afgeleid uit die tellers.
 
-Alle 1.250 luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
+Alle 1.253 luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
 
 ```sh
 node --experimental-strip-types scripts/generate-audio.mjs
 ```
 
-De generator maakt standaard alleen ontbrekende bestanden. Gebruik `--force` wanneer bestaande gesproken tekst of de stem verandert. `--voice=Ellen` en `--rate=125` stellen stem en tempo in; `--prefix=story-` beperkt de selectie. Voor parallel genereren kunnen afzonderlijke processen `--shard=0/4` tot en met `--shard=3/4` gebruiken. Bestanden worden pas na een geslaagde omzetting vervangen. De offline-controle gebruikt dezelfde audiolijst, zodat ook nieuwe onderwerpen automatisch worden gecontroleerd.
+De generator maakt standaard alleen ontbrekende bestanden. Gebruik `--force` wanneer bestaande gesproken tekst of de stem verandert. `--voice=Ellen` en `--rate=125` stellen stem en tempo in; `--prefix=story-` beperkt de selectie. Voor parallel genereren kunnen afzonderlijke processen `--shard=0/4` tot en met `--shard=3/4` gebruiken. Bestanden worden pas na een geslaagde omzetting vervangen. Met `--encoder=afconvert` kan de ingebouwde macOS-converter worden gebruikt als alternatief voor FFmpeg; de stem, het tempo en de korte pauzes blijven hetzelfde. De offline-controle gebruikt dezelfde audiolijst, zodat ook nieuwe onderwerpen automatisch worden gecontroleerd.
 
 De eigen appiconen zijn reproduceerbaar met `python3 scripts/generate-icons.py` (Pillow vereist). Beide hulpprogramma's zijn uitsluitend voor het maken van assets en draaien niet bij publicatie of op de iPad.
