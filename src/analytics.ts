@@ -25,7 +25,7 @@ const titles: Record<AnalyticsEvent, string> = {
 function eventCounts(event: AnalyticsEvent, game?: GameContext): Count[] {
   const result: Count[] = [];
   const add = (path: string, title: string) => result.push({path, title, referrer: '', event: true, no_session: true});
-  if (event !== 'game-started') add(event, titles[event]);
+  if (event !== 'game-started' && event !== 'round-completed') add(event, titles[event]);
   if ((event === 'game-started' || event === 'round-completed') && game && GROUPS.includes(game.group)) {
     const activity = activities(game.group).find(a => a.id === game.skill);
     if (!activity) return result;
@@ -35,8 +35,6 @@ function eventCounts(event: AnalyticsEvent, game?: GameContext): Count[] {
     const key = mixed ? 'koppelplein-mix' : memory ? 'memory' : game.skill;
     const label = game.skill === 'koppelen' ? (mixed ? 'Koppelen & Memory' : memory ? 'Memory' : 'Koppelen') : activity.title;
     const action = event === 'game-started' ? 'Gestart' : 'Afgerond';
-    add(`${event}/game/${key}`, `${action} · ${game.skill === 'taal' ? 'Taal (rijmen, woorden & spelling)' : label}`);
-    add(`${event}/group/${game.group}`, `${action} · Groep ${game.group}`);
     add(`${event}/group/${game.group}/game/${key}`, `${action} · ${label} · Groep ${game.group}`);
   }
   return result;
