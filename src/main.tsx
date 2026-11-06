@@ -8,6 +8,7 @@ import { analyticsDashboard, startAnalytics } from './analytics';
 import { availableLevels, makeRound, stickers, GROUPS, isCorrectAnswer, type Difficulty, type Activity, type Group, type Question } from './content';
 import { avatars, emptyProfile, loadProfiles, parseBackup, rememberQuestions, MAX_BACKUP_BYTES, reward, saveProfiles, type Profile } from './storage';
 import { QuestionAnswers } from './QuestionAnswers';
+import { AnswerCelebration } from './AnswerCelebration';
 import { QuestionVisual } from './QuestionVisual';
 import { RhymeWord } from './RhymeWord';
 import { AppTabs, IslandHome, LessonsPage, TreasuresPage, topicLabel, type AppPage } from './AppPages';
@@ -30,6 +31,8 @@ function App(){
   useEffect(()=>installTouchControls(document),[]);
   const [profiles,setProfiles]=useState<Profile[]>([]),[activeId,setActiveId]=useState(''),[loaded,setLoaded]=useState(false);
   const [page,setPage]=useState<AppPage>('island'),[dialog,setDialog]=useState<Dialog>(null),[round,setRound]=useState<Round|null>(null);
+  const [leaving,setLeaving]=useState(false),[advanceError,setAdvanceError]=useState('');
+  const advancing=useRef(false);
   const [selectedActivity,setSelectedActivity]=useState<Activity|null>(null);
   const [online,setOnline]=useState(navigator.onLine),[sound,setSound]=useState(true),[message,setMessage]=useState('');
   const {offlineSupported,readyForOffline,pwaError,needRefresh,status:updateStatus,updating,checkForUpdates,reloadApp}=useAppUpdates();
@@ -41,7 +44,7 @@ function App(){
   useEffect(()=>{if(!message)return;const timeout=setTimeout(()=>setMessage(''),10000);return()=>clearTimeout(timeout);},[message]);
   useEffect(()=>{audioRef.current?.pause();},[round?.index,dialog]);
   useEffect(()=>{if(!dialog&&!round)return;const handle=(event:KeyboardEvent)=>{if(event.key==='Escape'&&dialog){setDialog(null);audioRef.current?.pause();}};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle);},[dialog,round]);
-  useEffect(()=>{if(!round)return;const heading=document.querySelector<HTMLElement>('.question-heading h1, .result-card h1');heading?.focus();},[round?.index,round?.done]);
+  useEffect(()=>{if(!round)return;const heading=document.querySelector<HTMLElement>('.question-heading h1, .result-card h1');heading?.focus({preventScroll:true});},[round?.index,round?.done]);
   useEffect(()=>{if(!round)document.querySelector<HTMLElement>('.app-main h1')?.focus({preventScroll:true});},[page]);
   async function persist(next:Profile[]){await saveProfiles(next);setProfiles(next);}
   function speak(source:string|string[]){
@@ -82,12 +85,24 @@ function App(){
     }
   }
   async function advance(){
-    if(!round||busy||!profile||round.selected!==round.questions[round.index].answer)return;
+    if(!round||busy||advancing.current||!profile||round.selected!==round.questions[round.index].answer)return;
+    advancing.current=true;setAdvanceError('');
     audioRef.current?.pause();
-    if(round.index<round.questions.length-1){setRound({...round,index:round.index+1,selected:null,hint:false,helped:false});return;}
-    if(finishGuard.current)return;finishGuard.current=true;setBusy(true);
-    try{await persist(profiles.map(p=>p.id===profile.id?reward(p,round.activity.id):p));setRound({...round,done:true,saved:true});trackAnalytics('round-completed');navigator.storage?.persist?.().catch(()=>{});}
-    catch{finishGuard.current=false;setMessage('Opslaan lukte niet. Je kunt het met de knop hieronder opnieuw proberen.');}finally{setBusy(false);}
+    const last=round.index===round.questions.length-1;
+    try{
+      if(last){
+        if(finishGuard.current)return;
+        finishGuard.current=true;setBusy(true);
+        await persist(profiles.map(p=>p.id===profile.id?reward(p,round.activity.id):p));
+      }
+      setLeaving(true);
+      if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)await new Promise(resolve=>setTimeout(resolve,180));
+      // A navigation during the animation must not reopen an abandoned round.
+      setRound(current=>current!==round?current:last?{...round,done:true,saved:true}:{...round,index:round.index+1,selected:null,hint:false,helped:false});
+      window.scrollTo({top:0,behavior:'instant'});
+      if(last){trackAnalytics('round-completed');navigator.storage?.persist?.().catch(()=>{});}
+    }catch{finishGuard.current=false;setAdvanceError('Bewaren lukte even niet. Probeer het nog eens.');}
+    finally{setLeaving(false);setBusy(false);advancing.current=false;}
   }
   async function addProfile(event:React.FormEvent){
     event.preventDefault();if(!loaded||busy)return;if(!name.trim()){setFormError('Hoe heet deze ontdekker?');return;}
@@ -124,7 +139,7 @@ function App(){
         <div className="result-actions"><button className="primary-button" onClick={()=>{setRound(null);setPage('island');}}>Bekijk mijn eiland <ArrowRight size={18}/></button><button className="text-button" onClick={()=>start(round.activity,round.difficulty)}><RotateCcw size={17}/>Nog een rondje</button></div>
       </section>:<>
         <div className="round-progress"><span aria-hidden="true">✦</span><span>{round.index+1} van {round.questions.length}</span><div><i style={{width:`${round.index/round.questions.length*100}%`}}/></div></div>
-        <section className={`question-card ${round.activity.color} ${round.questions[round.index].rhyme?'rhyme-question':''}`} key={round.index}>
+        <section className={`question-card question-motion ${leaving?'question-leaving':''} ${round.activity.color} ${round.questions[round.index].rhyme?'rhyme-question':''}`} key={round.index} inert={leaving}>
           <span className="question-number">OPDRACHT {round.index+1}</span>
           {round.questions[round.index].passage&&<div className="passage"><BookOpen size={23}/><p>{round.questions[round.index].passage}</p></div>}
           <div className="question-heading"><h1 tabIndex={-1}>{round.questions[round.index].prompt}</h1>{(round.questions[round.index].audio||round.questions[round.index].audioSequence)&&<button className="listen-button" aria-label="Luister naar de opdracht" onClick={()=>speak(round.questions[round.index].audioSequence??round.questions[round.index].audio!)}><Volume2 size={23}/></button>}</div>
@@ -132,8 +147,9 @@ function App(){
           {round.questions[round.index].visual&&<div className={`counting-objects layout-${round.questions[round.index].visualLayout??'rows'}`}>{Array.from(round.questions[round.index].visual!).filter(char=>char!=='\ufe0f').map((char,i)=><button key={i} aria-label={`Voorwerp ${i+1}`} onClick={event=>event.currentTarget.classList.toggle('counted')}><Picture symbol={char}/></button>)}</div>}
           {round.questions[round.index].diagram&&<QuestionVisual diagram={round.questions[round.index].diagram!}/>}
           <QuestionAnswers question={round.questions[round.index]} young={currentGroup<=3} selected={round.selected} onAnswer={answer} onSpeak={speak}/>
-          <div className="feedback" aria-live="polite">{round.selected===round.questions[round.index].answer?<div className="success-feedback"><span><Check size={21}/></span><div><strong>{round.helped?'Gelukt! Goed doorgezet.':'Ja, helemaal goed!'}</strong></div><button className="primary-button" onClick={()=>void advance()} disabled={busy||updating}>{busy?'Even bewaren…':round.index===round.questions.length-1?'Rondje afronden':'Volgende'}<ArrowRight size={18}/></button></div>:round.hint?<div className="hint-feedback"><Leaf size={23}/><p><strong>{round.selected?'Probeer het nog eens. ':'Een kleine tip: '}</strong>{round.questions[round.index].hint}</p>{(round.questions[round.index].audio||round.questions[round.index].audioSequence)&&<button className="icon-button" aria-label="Luister naar de hint" onClick={()=>speak(round.questions[round.index].hintAudio??`/audio/hint-${round.questions[round.index].id}.m4a`)}><Volume2 size={20}/></button>}</div>:<button className="hint-button" onClick={()=>setRound({...round,hint:true,helped:true})}><CircleHelp size={18}/> Een kleine hint</button>}</div>
+          {round.selected!==round.questions[round.index].answer&&<div className="feedback" aria-live="polite">{round.hint?<div className="hint-feedback"><Leaf size={23}/><p><strong>{round.selected?'Probeer het nog eens. ':'Een kleine tip: '}</strong>{round.questions[round.index].hint}</p>{(round.questions[round.index].audio||round.questions[round.index].audioSequence)&&<button className="icon-button" aria-label="Luister naar de hint" onClick={()=>speak(round.questions[round.index].hintAudio??`/audio/hint-${round.questions[round.index].id}.m4a`)}><Volume2 size={20}/></button>}</div>:<button className="hint-button" onClick={()=>setRound({...round,hint:true,helped:true})}><CircleHelp size={18}/> Een kleine hint</button>}</div>}
         </section>
+        {round.selected===round.questions[round.index].answer&&!leaving&&<AnswerCelebration key={`celebration-${round.index}`} helped={round.helped} index={round.index} total={round.questions.length} busy={busy||updating} error={advanceError} onNext={()=>void advance()}/>}
       </>}
     </div>:page==='island'?<IslandHome profile={profile} loaded={loaded} disabled={updating||busy} onLessons={()=>navigate('lessons')} onTreasures={()=>navigate('treasures')} onProfile={()=>setDialog('profiles')}/>:page==='lessons'?<LessonsPage group={currentGroup} disabled={!loaded||updating||busy} onChoose={chooseActivity}/>:<TreasuresPage rounds={rounds} onLessons={()=>navigate('lessons')}/>}
     </main>
