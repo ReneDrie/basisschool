@@ -84,6 +84,13 @@ html{background:#e7f4f4}body{color:var(--app-ink)}.app-shell{min-height:100dvh;b
 
 /* Pairs stay visible; memory cards wait for the child's next turn. */
 .matching-game{max-width:660px;margin:0 auto}
+.match-instruction{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 9px;margin:0 0 16px;text-align:center;font-size:18px;font-weight:700;color:#42697a}
+.match-instruction span{flex-basis:100%;font-size:14px;font-weight:500}
+.mode-pairs .match-card{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+.mode-pairs .match-card.is-dragging{opacity:.35;cursor:grabbing}
+.mode-pairs .match-card.is-drop-ready{border-style:dashed;border-color:#86b5bf}
+.mode-pairs .match-card.is-drop-target{border-style:solid;border-color:#318f9b;background:#e6f6f2;box-shadow:0 0 0 4px #318f9b30;transform:scale(1.03)}
+.match-drag-preview{position:fixed;z-index:1000;pointer-events:none;width:150px;min-height:100px;transform:translate(-50%,-65%) rotate(-4deg);box-shadow:0 12px 24px #294c6040;border-color:#318f9b;opacity:.92}
 .match-progress{display:flex;justify-content:center;align-items:center;gap:14px;margin:0 0 18px;color:#42697a}
 .match-progress>div{display:flex;gap:8px}.match-progress>div>span{display:grid;place-items:center;width:27px;height:27px;border:2px solid #b5cbd0;border-radius:50%;background:#ffffff7d}
 .match-progress>div>span.found{background:#d3ecd3;border-color:#8cb69c;color:#44715b}.match-progress strong{font-size:17px}
