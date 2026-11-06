@@ -13,6 +13,8 @@ function Face({face}:{face:MatchFace}){
   return <QuestionVisual diagram={face.diagram}/>;
 }
 
+type DragGeometry={width:number;height:number;offsetX:number;offsetY:number};
+
 export function MatchingGame({task,correct,onAnswer}:{task:MatchingTask;correct:boolean;onAnswer:(value:string)=>void}){
   const [cards]=useState(()=>{
     const all=matchingCards(task);
@@ -21,9 +23,9 @@ export function MatchingGame({task,correct,onAnswer}:{task:MatchingTask;correct:
     return left.flatMap((c,i)=>[c,right[i]]);
   });
   const [selected,setSelected]=useState<string[]>([]),[found,setFound]=useState<string[]>([]),[mismatch,setMismatch]=useState(false),[announcement,setAnnouncement]=useState('');
-  const gesture=useRef<{card:MatchCard;pointerId:number;x:number;y:number;moving:boolean}|null>(null);
+  const gesture=useRef<DragGeometry&{card:MatchCard;pointerId:number;x:number;y:number;moving:boolean}|null>(null);
   const suppressClick=useRef(false);
-  const [drag,setDrag]=useState<{card:MatchCard;x:number;y:number;target?:string}|null>(null);
+  const [drag,setDrag]=useState<DragGeometry&{card:MatchCard;x:number;y:number;target?:string}|null>(null);
   function connect(first:MatchCard,card:MatchCard){
     if(matches(first,card)){
       const next=[...found,card.pairId];setFound(next);setSelected([]);setAnnouncement(`Paar gevonden. ${next.length} van ${task.pairs.length} klaar.`);
@@ -54,7 +56,8 @@ export function MatchingGame({task,correct,onAnswer}:{task:MatchingTask;correct:
   function startDrag(event:PointerEvent<HTMLButtonElement>,card:MatchCard){
     if(task.mode!=='pairs'||correct||mismatch||found.includes(card.pairId)||!event.isPrimary||event.button!==0||gesture.current)return;
     suppressClick.current=false;
-    gesture.current={card,pointerId:event.pointerId,x:event.clientX,y:event.clientY,moving:false};
+    const bounds=event.currentTarget.getBoundingClientRect();
+    gesture.current={card,pointerId:event.pointerId,x:event.clientX,y:event.clientY,moving:false,width:bounds.width,height:bounds.height,offsetX:event.clientX-bounds.left,offsetY:event.clientY-bounds.top};
     event.currentTarget.setPointerCapture(event.pointerId);
   }
   function moveDrag(event:PointerEvent<HTMLButtonElement>){
@@ -63,7 +66,7 @@ export function MatchingGame({task,correct,onAnswer}:{task:MatchingTask;correct:
     if(!current.moving&&Math.hypot(event.clientX-current.x,event.clientY-current.y)<8)return;
     if(!current.moving){setSelected([]);setAnnouncement('Sleep naar een kaart aan de andere kant.');}
     current.moving=true;suppressClick.current=true;
-    setDrag({card:current.card,x:event.clientX,y:event.clientY,target:dropTarget(event.clientX,event.clientY,current.card)?.id});
+    setDrag({...current,x:event.clientX,y:event.clientY,target:dropTarget(event.clientX,event.clientY,current.card)?.id});
   }
   function endDrag(event:PointerEvent<HTMLButtonElement>,cancelled=false){
     const current=gesture.current;
@@ -85,7 +88,7 @@ export function MatchingGame({task,correct,onAnswer}:{task:MatchingTask;correct:
         {paired&&<Check className="match-card-check" size={21} aria-hidden="true"/>}
       </button>;
     })}</div>
-    {drag&&createPortal(<div className="match-card match-drag-preview" aria-hidden="true" style={{left:drag.x,top:drag.y}}><Face face={drag.card.face}/></div>,document.body)}
+    {drag&&createPortal(<div className="match-card match-drag-preview" aria-hidden="true" style={{left:drag.x-drag.offsetX,top:drag.y-drag.offsetY,width:drag.width,height:drag.height,transformOrigin:`${drag.offsetX}px ${drag.offsetY}px`}}><Face face={drag.card.face}/></div>,document.body)}
     {mismatch&&task.mode==='pairs'&&<button type="button" className="secondary-button match-retry" onClick={()=>{setSelected([]);setMismatch(false);setAnnouncement('Kies twee andere kaarten.');}}><RotateCcw size={19}/>Nog eens</button>}
     <span className="sr-only" role="status">{announcement}</span>
   </div>;
