@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { analyticsDashboard, startAnalytics } from '../src/analytics.ts';
+import { activities } from '../src/learning/catalog.ts';
+import { GROUPS } from '../src/learning/model.ts';
 
 function setup({ online = true, standalone = false, safari = false, search = '', hostname = 'ontdekkers.example', dnt = '0' } = {}) {
   const browser = Object.assign(new EventTarget(), {
@@ -105,4 +107,52 @@ test('An unavailable analytics script can retry and never blocks playing', () =>
   fixture.loaded();
   fixture.browser.goatcounter.count = () => { throw new Error('Analytics unavailable'); };
   assert.doesNotThrow(() => track('round-completed'));
+});
+
+test('Game starts and completions provide separate game, year and combined counts', () => {
+  const fixture = setup();
+  const track = fixture.start();
+  const game = {skill: 'winkel', group: 4, name: 'Private child', answer: 'secret', score: 7} as const;
+  track('game-started', game);
+  fixture.loaded();
+  track('round-completed', game);
+  assert.deepEqual(fixture.counts.map(c => c.path), [
+    '/', 'game-started/game/winkel', 'game-started/group/4', 'game-started/group/4/game/winkel',
+    'round-completed', 'round-completed/game/winkel', 'round-completed/group/4', 'round-completed/group/4/game/winkel',
+  ]);
+  assert.equal(fixture.counts[3].title, 'Gestart · De Eilandwinkel · Groep 4');
+  assert.doesNotMatch(JSON.stringify(fixture.counts), /Private|secret|score|answer|name/);
+  assert.ok(fixture.counts.slice(1).every(c => c.event && c.no_session && c.referrer === ''));
+});
+
+test('Every offered game and year can be counted, with distinct matching, memory and mixed games', () => {
+  const fixture = setup();
+  const track = fixture.start();
+  fixture.loaded();
+  for (const group of GROUPS) for (const activity of activities(group)) {
+    const before = fixture.counts.length;
+    track('game-started', {skill:activity.id, group, difficulty:1});
+    assert.equal(fixture.counts.length - before, 3);
+    assert.equal(fixture.counts.at(-1).path, `game-started/group/${group}/game/${activity.id}`);
+  }
+  track('game-started', {skill:'koppelen', group:3, difficulty:2});
+  assert.equal(fixture.counts.at(-1).path, 'game-started/group/3/game/memory');
+  track('game-started', {skill:'koppelen', group:3});
+  assert.equal(fixture.counts.at(-1).path, 'game-started/group/3/game/koppelplein-mix');
+});
+
+test('Invalid game contexts and offline games do not leak arbitrary caller data', () => {
+  const fixture = setup();
+  const track = fixture.start();
+  fixture.loaded();
+  for (const context of [{skill:'Private child', group:4}, {skill:'winkel', group:99}, {skill:'breuken', group:2}]) {
+    track('game-started', context as any);
+  }
+  track('game-started');
+  fixture.browser.navigator.onLine = false;
+  track('game-started', {skill:'winkel', group:4});
+  track('round-completed', {skill:'winkel', group:4});
+  fixture.browser.navigator.onLine = true;
+  fixture.browser.dispatchEvent(new Event('online'));
+  assert.equal(fixture.counts.length, 1);
 });

@@ -28,7 +28,11 @@ Voor een andere GoatCounter-site kun je in Vercel bij **Settings → Environment
 | `/` — Kleine Ontdekkers | De app is geladen met internet, of kwam tijdens dezelfde opening weer online. GoatCounter toont bezoeken en een schatting van bezoekers. |
 | `home-screen-open` | De app is geladen vanaf het beginscherm, inclusief iPad/Safari. Dit telt openingen, geen unieke installaties. |
 | `app-installed` | De browser meldde een geslaagde installatie. Dit werkt alleen in browsers met `appinstalled`; Safari/iPad meldt deze gebeurtenis niet. |
-| `round-completed` | Een rondje is met internet afgerond en succesvol lokaal opgeslagen. Zonder namen, groep, onderwerp, antwoorden of scores. |
+| `round-completed` | Een rondje is met internet afgerond en succesvol lokaal opgeslagen. Zonder namen, antwoorden of scores; daarnaast zijn er uitsplitsingen per spel en groep. |
+
+Spelpopulariteit is vanaf deze versie zichtbaar als gebeurtenissen met `game-started` (gestarte rondjes) en `round-completed` (afgeronde rondjes). Per start of afronding zijn er drie uitsplitsingen: `/game/winkel` voor het spel over alle groepen, `/group/4` voor alle spellen in groep 4 en `/group/4/game/winkel` voor de combinatie. Filter bijvoorbeeld op `game-started/game/` om spellen te vergelijken, of op `game-started/group/4/game/` voor groep 4. Koppelen en Memory hebben afzonderlijke spelcodes (`koppelen` en `memory`). Gemengde Koppelplein-rondjes hebben de spelcode `koppelplein-mix`.
+
+Deze tellingen meten rondjes, geen unieke kinderen. De groep is de gekozen profielgroep, geen klasnaam of school. Tel de uitsplitsingen niet bij elkaar op: hetzelfde rondje staat in meerdere overzichten. Starts tellen pas nadat een rondje succesvol is voorbereid; afrondingen pas na het bewaren van de beloning. Oudere bezoeken en offline rondjes krijgen geen uitsplitsing achteraf.
 
 Tel de twee beginschermgebeurtenissen niet op als installatietotaal: dezelfde installatie kan later vaak geopend worden. Bestaande installaties worden zichtbaar zodra ze de bijgewerkte app openen. Het hervatten van een nog geopende app telt niet als een nieuwe opening.
 
