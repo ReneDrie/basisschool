@@ -11,7 +11,30 @@ npm ci
 npm run dev
 ```
 
-De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitten in de app. Een backend, API-sleutel en account zijn niet nodig.
+De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitten in de app. Voor spelen zijn een backend, API-sleutel en account niet nodig. Optionele gebruiksstatistieken gebruiken een GoatCounter-account.
+
+## Gebruiksstatistieken met GoatCounter
+
+De productiebuild is ingesteld op [renedrie.goatcounter.com](https://renedrie.goatcounter.com/). Een extra omgevingsvariabele of API-sleutel is niet nodig. Dit adres staat als publieke standaard in `src/main.tsx`.
+
+Het dashboard blijft voorlopig privé: alleen wie bij GoatCounter kan inloggen heeft toegang. Dit heeft geen invloed op het verzamelen van statistieken. Na publicatie van de nieuwe appbuild staat bij **Voor ouders → Gebruik van de app → Bekijk de statistieken** een link naar het dashboard; daar moet je inloggen.
+
+Een openbaar overzicht kan later door de zichtbaarheid in GoatCounter te wijzigen; daarvoor is geen nieuwe appbuild nodig. Laat individuele pageviews uitgeschakeld als je alleen totalen wilt. Aanvullende gegevens zoals locatie en schermgrootte kun je in de GoatCounter-site-instellingen uitschakelen.
+
+Voor een andere GoatCounter-site kun je in Vercel bij **Settings → Environment Variables** `VITE_GOATCOUNTER_URL=https://jouw-site.goatcounter.com` instellen. Gebruik het siteadres, zonder `/count`. Dit is een openbaar adres; zet hier nooit een API-sleutel in. Stel `VITE_GOATCOUNTER_URL` in op `off` om analytics uit te schakelen. Vite verwerkt deze instelling tijdens het bouwen, dus maak na een wijziging een nieuwe deployment.
+
+| Telling in GoatCounter | Betekenis |
+| --- | --- |
+| `/` — Kleine Ontdekkers | De app is geladen met internet, of kwam tijdens dezelfde opening weer online. GoatCounter toont bezoeken en een schatting van bezoekers. |
+| `home-screen-open` | De app is geladen vanaf het beginscherm, inclusief iPad/Safari. Dit telt openingen, geen unieke installaties. |
+| `app-installed` | De browser meldde een geslaagde installatie. Dit werkt alleen in browsers met `appinstalled`; Safari/iPad meldt deze gebeurtenis niet. |
+| `round-completed` | Een rondje is met internet afgerond en succesvol lokaal opgeslagen. Zonder namen, groep, onderwerp, antwoorden of scores. |
+
+Tel de twee beginschermgebeurtenissen niet op als installatietotaal: dezelfde installatie kan later vaak geopend worden. Bestaande installaties worden zichtbaar zodra ze de bijgewerkte app openen. Het hervatten van een nog geopende app telt niet als een nieuwe opening.
+
+Deze integratie gebruikt geen trackingcookies of blijvend apparaat-ID. Alleen vaste paginanamen en gebeurtenislabels worden verstuurd; URL-query's en verwijzende pagina's worden weggelaten. GoatCounter verwerkt voor bezoekersschattingen ook normale netwerkgegevens; zie het [privacybeleid](https://www.goatcounter.com/help/privacy) en de uitleg over [bezoekers en sessies](https://www.goatcounter.com/help/sessions). Bezoekersaantallen zijn geen exacte telling van personen: een gezin kan een apparaat delen en iemand kan meerdere apparaten gebruiken. Offline rondjes en installaties worden niet achteraf verstuurd. Een app die nog openstaat wanneer de verbinding terugkomt kan wel zijn eerste bezoek en beginschermopening melden. Blokkades van analytics of Do Not Track kunnen de telling verlagen.
+
+Analytics staat altijd uit in ontwikkeling, op localhost, bij Do Not Track en met `?test=1` (ook bij een productiepreview). Een storing bij GoatCounter blokkeert de app niet en het script is geen onderdeel van de offlinecache. Voor automatische browsercontroles blijft `?test=1` verplicht.
 
 ## Een app voor kinderen
 
