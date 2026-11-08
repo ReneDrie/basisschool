@@ -1,3 +1,5 @@
+import { SoundStudioGame } from './SoundStudioGame';
+import { BusGame } from './BusGame';
 import { StoryGame } from './StoryGame';
 import { BuildingGame } from './BuildingGame';
 import { ShopGame } from './ShopGame';
@@ -7,11 +9,15 @@ import { choiceAudioPath, choiceLabel, animalSymbol, type Question } from './con
 import { OpenAnswer } from './OpenAnswer';
 import { RhymeWord } from './RhymeWord';
 import { MatchingGame } from './MatchingGame';
+import { LanguageGame } from './LanguageGame';
 import { TrainGame } from './TrainGame';
 import { DetectiveGame } from './DetectiveGame';
 
-export function QuestionAnswers({question,young,selected,onAnswer,onSpeak}:{question:Question;young:boolean;selected:string|null;onAnswer:(value:string)=>void;onSpeak:(source:string|string[])=>void}){
+export function QuestionAnswers({question,young,selected,onAnswer,onSpeak,onHelp}:{question:Question;young:boolean;selected:string|null;onAnswer:(value:string)=>void;onSpeak:(source:string|string[])=>void;onHelp?:()=>void}){
   const correct=selected===question.answer;
+  if(question.soundStudio)return <SoundStudioGame key={question.id} task={question.soundStudio} correct={correct} selected={selected} onAnswer={onAnswer} onSpeak={onSpeak} onHelp={onHelp}/>;
+  if(question.bus)return <BusGame key={question.id} task={question.bus} correct={correct} selected={selected} onAnswer={onAnswer} onSpeak={onSpeak}/>;
+  if(question.language)return <LanguageGame key={question.id} task={question.language} correct={correct} onAnswer={onAnswer} onSpeak={onSpeak} onHelp={onHelp}/>;
   if(question.train)return <TrainGame key={question.id} task={question.train} correct={correct} onAnswer={onAnswer}/>;
   if(question.detective)return <DetectiveGame key={question.id} task={question.detective} correct={correct} selected={selected} onAnswer={onAnswer}/>;
   if(question.matching)return <MatchingGame key={question.id} task={question.matching} correct={correct} onAnswer={onAnswer}/>;

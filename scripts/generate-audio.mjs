@@ -28,6 +28,8 @@ try {
   for (const [index,[path, text]] of [...fragments].entries()) {
     if(index%shardCount!==shardIndex)continue;
     if(prefix&&!path.startsWith(`/audio/${prefix}`))continue;
+    // Phonemes require IPA synthesis; plain speech would produce letter names.
+    if(path.startsWith('/audio/klank-phoneme-'))continue;
     const target=new URL(path.slice(1),publicDirectory);
     if(existsSync(target)&&!process.argv.includes('--force'))continue;
     const intermediate=join(temporary,'speech.aiff');

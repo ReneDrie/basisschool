@@ -9,7 +9,7 @@ export function shuffle<T>(items: readonly T[]): T[] {
 // A compact semantic key ignores answer order and choice/open presentation.
 export function questionKey(q: Question): string {
   // Append interactive content only when present, preserving existing saved keys.
-  const value=[q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[]),...(q.building?[q.building]:[]),...(q.story?[q.story]:[]),...(q.visualLayout?[q.visualLayout]:[]),...(q.matching?[q.matching]:[]),...(q.train?[q.train]:[]),...(q.detective?[q.detective]:[])];
+  const value=[q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[]),...(q.building?[q.building]:[]),...(q.story?[q.story]:[]),...(q.visualLayout?[q.visualLayout]:[]),...(q.matching?[q.matching]:[]),...(q.train?[q.train]:[]),...(q.detective?[q.detective]:[]),...(q.language?[q.language]:[]),...(q.soundStudio?[q.soundStudio]:[]),...(q.bus?[q.bus]:[])];
   return hashKey(value);
 }
 export function buildRound(bank: Question[], difficulty?: Difficulty, recent: readonly string[] = [], recentConcepts:readonly string[]=[]): Question[] {

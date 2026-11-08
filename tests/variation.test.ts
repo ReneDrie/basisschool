@@ -47,7 +47,7 @@ test('Every generated candidate has correct answers, bounded numbers, unambiguou
     const bank=questionBank(group,a.id),generated=variantBank(bank);
     assert.equal(new Set(generated.map(questionKey)).size,generated.length,`${group}: ${a.id}`);
     for(const q of generated){
-      if(!q.shop&&!q.building&&!q.story&&!q.matching&&!q.train&&!q.detective){assert.equal(new Set(q.choices).size,4,q.id);assert.ok(q.choices.includes(q.answer),q.id);}
+      if(!q.shop&&!q.building&&!q.story&&!q.matching&&!q.train&&!q.detective&&!q.language&&!q.soundStudio&&!q.bus){assert.equal(new Set(q.choices).size,4,q.id);assert.ok(q.choices.includes(q.answer),q.id);}
       if(q.missing){const {a:x,b:y,result,operation}=q.missing;assert.equal(result,operation==='+'?x+y:operation==='−'?x-y:x*y);assert.equal(Number(q.answer),y);assert.ok(q.choices.includes(String(y)));}
       if(!q.missing&&(a.id==='rekenen'&&group>2||a.id==='tafels')){
         const m=q.prompt.match(/(\d+) ([+−×:]) (\d+)/)!;assert.ok(m);

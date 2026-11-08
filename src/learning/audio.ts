@@ -1,3 +1,5 @@
+import { PHONEMES, phonemeAudio } from './sound-studio.ts';
+import { busStopAudio, busStopText } from './bus.ts';
 import { patternPalettes, shapeTargets } from './variation-assets.ts';
 import type { Question } from './model.ts';
 
@@ -25,6 +27,12 @@ export function audioFragments(questions: Question[]): Map<string,string> {
     const prompt=question.matching?(question.matching.mode==='pairs'?'Zoek twee kaarten die bij elkaar horen. Maak alle vier de paren.':'Draai twee kaarten om. Zoek wat bij elkaar hoort. Maak alle vier de paren.'):question.prompt.startsWith('Hoeveel is ')?question.prompt.replaceAll('−','min').replaceAll('+','plus').replaceAll('×','keer').replaceAll(' : ',' gedeeld door '):question.prompt;
     fragments.set(question.audio,prompt);
     fragments.set(question.hintAudio??`/audio/hint-${question.id}.m4a`,question.hint);
+    if(question.bus)for(const stop of question.bus.stops)fragments.set(busStopAudio(stop),busStopText(stop));
+    if(question.soundStudio){
+      fragments.set(question.soundStudio.wordAudio,question.soundStudio.word);
+      for(const sound of question.soundStudio.sounds)fragments.set(phonemeAudio(sound),`/${PHONEMES[sound]}/`);
+    }
+    if(question.language)fragments.set(question.language.targetAudio,question.language.target);
     if(question.story){
       for(const step of question.story.steps)fragments.set(step.audio,step.text);
       if(question.story.check){

@@ -13,7 +13,7 @@ test('Every advertised topic has a complete bank with unique IDs, answers and le
     for(const question of questions){
       assert.equal(question.group,group);assert.equal(question.topic,activity.id);
       assert.ok(question.learningGoal.length>10);assert.ok([1,2].includes(question.difficulty));
-      if(!question.shop&&!question.building&&!question.story&&!question.matching&&!question.train&&!question.detective){
+      if(!question.shop&&!question.building&&!question.story&&!question.matching&&!question.train&&!question.detective&&!question.language&&!question.soundStudio&&!question.bus){
         assert.equal(question.choices.length,4,question.id);
         assert.equal(new Set(question.choices).size,4,question.id);
         assert.equal(question.choices.filter(choice=>choice===question.answer).length,1,question.id);
@@ -109,7 +109,7 @@ test('Patterns have a consistent visible cycle and new banks do not repeat the s
   for(const group of GROUPS)for(const activity of activities(group)){
     const bank=questionBank(group,activity.id);
     if(group!==3&&!['vergelijken','patronen','klok','geld','breuken','grafieken'].includes(activity.id))continue;
-    const signatures=bank.map(q=>JSON.stringify([q.prompt,q.diagram,q.passage,q.choices,q.matching,q.train,q.detective]));
+    const signatures=bank.map(q=>JSON.stringify([q.prompt,q.diagram,q.passage,q.choices,q.matching,q.train,q.detective,q.language,q.soundStudio,q.bus]));
     assert.equal(new Set(signatures).size,bank.length,`${group}: ${activity.id}`);
     for(const q of bank){
       const d=q.diagram;if(d?.kind!=='pattern')continue;

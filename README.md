@@ -266,3 +266,44 @@ De eigen appiconen zijn reproduceerbaar met `python3 scripts/generate-icons.py` 
 | 5 | Getallen tot 1.000, daarna breuken | Een afwijkende breuk / een afwijkende lengtemaat |
 
 Beide spellen hebben eigen oefengeschiedenis, twee niveaus per groep, de gebruikelijke beloningen en 24 gedeelde lokale opdracht- en hintfragmenten. Bestaande profielen en reservekopieën blijven bruikbaar. De inhoud, beoordelingsregels, verwisselen van treinkaartjes, spreiding van opdrachten en reservekopieën worden gecontroleerd in `tests/playful.test.ts`.
+
+## Woordfabriek en Zinnenbouwer
+
+Onder **Lessen → Taal & lezen** staat **Woordfabriek** voor groep 2–5 en **Zinnenbouwer** vanaf groep 3. Beide spellen ondersteunen slepen met muis of vinger, twee keer tikken en het toetsenbord. Kaartjes kunnen worden verwisseld, vervangen of teruggelegd. Herhaalde letters zijn uitwisselbaar: de beoordeling gebruikt het opgebouwde woord, niet de identiteit van een letterkaartje.
+
+| Groep | Woordfabriek, stap 1 / stap 2 | Zinnenbouwer, stap 1 / stap 2 |
+| --- | --- | --- |
+| 2 | Korte woorden nabouwen / woorden met vier letters, met plaatje en voorbeeld | — |
+| 3 | Woorden bij plaatjes / langere woorden en medeklinkercombinaties | Korte zinnen / langere zinnen over dieren |
+| 4 | Meervouden bouwen / langere woorden bij plaatjes | Zinnen met beschrijvingen / zinnen met plaatsen en vragen |
+| 5 | Samengestelde woorden / moeilijkere spelling bij omschrijvingen | Langere zinnen / bijzinnen met komma's |
+
+De knop **Luister naar het woord/de zin** speelt het doelwoord of de voorbeeldzin af. Bij Zinnenbouwer bouwen kinderen de gesproken zin na; dat maakt de bedoelde volgorde duidelijk, ook wanneer met dezelfde woorden andere zinnen mogelijk zijn. Een voorbeeld laten zien geldt vanaf groep 3 als hulp. Groep 2 krijgt het voorbeeld standaard als onderdeel van de oefening in letterherkenning. Het model verdwijnt bij de volgende opdracht. Hoofdletters staan op de woordkaartjes; punten, komma's en vraagtekens zijn losse kaartjes.
+
+Opdrachten, hints, doelwoorden en zinnen zijn lokaal ingesproken en worden meegenomen in de offlinecache. De spellen gebruiken dezelfde sterren, oefengeschiedenis, felicitatie en vraagovergangen als de rest van de app. Bestaande reservekopieën blijven bruikbaar. In `tests/language.test.ts` staan controles voor woordopbouw, herhaalde letters, leestekens, niveaus, variatie, beloningen en lokale audio. De Getallentrein deelt de sleepbediening en is na het hergebruik opnieuw in de browser gecontroleerd.
+
+## Klankstudio en Rekenbus
+
+**Lessen → Taal & lezen → Klankstudio** is beschikbaar in groep 2 en 3. Kinderen luisteren naar een reeks losse spraakklanken of herhalen één klank met een eigen luisterknop. Daarna kiezen ze het bijbehorende plaatje. Het hele woord wordt uitgesproken als bevestiging bij een goed antwoord. De klanken zichtbaar maken telt als hulp; bij een nieuwe opdracht verdwijnen die weer.
+
+**Lessen → Rekenen → Rekenbus** is beschikbaar in groep 2–4. Bij elke halte verplaatsen kinderen passagiers tussen de bus en het perron, met slepen, tikken of het toetsenbord. Verplaatsingen kunnen ongedaan worden gemaakt. Bij te veel uitstappers kunnen ze passagiers terugzetten; de volgende halte gaat pas open wanneer het gevraagde aantal is verplaatst. Na de laatste halte kiezen kinderen hoeveel passagiers nog in de bus zitten. Een hele rit kan opnieuw.
+
+| Groep | Klankstudio, stap 1 / stap 2 | Rekenbus, stap 1 / stap 2 |
+| --- | --- | --- |
+| 2 | Korte woorden / woorden met lange klinkers en tweetekenklanken | Instappen tot 5 / in- en uitstappen tot 10 |
+| 3 | Lange klinkers en tweetekenklanken / medeklinkercombinaties | Eén halte tot 10 / twee haltes tot 20 |
+| 4 | — | Twee haltes tot 20 / drie haltes tot 30 |
+
+Beide spellen hebben twee niveaus, lokale audio, eigen oefengeschiedenis en dezelfde sterren en felicitaties als de andere spellen. De bestaande profielen en reservekopieën blijven bruikbaar. `tests/sound-bus.test.ts` controleert de klankreeksen, plaatjes, rekenritten, over- en ondergrenzen, omkeerbare passagiersverplaatsingen, variatie, beloningen en audiobestanden.
+
+### Losse klanken maken
+
+De spraakklanken worden apart gegenereerd; gewone tekst-naar-spraak zou bijvoorbeeld de letternaam ‘em’ kunnen uitspreken in plaats van de klank /m/. De auteurstool gebruikt [IPA-uitspraak met AVSpeechUtterance](https://developer.apple.com/documentation/avfaudio/avspeechutterance/init(attributedstring:)) en schrijft alleen bestanden. De app zelf gebruikt geen spraakdienst, microfoon of native macOS-code.
+
+```sh
+node --experimental-strip-types scripts/generate-phonemes.mjs
+node --experimental-strip-types scripts/generate-audio.mjs --prefix=klank- --encoder=afconvert
+node --experimental-strip-types scripts/generate-audio.mjs --prefix=rekenbus- --encoder=afconvert
+```
+
+De eerste opdracht vereist macOS met Command Line Tools en de Nederlandse stemmen Xander en Ellen. De fonetische notaties staan in `src/learning/sound-studio.ts`. De auteurstool controleert op stil signaal, voegt korte pauzes toe en brengt de piekniveaus op gelijke hoogte. Voor de korte u gebruikt Xander een engine-specifieke uitspraakalias; die is vergeleken met de klinker in natuurlijk uitgesproken ‘mus’, ‘bus’ en ‘put’. De canonieke IPA-notatie in de inhoud blijft /ʏ/. Gebruik `--force` om bestaande klankbestanden opnieuw te maken. De gewone audiogenerator slaat deze fonetische bestanden bewust over.

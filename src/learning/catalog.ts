@@ -6,6 +6,10 @@ export const worlds: { id: World; title: string; symbol: string }[] = [
   { id: 'ontdekken', title: 'Kijken & ontdekken', symbol: '✦' }
 ];
 const catalog: Record<Skill, Activity> = {
+  klankstudio:{id:'klankstudio',title:'De Klankstudio',subtitle:'Plak de klanken aan elkaar',tag:'Luisteren & klanken',color:'purple',symbol:'sound-studio',world:'taal',learningGoal:'Losse spraakklanken samenvoegen en het bijbehorende woord herkennen.'},
+  rekenbus:{id:'rekenbus',title:'De Rekenbus',subtitle:'Stap in voor een som',tag:'Optellen & aftrekken',color:'peach',symbol:'number-bus',world:'rekenen',learningGoal:'Optellen en aftrekken uitvoeren door passagiers te laten in- en uitstappen.'},
+  woordfabriek:{id:'woordfabriek',title:'De Woordfabriek',subtitle:'Bouw woorden met letters en woorddelen',tag:'Woorden bouwen',color:'purple',symbol:'word-factory',world:'taal',learningGoal:'Letters en lettergroepen herkennen en samenvoegen tot een correct woord.'},
+  zinnenbouwer:{id:'zinnenbouwer',title:'De Zinnenbouwer',subtitle:'Geef elk woord een plekje',tag:'Woorden & zinnen',color:'blue',symbol:'sentence-builder',world:'taal',learningGoal:'Gesproken zinnen onthouden en woorden en leestekens in de juiste volgorde zetten.'},
   getallentrein:{id:'getallentrein',title:'De Getallentrein',subtitle:'Zet de wagons in de goede volgorde',tag:'Ordenen & vergelijken',color:'peach',symbol:'train',world:'rekenen',learningGoal:'Getallen en breuken vergelijken en ordenen.'},
   speurneus:{id:'speurneus',title:'De Speurneus',subtitle:'Welke hoort er niet bij?',tag:'Speuren & logisch denken',color:'green',symbol:'detective',world:'ontdekken',learningGoal:'Eigenschappen vergelijken en een afwijkende kaart herkennen.'},
   koppelen:{id:'koppelen',title:'Het Koppelplein',subtitle:'Zoek wat bij elkaar hoort',tag:'Koppelen & memory',color:'blue',symbol:'matching',world:'ontdekken',learningGoal:'Verbanden herkennen, passende kaarten koppelen en paren onthouden.'},
@@ -32,7 +36,7 @@ const groupTopics: Record<Group, Skill[]> = {
   5: ['rekenen','taal','tafels','lezen','breuken','grafieken','koppelen']
 };
 export function activities(group: Group): Activity[] {
-  const ids:Skill[]=[...groupTopics[group],'getallentrein','speurneus'];
+  const ids:Skill[]=[...groupTopics[group],'getallentrein','speurneus','woordfabriek',...(group>=3?['zinnenbouwer' as const]:[]),...(group<=3?['klankstudio' as const]:[]),...(group<=4?['rekenbus' as const]:[])];
   return ids.map(id => {
     const activity = { ...catalog[id] };
     if (group===2 && id==='rekenen') Object.assign(activity,{ subtitle:'Tel je met ons mee?', tag:'Tellen & getallen', learningGoal:'Hoeveelheden tot en met tien tellen.' });

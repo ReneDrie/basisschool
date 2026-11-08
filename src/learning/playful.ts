@@ -1,6 +1,7 @@
 import type { AuthoredQuestion, Group } from './model.ts';
 import type { MatchFace } from './matching.ts';
 import { hashKey } from './repetition.ts';
+import { placeBoardTile } from './tiles.ts';
 
 export type TrainItem={id:string;label:string;numerator:number;denominator:number};
 export type TrainTask={items:TrainItem[];descending:boolean};
@@ -94,11 +95,5 @@ export function detectiveBank(group:Group):AuthoredQuestion[]{
 // Moving a placed card onto another wagon swaps them. A card from the tray
 // displaces the old card back to the tray, so every card always has one home.
 export function placeTrainItem(task:TrainTask,slots:readonly (string|null)[],id:string,target:number|null):(string|null)[]{
-  if(!task.items.some(item=>item.id===id)||slots.length!==task.items.length||(target!==null&&(!Number.isInteger(target)||target<0||target>=slots.length)))return [...slots];
-  const next=[...slots],source=next.indexOf(id);
-  if(source===target)return next;
-  const displaced=target===null?null:next[target];
-  if(source>=0)next[source]=displaced;
-  if(target!==null)next[target]=id;
-  return next;
+  return placeBoardTile(task.items,slots,id,target);
 }
