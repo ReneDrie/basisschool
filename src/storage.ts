@@ -1,6 +1,7 @@
 import { GROUPS, SKILLS, questionKey, repetitionKey, type Question, type Group, type Skill } from './content.ts';
+import { PRACTICE_WINDOW, type PracticeHistory, type PracticeResult } from './learning/adaptive.ts';
 export type RecentQuestions = Partial<Record<`${Group}:${Skill}`, string[]>>;
-export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions };
+export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
 let dbPromise:Promise<IDBDatabase>|undefined;
@@ -53,7 +54,20 @@ export function validateProfiles(value:unknown):Profile[]{
       if(total>HISTORY_PER_PROFILE)throw new Error('Ongeldige oefengeschiedenis.');
       histories[field]=history;
     }
-    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories};
+    let practice:PracticeHistory|undefined;
+    if(item.practice!==undefined){
+      if(!item.practice||typeof item.practice!=='object'||Array.isArray(item.practice))throw new Error('Ongeldige oefenresultaten.');
+      practice={};
+      for(const [key,results] of Object.entries(item.practice)){
+        const [group,skill,...extra]=key.split(':');
+        if(extra.length||!GROUPS.some(g=>String(g)===group)||!SKILLS.includes(skill as Skill)||!Array.isArray(results)||results.length>PRACTICE_WINDOW)throw new Error('Ongeldige oefenresultaten.');
+        practice[key as keyof PracticeHistory]=results.map(result=>{
+          if(!result||typeof result!=='object'||![1,2].includes(result.level)||typeof result.independent!=='boolean'||(result.challenge!==undefined&&typeof result.challenge!=='boolean'))throw new Error('Ongeldige oefenresultaten.');
+          return {level:result.level,independent:result.independent,...(result.challenge!==undefined?{challenge:result.challenge}:{})};
+        });
+      }
+    }
+    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{})};
   });
 }
 export function parseBackup(text:string):Profile[]{
@@ -79,4 +93,9 @@ function appendHistory(previous:RecentQuestions|undefined,questions:Question[],k
 }
 export function rememberQuestions(profile:Profile, questions:Question[]):Profile {
   return {...profile,recentQuestions:appendHistory(profile.recentQuestions,questions,questionKey),recentConcepts:appendHistory(profile.recentConcepts,questions,repetitionKey)};
+}
+
+export function recordPractice(profile:Profile,group:Group,skill:Skill,results:readonly PracticeResult[]):Profile{
+  const key=`${group}:${skill}` as const;
+  return {...profile,practice:{...profile.practice,[key]:[...(profile.practice?.[key]??[]),...results].slice(-PRACTICE_WINDOW)}};
 }

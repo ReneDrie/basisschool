@@ -27,6 +27,7 @@ export type Question = {
   topic: Skill;
   learningGoal: string;
   difficulty: Difficulty;
+  challengeGroup?: Group;
   prompt: string;
   choices: string[];
   answer: string;

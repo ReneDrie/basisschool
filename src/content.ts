@@ -38,8 +38,13 @@ export function questionBank(group: Group, skill: Skill): Question[] {
   const keys=new Set<string>(),bank=questions.filter(q=>{const key=questionKey(q);if(keys.has(key))return false;keys.add(key);return true;});
   bankCache.set(cacheKey,bank);return bank;
 }
-export function makeRound(group: Group, skill: Skill, difficulty?: Difficulty, recent: readonly string[] = [], recentConcepts:readonly string[]=[]): Question[] {
-  const bank=variantBank(questionBank(group,skill));
+export function makeRound(group: Group, skill: Skill, difficulty?: Difficulty, recent: readonly string[] = [], recentConcepts:readonly string[]=[],options?:{hardCount:number;magnitudeLimit?:number}): Question[] {
+  let bank=variantBank(questionBank(group,skill));
+  if(options?.magnitudeLimit){
+    const limit=options.magnitudeLimit;
+    const smaller=bank.filter(q=>Math.max(...[...(q.prompt.match(/\d+/g)??[]).map(Number),Number(q.answer)||0])<=limit);
+    if(smaller.length>=QUESTIONS_PER_ADVENTURE[group])bank=smaller;
+  }
   // Old backups contain exact keys only. Recover concepts where those questions
   // are still in the local pool, without resetting the child's saved history.
   if(recent.length&&!recentConcepts.length){
@@ -48,7 +53,7 @@ export function makeRound(group: Group, skill: Skill, difficulty?: Difficulty, r
     if(skill==='patronen')for(const q of bank)concepts.set(questionKey({...q,prompt:'Welke kleur komt op de lege plek?'}),repetitionKey(q));
     recentConcepts=recent.flatMap(key=>concepts.has(key)?[concepts.get(key)!]:[]);
   }
-  return buildRound(bank,difficulty,recent,recentConcepts);
+  return buildRound(bank,difficulty,recent,recentConcepts,options);
 }
 export function availableLevels(group: Group, skill: Skill): Difficulty[] {
   const bank=questionBank(group,skill);
