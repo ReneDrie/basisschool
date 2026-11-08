@@ -1,9 +1,9 @@
-import { useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
 import { shuffle } from './content';
 import { placeBoardTile, type BoardTile } from './learning/tiles';
 
 type Drag={item:BoardTile;pointerId:number;x:number;y:number;offsetX:number;offsetY:number;width:number;height:number;fontSize:string;moving:boolean};
-export function useTileBoard(source:readonly BoardTile[],correct:boolean,slotName:string){
+export function useTileBoard(source:readonly BoardTile[],correct:boolean,slotName:string,autoScroll=false){
   const [items]=useState(()=>shuffle(source));
   const [slots,setSlots]=useState<(string|null)[]>(()=>source.map(()=>null));
   const [selected,setSelected]=useState<string|null>(null),[announcement,setAnnouncement]=useState('');
@@ -33,9 +33,20 @@ export function useTileBoard(source:readonly BoardTile[],correct:boolean,slotNam
   function move(event:PointerEvent<HTMLButtonElement>){
     const current=gesture.current;if(!current||current.pointerId!==event.pointerId)return;
     if(!current.moving&&Math.hypot(event.clientX-current.x,event.clientY-current.y)<8)return;
-    current.moving=true;suppressClick.current=true;setSelected(null);
+    current.moving=true;current.x=event.clientX;current.y=event.clientY;suppressClick.current=true;setSelected(null);
     setDrag({...current,x:event.clientX,y:event.clientY});setHover(targetAt(event.clientX,event.clientY)??null);
   }
+  useEffect(()=>{
+    if(!autoScroll||!drag)return;
+    let frame=0;
+    function scroll(){
+      const current=gesture.current;if(!current?.moving)return;
+      const edge=64,y=current.y,delta=y<edge?-Math.min(10,(edge-y)/5):y>innerHeight-edge?Math.min(10,(y-innerHeight+edge)/5):0;
+      if(delta){window.scrollBy(0,delta);setHover(targetAt(current.x,current.y)??null);}
+      frame=requestAnimationFrame(scroll);
+    }
+    frame=requestAnimationFrame(scroll);return()=>cancelAnimationFrame(frame);
+  },[autoScroll,!!drag]);
   function end(event:PointerEvent<HTMLButtonElement>,cancelled=false){
     const current=gesture.current;if(!current||current.pointerId!==event.pointerId)return;
     gesture.current=null;setDrag(null);setHover(null);

@@ -242,7 +242,7 @@ Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg gro
 
 Naast de recente oefengeschiedenis blijft voortgang voorlopig een rondjeteller per onderwerp, ook als een profiel van groep verandert. Er wordt nog geen beheersing per groep of leerdoel afgeleid uit die tellers.
 
-Alle 1.253 luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
+Alle luisterfragmenten staan in `public/audio`. De fragmenten gebruiken Ellen, een Nederlandstalige vrouwenstem met een Vlaams accent, op 125 woorden per minuut. Elk bestand heeft 180 milliseconden aanloop en 320 milliseconden rust aan het einde; ook losse getallen en rekenwoorden krijgen zo ruimte. De goedgekeurde stem wordt tijdens het maken van de bestanden gebruikt: afspelen blijft volledig lokaal en offline. Nieuwe fragmenten worden op macOS gemaakt met de geïnstalleerde stem Ellen en FFmpeg:
 
 ```sh
 node --experimental-strip-types scripts/generate-audio.mjs
@@ -317,3 +317,27 @@ Het profiel bewaart per groep en spel maximaal 24 recente resultaten: het niveau
 Vanaf Wolkenrijk kan bij rekenen en Woordfabriek maximaal één proefvraag uit de volgende groep verschijnen, na minstens twaalf gewone opdrachten, recente zelfstandige successen en voldoende succes op stap 2 wanneer dat spel twee niveaus heeft. Bij rekenen blijft de overstap beperkt: maximaal 12 vanuit groep 2, 25 vanuit groep 3 en 120 vanuit groep 4. Bij Woordfabriek worden eenvoudige opdrachten uit het volgende groepsniveau gebruikt. De profielgroep blijft gelijk, hulp is beschikbaar en groep 5 krijgt geen opdrachten uit een nog niet aangeboden groep 6. Na hulp bij een proefvraag volgen eerst weer gewone opdrachten. Andere spelvormen groeien voorlopig via hun eigen twee niveaus.
 
 De proefvraag heet voor kinderen ‘Een kleine uitdaging’. De beschrijving bij de niveaukeuze en de informatie voor ouders leggen de opbouw uit. Een eerder eiland bekijken verlaagt het niveau niet: het hoogst vrijgespeelde eiland blijft de basis en stap 1 is de vaste rustige keuze. De checks in `tests/adaptive.test.ts` controleren grenzen, terugschakelen, de expliciete stappen, proefvragen, groepen, geschiedenis en reservekopieën.
+
+## Natuurmissies
+
+Onder **Lessen → Ontdekken → Natuurmissies** staan voor groep 2–5 afwisselend keuzevragen, dieren of plantendelen bij een passende plek of functie leggen, en stappen op volgorde zetten. Kaartjes volgen zichtbaar de muis of vinger; bij de schermrand schuift de pagina mee. Tikken en toetsenbordbediening werken ook. Geplaatste kaartjes kunnen worden vervangen, verwisseld en teruggelegd. **Missie klaar!** controleert een volledig bord; na een fout blijft het bewerkbaar.
+
+| Groep | Stap 1 | Stap 2 |
+| --- | --- | --- |
+| 2 | Dieren herkennen en naar hun plek brengen | Natuurvragen, groeistappen en seizoenen |
+| 3 | Dieren, planten en hun omgeving herkennen | Levenscycli, eenvoudige voedselketens en natuurverschijnselen |
+| 4 en 5 | Plantendelen en hun functies, natuurverschijnselen | Voedselketens, waterkringloop, bestuiving en eenvoudig onderzoek |
+
+Vragen, hints, aanwijzingen, antwoordkaarten en doelplekken hebben lokale voorleesfragmenten. Cycli hebben een vast genoemd beginpunt; de voedselketen legt uit dat een pijl ‘wordt gegeten door’ betekent. Plaatjes geven nooit alleen het juiste keuzeantwoord weg. De missies gebruiken de bestaande sterren, oefengeschiedenis, felicitaties en opbouw per eiland via **Verras me!**, binnen de gekozen groep.
+
+De inhoud staat in `src/learning/nature.ts`, de eigen illustraties in `src/NatureArt.tsx` en controles op inhoud, volgorde, niveaus, voortgang en audiobestanden in `tests/nature.test.ts`. Nieuwe gesproken tekst wordt op macOS gemaakt met:
+
+```sh
+node --experimental-strip-types scripts/generate-audio.mjs --prefix=nature- --encoder=afconvert
+```
+
+De opdrachten zijn zelf geschreven. Bij het controleren van de inhoud zijn onder meer de [vlinderlevensloop van Universiteit Utrecht](https://www.uu.nl/botanischetuinen/de-levensloop-van-de-vlinder), [kikkerontwikkeling bij SchoolTV](https://schooltv.nl/video-item/kikkers-van-kikkerdril-tot-kikker), [seizoenen bij het KNMI](https://www.knmi.nl/kennis-en-datacentrum/uitleg/seizoenen), [de koolmees bij Vogelbescherming](https://www.vogelbescherming.nl/beleefdelente/koolmees/achtergrond-koolmees/) en [fotosynthese bij SchoolTV](https://schooltv.nl/video-item/clipphanger-wat-is-fotosynthese) geraadpleegd.
+
+## Een rondje verlaten
+
+De knoppen **Lessen** en **Naar je eiland** tonen tijdens een onvoltooid rondje een eigen dialoog met **Verder spelen** en **Rondje verlaten**. Verder spelen heeft standaard de focus; Escape en het kruisje sluiten de dialoog ook. Kaartjes en antwoorden blijven bij annuleren staan. De dialoog houdt toetsenbordfocus binnen het venster en zet die na annuleren terug. Bij een afgerond rondje volgt geen bevestiging en blijft de verdiende ster bewaard.

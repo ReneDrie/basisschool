@@ -9,7 +9,7 @@ export function shuffle<T>(items: readonly T[]): T[] {
 // A compact semantic key ignores answer order and choice/open presentation.
 export function questionKey(q: Question): string {
   // Append interactive content only when present, preserving existing saved keys.
-  const value=[q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[]),...(q.building?[q.building]:[]),...(q.story?[q.story]:[]),...(q.visualLayout?[q.visualLayout]:[]),...(q.matching?[q.matching]:[]),...(q.train?[q.train]:[]),...(q.detective?[q.detective]:[]),...(q.language?[q.language]:[]),...(q.soundStudio?[q.soundStudio]:[]),...(q.bus?[q.bus]:[]),...(q.challengeGroup?[q.challengeGroup]:[])];
+  const value=[q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[]),...(q.building?[q.building]:[]),...(q.story?[q.story]:[]),...(q.visualLayout?[q.visualLayout]:[]),...(q.matching?[q.matching]:[]),...(q.train?[q.train]:[]),...(q.detective?[q.detective]:[]),...(q.language?[q.language]:[]),...(q.soundStudio?[q.soundStudio]:[]),...(q.bus?[q.bus]:[]),...(q.challengeGroup?[q.challengeGroup]:[]),...(q.nature?[q.nature]:[])];
   return hashKey(value);
 }
 export function buildRound(bank: Question[], difficulty?: Difficulty, recent: readonly string[] = [], recentConcepts:readonly string[]=[],options?:{hardCount:number}): Question[] {
@@ -27,7 +27,7 @@ export function buildRound(bank: Question[], difficulty?: Difficulty, recent: re
   const quota={1:options?questionCount-hardQuota:questionCount,2:hardQuota},levels={1:0,2:0};
   const allowed=(entry:typeof ranked[number])=>levels[entry.q.difficulty]<quota[entry.q.difficulty];
   const categoryCounts=new Map<string,number>();
-  const categoryOf=(q:Question)=>q.matching?.category??(q.detective?`${q.detective.category}:${q.detective.clue??''}`:undefined);
+  const categoryOf=(q:Question)=>q.nature?.kind??q.matching?.category??(q.detective?`${q.detective.category}:${q.detective.clue??''}`:undefined);
   const add=(entry:typeof ranked[number])=>{
     levels[entry.q.difficulty]++;selected.push(entry.q);chosen.add(entry.key);used.add(entry.concept);
     const category=categoryOf(entry.q);if(category){categoryCounts.set(category,(categoryCounts.get(category)??0)+1);}

@@ -1,3 +1,4 @@
+import { NatureShape } from './NatureArt';
 import type { ReactNode } from 'react';
 import { avatarKinds, pictureKinds } from './art-catalog';
 import { WordDrawing } from './WordArt';
@@ -25,6 +26,7 @@ export function ArtShape({kind}:{kind:string}):ReactNode {
   return <g className="art-shape" strokeLinejoin="round" strokeLinecap="round"><ShapeDrawing kind={kind}/></g>;
 }
 function ShapeDrawing({kind}:{kind:string}):ReactNode {
+  if(kind.startsWith('nature-'))return <NatureShape kind={kind}/>;
   if(kind==='sound-studio')return <g stroke={ink} strokeWidth="2.5" strokeLinecap="round"><path d="M20 55V40a30 30 0 0 1 60 0v15" fill="none" strokeWidth="7"/><rect x="12" y="43" width="17" height="34" rx="7" fill={purple}/><rect x="71" y="43" width="17" height="34" rx="7" fill={purple}/><path d="M39 48v16m10-27v38m11-27v16" stroke={blue} strokeWidth="6"/><path d="M78 79q-5 12-24 12" stroke={ink} fill="none"/><rect x="43" y="86" width="17" height="9" rx="4" fill={gold}/></g>;
   if(kind==='number-bus')return <g stroke={ink} strokeWidth="2.5" strokeLinejoin="round"><rect x="5" y="24" width="89" height="52" rx="11" fill={gold}/><path d="M9 54h82" stroke={cream} strokeWidth="4"/><g fill={blue}>{[13,33,53].map(x=><rect key={x} x={x} y="33" width="15" height="18" rx="3"/>)}<path d="M74 32h10q5 0 5 8v12H74z"/></g><g fill={ink}><circle cx="24" cy="79" r="9"/><circle cx="76" cy="79" r="9"/></g><g fill={cream}><circle cx="24" cy="79" r="4"/><circle cx="76" cy="79" r="4"/></g><path d="M75 60v10h13V60" fill={rose}/></g>;
   if(kind==='word-factory')return <g stroke={ink} strokeWidth="2.5" strokeLinejoin="round"><path d="M12 89V42l24 13V38l25 15V27h15v62z" fill={purple}/><path d="M7 89h83" strokeWidth="4"/><path d="M69 17q-8-8 1-12m13 13q9-5 4-12" fill="none" strokeLinecap="round"/><rect x="21" y="64" width="19" height="18" rx="3" fill={cream}/><rect x="48" y="64" width="19" height="18" rx="3" fill={gold}/><text x="30" y="78" textAnchor="middle" fontSize="14" fill={ink} stroke="none" fontWeight="800">a</text><text x="58" y="78" textAnchor="middle" fontSize="14" fill={ink} stroke="none" fontWeight="800">b</text></g>;

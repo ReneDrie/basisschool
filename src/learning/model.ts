@@ -1,3 +1,4 @@
+import type { NatureTask } from './nature.ts';
 import type { BusTask } from './bus.ts';
 import type { SoundTask } from './sound-studio.ts';
 import type { LanguageTask } from './language.ts';
@@ -8,7 +9,7 @@ import type { MatchingTask } from './matching.ts';
 import type { DetectiveTask, TrainTask } from './playful.ts';
 export const GROUPS = [2, 3, 4, 5] as const;
 export type Group = typeof GROUPS[number];
-export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel', 'bouwen', 'verhalen', 'koppelen', 'getallentrein', 'speurneus', 'woordfabriek', 'zinnenbouwer', 'klankstudio', 'rekenbus'] as const;
+export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel', 'bouwen', 'verhalen', 'koppelen', 'getallentrein', 'speurneus', 'woordfabriek', 'zinnenbouwer', 'klankstudio', 'rekenbus', 'natuurmissies'] as const;
 export type Skill = typeof SKILLS[number];
 export type Difficulty = 1 | 2;
 export type World = 'rekenen' | 'taal' | 'ontdekken';
@@ -41,6 +42,7 @@ export type Question = {
   building?: BuildingTask;
   story?: StoryTask;
   matching?: MatchingTask;
+  nature?: NatureTask;
   soundStudio?: SoundTask;
   bus?: BusTask;
   language?: LanguageTask;

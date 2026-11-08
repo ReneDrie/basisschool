@@ -1,3 +1,4 @@
+import { natureBank } from './learning/nature.ts';
 import { busBank } from './learning/bus.ts';
 import { soundStudioBank } from './learning/sound-studio.ts';
 import { wordFactoryBank, sentenceBuilderBank } from './learning/language.ts';
@@ -29,7 +30,7 @@ export function questionBank(group: Group, skill: Skill): Question[] {
   if(cached)return cached;
   const activity=activities(group).find(item=>item.id===skill);
   if(!activity)throw new Error('Dit spel hoort niet bij deze groep.');
-  const authored=skill==='klankstudio'&&(group===2||group===3)?soundStudioBank(group):skill==='rekenbus'&&group!==5?busBank(group):skill==='woordfabriek'?wordFactoryBank(group):skill==='zinnenbouwer'&&group!==2?sentenceBuilderBank(group):skill==='getallentrein'?trainBank(group):skill==='speurneus'?detectiveBank(group):skill==='koppelen'?matchingBank(group):skill==='verhalen'&&(group===2||group===4)?storiesBank(group):skill==='bouwen'&&(group===2||group===4)?buildingBank(group):skill==='winkel'&&(group===2||group===4)?shopBank(group):group===3?group3Bank[skill]!:newTopics[skill]??legacyBank(group,skill);
+  const authored=skill==='natuurmissies'?natureBank(group):skill==='klankstudio'&&(group===2||group===3)?soundStudioBank(group):skill==='rekenbus'&&group!==5?busBank(group):skill==='woordfabriek'?wordFactoryBank(group):skill==='zinnenbouwer'&&group!==2?sentenceBuilderBank(group):skill==='getallentrein'?trainBank(group):skill==='speurneus'?detectiveBank(group):skill==='koppelen'?matchingBank(group):skill==='verhalen'&&(group===2||group===4)?storiesBank(group):skill==='bouwen'&&(group===2||group===4)?buildingBank(group):skill==='winkel'&&(group===2||group===4)?shopBank(group):group===3?group3Bank[skill]!:newTopics[skill]??legacyBank(group,skill);
   const questions:Question[]=[...authored,...extendedContent(group,skill)].map(question=>({
     ...question,group,topic:skill,difficulty:question.difficulty??1,learningGoal:question.learningGoal??activity.learningGoal,
     ...(group<=3?{audio:question.audio??`/audio/${question.id}.m4a`}:{}),

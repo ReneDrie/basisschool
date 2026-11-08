@@ -10,7 +10,8 @@ export function hashKey(value:unknown):string {
 export function repetitionKey(q:Question):string {
   let concept:unknown;
   const sum=q.prompt.match(/(\d+) ([+−×:]) (\d+)/);
-  if(q.soundStudio)concept=['sound-studio',q.soundStudio.word];
+  if(q.nature)concept=['nature',q.nature.kind,q.nature.theme,q.nature.items.map(i=>i.label).sort(),q.prompt];
+  else if(q.soundStudio)concept=['sound-studio',q.soundStudio.word];
   else if(q.bus)concept=['bus',q.bus.start,q.bus.stops.map(s=>[s.kind,s.count])];
   else if(q.language)concept=['language',q.language.kind,q.language.target.toLocaleLowerCase('nl')];
   else if(q.train)concept=['train',q.train.descending,q.train.items.map(i=>[i.numerator,i.denominator]).sort()];
