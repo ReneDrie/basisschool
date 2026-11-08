@@ -2,16 +2,9 @@ import { useRef, useState, type PointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { Check, MoveHorizontal, RotateCcw } from 'lucide-react';
 import { Art } from './Art';
-import { QuestionVisual } from './QuestionVisual';
+import { MatchCardFace } from './MatchCardFace';
 import { shuffle } from './content';
-import { MATCH_COMPLETE, faceLabel, matches, matchingCards, type MatchFace, type MatchCard, type MatchingTask } from './learning/matching';
-
-function Face({face}:{face:MatchFace}){
-  if(face.kind==='text')return <span className={`match-text ${face.text.length>22?'match-definition':''}`}>{face.text}</span>;
-  if(face.kind==='art')return <span className={face.shadow?'match-shadow':''}><Art kind={face.art}/></span>;
-  if(face.kind==='count')return <span className="match-count" aria-hidden="true">{Array.from({length:face.count},(_,i)=><Art key={i} kind={face.art}/>)}</span>;
-  return <QuestionVisual diagram={face.diagram}/>;
-}
+import { MATCH_COMPLETE, faceLabel, matches, matchingCards, type MatchCard, type MatchingTask } from './learning/matching';
 
 type DragGeometry={width:number;height:number;offsetX:number;offsetY:number};
 
@@ -84,11 +77,11 @@ export function MatchingGame({task,correct,onAnswer}:{task:MatchingTask;correct:
     <div className="match-board" role="group" aria-label={task.mode==='memory'?'Memorykaarten':'Kaarten die bij elkaar horen'}>{cards.map((card,i)=>{
       const paired=found.includes(card.pairId),active=selected.includes(card.id),revealed=task.mode==='pairs'||paired||active;
       return <button type="button" key={card.id} data-match-card={card.id} className={`match-card ${revealed?'is-revealed':'is-hidden'} ${active?'is-selected':''} ${paired?'is-paired':''} ${mismatch&&active?'is-mismatch':''} ${card.side==='right'?'match-right':'match-left'} ${drag?.card.id===card.id?'is-dragging':''} ${drag&&drag.card.side!==card.side&&!paired?'is-drop-ready':''} ${drag?.target===card.id?'is-drop-target':''}`} aria-label={revealed?`${card.side==='left'?'Linkerkaart':'Rechterkaart'}: ${faceLabel(card.face)}`:`Kaart ${String.fromCharCode(65+i)} omdraaien`} aria-pressed={active} disabled={correct||paired||(mismatch&&(task.mode==='pairs'||active))} onPointerDown={event=>startDrag(event,card)} onPointerMove={moveDrag} onPointerUp={event=>endDrag(event)} onPointerCancel={event=>endDrag(event,true)} onLostPointerCapture={event=>endDrag(event,true)} onKeyDown={event=>{if(event.key==='Escape'&&gesture.current){gesture.current=null;setDrag(null);setAnnouncement('Slepen gestopt.');}}} onClick={event=>{if(event.detail>0&&suppressClick.current){suppressClick.current=false;return;}choose(card);}}>
-        {revealed?<Face face={card.face}/>:<span className="match-card-back" aria-hidden="true"><Art kind="star"/><strong>?</strong></span>}
+        {revealed?<MatchCardFace face={card.face}/>:<span className="match-card-back" aria-hidden="true"><Art kind="star"/><strong>?</strong></span>}
         {paired&&<Check className="match-card-check" size={21} aria-hidden="true"/>}
       </button>;
     })}</div>
-    {drag&&createPortal(<div className="match-card match-drag-preview" aria-hidden="true" style={{left:drag.x-drag.offsetX,top:drag.y-drag.offsetY,width:drag.width,height:drag.height,transformOrigin:`${drag.offsetX}px ${drag.offsetY}px`}}><Face face={drag.card.face}/></div>,document.body)}
+    {drag&&createPortal(<div className="match-card match-drag-preview" aria-hidden="true" style={{left:drag.x-drag.offsetX,top:drag.y-drag.offsetY,width:drag.width,height:drag.height,transformOrigin:`${drag.offsetX}px ${drag.offsetY}px`}}><MatchCardFace face={drag.card.face}/></div>,document.body)}
     {mismatch&&task.mode==='pairs'&&<button type="button" className="secondary-button match-retry" onClick={()=>{setSelected([]);setMismatch(false);setAnnouncement('Kies twee andere kaarten.');}}><RotateCcw size={19}/>Nog eens</button>}
     <span className="sr-only" role="status">{announcement}</span>
   </div>;

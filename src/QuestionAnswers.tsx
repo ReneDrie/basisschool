@@ -7,9 +7,13 @@ import { choiceAudioPath, choiceLabel, animalSymbol, type Question } from './con
 import { OpenAnswer } from './OpenAnswer';
 import { RhymeWord } from './RhymeWord';
 import { MatchingGame } from './MatchingGame';
+import { TrainGame } from './TrainGame';
+import { DetectiveGame } from './DetectiveGame';
 
 export function QuestionAnswers({question,young,selected,onAnswer,onSpeak}:{question:Question;young:boolean;selected:string|null;onAnswer:(value:string)=>void;onSpeak:(source:string|string[])=>void}){
   const correct=selected===question.answer;
+  if(question.train)return <TrainGame key={question.id} task={question.train} correct={correct} onAnswer={onAnswer}/>;
+  if(question.detective)return <DetectiveGame key={question.id} task={question.detective} correct={correct} selected={selected} onAnswer={onAnswer}/>;
   if(question.matching)return <MatchingGame key={question.id} task={question.matching} correct={correct} onAnswer={onAnswer}/>;
   if(question.story)return <StoryGame key={question.id} task={question.story} correct={correct} onAnswer={onAnswer} onSpeak={onSpeak}/>;
   if(question.building)return <BuildingGame key={question.id} task={question.building} correct={correct} onAnswer={onAnswer}/>;

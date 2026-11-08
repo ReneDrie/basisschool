@@ -10,7 +10,9 @@ export function hashKey(value:unknown):string {
 export function repetitionKey(q:Question):string {
   let concept:unknown;
   const sum=q.prompt.match(/(\d+) ([+−×:]) (\d+)/);
-  if(q.missing)concept=['missing',q.missing.operation,q.missing.a,q.missing.result];
+  if(q.train)concept=['train',q.train.descending,q.train.items.map(i=>[i.numerator,i.denominator]).sort()];
+  else if(q.detective)concept=['detective',q.detective.category,q.detective.clue,q.detective.cards.map(c=>JSON.stringify(c.face)).sort()];
+  else if(q.missing)concept=['missing',q.missing.operation,q.missing.a,q.missing.result];
   else if(sum){let a=Number(sum[1]),b=Number(sum[3]);if(sum[2]==='+'||sum[2]==='×')[a,b]=[a,b].sort((x,y)=>x-y);concept=[sum[2],a,b];}
   else if(q.story)concept=['story',q.story.plotId??q.story.steps[0].scene];
   else if(q.matching)concept=['matching',q.matching.category,q.matching.pairs.map(p=>p.id).sort()];

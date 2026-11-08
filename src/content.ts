@@ -1,5 +1,6 @@
 import { extendedContent } from './learning/extended-content.ts';
 import { matchingBank } from './learning/matching.ts';
+import { detectiveBank, trainBank } from './learning/playful.ts';
 import { storiesBank } from './learning/stories.ts';
 import { buildingBank } from './learning/building.ts';
 import { shopBank } from './learning/shop.ts';
@@ -25,7 +26,7 @@ export function questionBank(group: Group, skill: Skill): Question[] {
   if(cached)return cached;
   const activity=activities(group).find(item=>item.id===skill);
   if(!activity)throw new Error('Dit spel hoort niet bij deze groep.');
-  const authored=skill==='koppelen'?matchingBank(group):skill==='verhalen'&&(group===2||group===4)?storiesBank(group):skill==='bouwen'&&(group===2||group===4)?buildingBank(group):skill==='winkel'&&(group===2||group===4)?shopBank(group):group===3?group3Bank[skill]!:newTopics[skill]??legacyBank(group,skill);
+  const authored=skill==='getallentrein'?trainBank(group):skill==='speurneus'?detectiveBank(group):skill==='koppelen'?matchingBank(group):skill==='verhalen'&&(group===2||group===4)?storiesBank(group):skill==='bouwen'&&(group===2||group===4)?buildingBank(group):skill==='winkel'&&(group===2||group===4)?shopBank(group):group===3?group3Bank[skill]!:newTopics[skill]??legacyBank(group,skill);
   const questions:Question[]=[...authored,...extendedContent(group,skill)].map(question=>({
     ...question,group,topic:skill,difficulty:question.difficulty??1,learningGoal:question.learningGoal??activity.learningGoal,
     ...(group<=3?{audio:question.audio??`/audio/${question.id}.m4a`}:{}),

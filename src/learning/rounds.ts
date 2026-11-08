@@ -9,7 +9,7 @@ export function shuffle<T>(items: readonly T[]): T[] {
 // A compact semantic key ignores answer order and choice/open presentation.
 export function questionKey(q: Question): string {
   // Append interactive content only when present, preserving existing saved keys.
-  const value=[q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[]),...(q.building?[q.building]:[]),...(q.story?[q.story]:[]),...(q.visualLayout?[q.visualLayout]:[]),...(q.matching?[q.matching]:[])];
+  const value=[q.group,q.topic,q.prompt,q.answer,q.visual,q.diagram,q.passage,...(q.shop?[q.shop]:[]),...(q.building?[q.building]:[]),...(q.story?[q.story]:[]),...(q.visualLayout?[q.visualLayout]:[]),...(q.matching?[q.matching]:[]),...(q.train?[q.train]:[]),...(q.detective?[q.detective]:[])];
   return hashKey(value);
 }
 export function buildRound(bank: Question[], difficulty?: Difficulty, recent: readonly string[] = [], recentConcepts:readonly string[]=[]): Question[] {
@@ -23,16 +23,17 @@ export function buildRound(bank: Question[], difficulty?: Difficulty, recent: re
   const used=new Set<string>(),chosen=new Set<string>();
   const selected:Question[]=[];
   const categoryCounts=new Map<string,number>();
+  const categoryOf=(q:Question)=>q.matching?.category??(q.detective?`${q.detective.category}:${q.detective.clue??''}`:undefined);
   const add=(entry:typeof ranked[number])=>{
     selected.push(entry.q);chosen.add(entry.key);used.add(entry.concept);
-    if(entry.q.matching){const category=entry.q.matching.category;categoryCounts.set(category,(categoryCounts.get(category)??0)+1);}
+    const category=categoryOf(entry.q);if(category){categoryCounts.set(category,(categoryCounts.get(category)??0)+1);}
   };
   const take=(entries:typeof ranked,distinctOnly:boolean)=>{
-    if(ranked[0]?.q.matching){
+    if(categoryOf(ranked[0].q)){
       while(selected.length<questionCount){
         const candidates=entries.filter(e=>!chosen.has(e.key)&&(!distinctOnly||!used.has(e.concept)));
         if(!candidates.length)break;
-        const next=candidates.reduce((best,e)=>(categoryCounts.get(e.q.matching!.category)??0)<(categoryCounts.get(best.q.matching!.category)??0)?e:best);
+        const next=candidates.reduce((best,e)=>(categoryCounts.get(categoryOf(e.q)!)??0)<(categoryCounts.get(categoryOf(best.q)!)??0)?e:best);
         add(next);
       }
       return;

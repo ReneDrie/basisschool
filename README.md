@@ -251,3 +251,18 @@ node --experimental-strip-types scripts/generate-audio.mjs
 De generator maakt standaard alleen ontbrekende bestanden. Gebruik `--force` wanneer bestaande gesproken tekst of de stem verandert. `--voice=Ellen` en `--rate=125` stellen stem en tempo in; `--prefix=story-` beperkt de selectie. Voor parallel genereren kunnen afzonderlijke processen `--shard=0/4` tot en met `--shard=3/4` gebruiken. Bestanden worden pas na een geslaagde omzetting vervangen. Met `--encoder=afconvert` kan de ingebouwde macOS-converter worden gebruikt als alternatief voor FFmpeg; de stem, het tempo en de korte pauzes blijven hetzelfde. De offline-controle gebruikt dezelfde audiolijst, zodat ook nieuwe onderwerpen automatisch worden gecontroleerd.
 
 De eigen appiconen zijn reproduceerbaar met `python3 scripts/generate-icons.py` (Pillow vereist). Beide hulpprogramma's zijn uitsluitend voor het maken van assets en draaien niet bij publicatie of op de iPad.
+
+## Getallentrein en Speurneus voor alle groepen
+
+**Lessen → Rekenen → Getallentrein** laat kinderen kaartjes naar genummerde wagons slepen. Tikken of toetsenbordbediening werkt ook: kies een kaartje en daarna een wagon. Geplaatste kaartjes kunnen worden verwisseld of terug naar het vak gesleept. Met **Trein klaar!** wordt de hele volgorde gecontroleerd. Stap 1 gaat van klein naar groot; stap 2 van groot naar klein.
+
+**Lessen → Ontdekken → Speurneus** toont vier gehusselde kaarten waarvan er precies één afwijkt van de gevraagde regel. Na een fout antwoord blijft het bord staan en verschijnt een hint.
+
+| Groep | Getallentrein | Speurneus, stap 1 / stap 2 |
+| --- | --- | --- |
+| 2 | Drie of vier getallen tot 10 | Dieren en fruit / een ander aantal |
+| 3 | Vier getallen tot 20 | Woorden bij een groep / sommen met een andere uitkomst |
+| 4 | Vier getallen tot 100 | Een getal buiten de tafel / enkelvoud tussen meervouden |
+| 5 | Getallen tot 1.000, daarna breuken | Een afwijkende breuk / een afwijkende lengtemaat |
+
+Beide spellen hebben eigen oefengeschiedenis, twee niveaus per groep, de gebruikelijke beloningen en 24 gedeelde lokale opdracht- en hintfragmenten. Bestaande profielen en reservekopieën blijven bruikbaar. De inhoud, beoordelingsregels, verwisselen van treinkaartjes, spreiding van opdrachten en reservekopieën worden gecontroleerd in `tests/playful.test.ts`.

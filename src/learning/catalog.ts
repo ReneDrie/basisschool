@@ -6,6 +6,8 @@ export const worlds: { id: World; title: string; symbol: string }[] = [
   { id: 'ontdekken', title: 'Kijken & ontdekken', symbol: '✦' }
 ];
 const catalog: Record<Skill, Activity> = {
+  getallentrein:{id:'getallentrein',title:'De Getallentrein',subtitle:'Zet de wagons in de goede volgorde',tag:'Ordenen & vergelijken',color:'peach',symbol:'train',world:'rekenen',learningGoal:'Getallen en breuken vergelijken en ordenen.'},
+  speurneus:{id:'speurneus',title:'De Speurneus',subtitle:'Welke hoort er niet bij?',tag:'Speuren & logisch denken',color:'green',symbol:'detective',world:'ontdekken',learningGoal:'Eigenschappen vergelijken en een afwijkende kaart herkennen.'},
   koppelen:{id:'koppelen',title:'Het Koppelplein',subtitle:'Zoek wat bij elkaar hoort',tag:'Koppelen & memory',color:'blue',symbol:'matching',world:'ontdekken',learningGoal:'Verbanden herkennen, passende kaarten koppelen en paren onthouden.'},
   verhalen:{id:'verhalen',title:'Het Verhalenpad',subtitle:'Elk plaatje vertelt iets',tag:'Luisteren & verhalen',color:'purple',symbol:'story',world:'taal',learningGoal:'Gebeurtenissen ordenen en een kort verhaal begrijpen.'},
   bouwen:{id:'bouwen',title:'De Bouwplaats',subtitle:'Bouw je mee?',tag:'Sorteren & meten',color:'blue',symbol:'building',world:'ontdekken',learningGoal:'Vormen sorteren, lengtes ordenen en meten met een liniaal.'},
@@ -30,7 +32,8 @@ const groupTopics: Record<Group, Skill[]> = {
   5: ['rekenen','taal','tafels','lezen','breuken','grafieken','koppelen']
 };
 export function activities(group: Group): Activity[] {
-  return groupTopics[group].map(id => {
+  const ids:Skill[]=[...groupTopics[group],'getallentrein','speurneus'];
+  return ids.map(id => {
     const activity = { ...catalog[id] };
     if (group===2 && id==='rekenen') Object.assign(activity,{ subtitle:'Tel je met ons mee?', tag:'Tellen & getallen', learningGoal:'Hoeveelheden tot en met tien tellen.' });
     if (group===2 && id==='taal') Object.assign(activity,{ title:'De Rijmwei', subtitle:'Welke woorden rijmen?', tag:'Luisteren & rijmen', learningGoal:'Woorden herkennen die op elkaar rijmen.' });
