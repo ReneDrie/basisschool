@@ -284,7 +284,7 @@ Opdrachten, hints, doelwoorden en zinnen zijn lokaal ingesproken en worden meege
 
 ## Klankstudio en Rekenbus
 
-**Lessen → Taal & lezen → Klankstudio** is beschikbaar in groep 2 en 3. Kinderen luisteren naar een reeks losse spraakklanken of herhalen één klank met een eigen luisterknop. Daarna kiezen ze het bijbehorende plaatje. Het hele woord wordt uitgesproken als bevestiging bij een goed antwoord. De klanken zichtbaar maken telt als hulp; bij een nieuwe opdracht verdwijnen die weer.
+**Lessen → Taal & lezen → Klankstudio** is voorlopig uitgezet voor groep 2 en 3 omdat de gedeelde klankfragmenten onvoldoende duidelijk zijn. Kinderen luisteren naar een reeks losse spraakklanken of herhalen één klank met een eigen luisterknop. Daarna kiezen ze het bijbehorende plaatje. Het hele woord wordt uitgesproken als bevestiging bij een goed antwoord. De klanken zichtbaar maken telt als hulp; bij een nieuwe opdracht verdwijnen die weer.
 
 **Lessen → Rekenen → Rekenbus** is beschikbaar in groep 2–4. Bij elke halte verplaatsen kinderen passagiers tussen de bus en het perron, met slepen, tikken of het toetsenbord. Verplaatsingen kunnen ongedaan worden gemaakt. Bij te veel uitstappers kunnen ze passagiers terugzetten; de volgende halte gaat pas open wanneer het gevraagde aantal is verplaatst. Na de laatste halte kiezen kinderen hoeveel passagiers nog in de bus zitten. Een hele rit kan opnieuw.
 

@@ -10,7 +10,7 @@ import { emptyProfile, parseBackup, rememberQuestions, reward } from '../src/sto
 const games=['klankstudio','rekenbus'] as const;
 test('Both games are stable, varied, and offered only to the appropriate groups',()=>{
   for(const group of GROUPS)for(const skill of games){
-    const offered=skill==='klankstudio'?group<=3:group<=4;
+    const offered=skill==='klankstudio'?false:group<=4;
     assert.equal(activities(group).some(a=>a.id===skill),offered);
     if(!offered){assert.throws(()=>questionBank(group,skill));continue;}
     assert.deepEqual(availableLevels(group,skill),[1,2]);
@@ -25,7 +25,7 @@ test('Sound boards use actual IPA phonemes, sound groups join into the word and 
   assert.equal(PHONEMES.m,'mː');assert.equal(PHONEMES.n,'nː');assert.equal(PHONEMES.s,'sː');
   assert.equal(PHONEMES.aa,'aː');assert.equal(PHONEMES.ij,PHONEMES.ei);
   const used=new Set<string>();
-  for(const group of [2,3] as const)for(const q of questionBank(group,'klankstudio')){
+  for(const group of [2,3] as const)for(const q of soundStudioBank(group).map(q=>({...q,group,topic:'klankstudio' as const,difficulty:q.difficulty??1,learningGoal:q.learningGoal??''}))){
     const task=q.soundStudio!;assert.equal(task.sounds.join(''),task.word);assert.equal(task.options.length,4);
     assert.equal(new Set(task.options.map(o=>o.word)).size,4);assert.equal(task.options.filter(o=>o.word===task.word).length,1);
     for(const sound of task.sounds){assert.ok(PHONEMES[sound]);used.add(sound);assert.match(phonemeAudio(sound),/^\/audio\/klank-phoneme-[a-z]+\.m4a$/);}

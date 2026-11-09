@@ -37,7 +37,7 @@ const groupTopics: Record<Group, Skill[]> = {
   5: ['rekenen','taal','tafels','lezen','breuken','grafieken','koppelen']
 };
 export function activities(group: Group): Activity[] {
-  const ids:Skill[]=[...groupTopics[group],'getallentrein','speurneus','woordfabriek','natuurmissies',...(group>=3?['zinnenbouwer' as const]:[]),...(group<=3?['klankstudio' as const]:[]),...(group<=4?['rekenbus' as const]:[])];
+  const ids:Skill[]=[...groupTopics[group],'getallentrein','speurneus','woordfabriek','natuurmissies',...(group>=3?['zinnenbouwer' as const]:[]),...(group<=4?['rekenbus' as const]:[])];
   return ids.map(id => {
     const activity = { ...catalog[id] };
     if (group===2 && id==='rekenen') Object.assign(activity,{ subtitle:'Tel je met ons mee?', tag:'Tellen & getallen', learningGoal:'Hoeveelheden tot en met tien tellen.' });
