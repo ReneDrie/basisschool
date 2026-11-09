@@ -43,7 +43,7 @@ test('Advanced arithmetic stays modest and one bridge question is gated by per-g
  assert.equal(makeAdaptiveRound(4,'rekenen',260,strong.map(r=>({...r,level:1}))).filter(q=>q.challengeGroup).length,1);
  assert.ok(makeAdaptiveRound(5,'rekenen',1000,strong).every(q=>!q.challengeGroup));
  for(const group of [2,3,4] as const)assert.equal(makeAdaptiveRound(group,'woordfabriek',260,strong).filter(q=>q.challengeGroup).length,1);
- assert.ok(makeAdaptiveRound(3,'klankstudio',260,strong).every(q=>!q.challengeGroup));
+ assert.throws(()=>makeAdaptiveRound(3,'klankstudio',260,strong));
 });
 test('Numeric bounds rise within a group, while an unfamiliar game on a late island starts gently',()=>{
  for(const group of GROUPS){
