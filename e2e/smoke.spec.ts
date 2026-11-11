@@ -62,6 +62,41 @@ test('A child can decorate the island and the spot is kept after a reload', asyn
   await expect.poll(async () => Math.round((await again.boundingBox())!.x)).toBe(Math.round(before.x));
 });
 
+test('A dragged treasure follows the finger across the island and stays where it is dropped', async ({ page }) => {
+  await openApp(page);
+  await createProfile(page, 'Noor', 2);
+  await startShapesRound(page);
+  await playRoundToEnd(page);
+  await page.getByRole('button', { name: 'Bekijk mijn eiland' }).click();
+  await page.getByRole('button', { name: 'Versieren' }).click();
+
+  const treasure = page.getByRole('button', { name: /Sleep of verplaats met de pijltjes/ }).first();
+  const island = (await page.locator('.island-art').boundingBox())!;
+  const start = (await treasure.boundingBox())!;
+  const from = { x: start.x + start.width / 2, y: start.y + start.height / 2 };
+  // Up and down through the depth layers, so the treasure changes layer mid-drag.
+  const path = [
+    { x: island.x + island.width * 0.3, y: island.y + island.height * 0.55 },
+    { x: island.x + island.width * 0.6, y: island.y + island.height * 0.8 },
+    { x: island.x + island.width * 0.7, y: island.y + island.height * 0.6 },
+  ];
+  await page.mouse.move(from.x, from.y);
+  await page.mouse.down();
+  for (const point of path) await page.mouse.move(point.x, point.y, { steps: 8 });
+  await expect(page.locator('.island-treasure.is-dragging')).toHaveCount(1);
+  await page.mouse.up();
+  await expect(page.locator('.island-treasure.is-dragging')).toHaveCount(0);
+
+  const dropped = (await treasure.boundingBox())!;
+  const end = path[path.length - 1];
+  expect(Math.abs(dropped.x + dropped.width / 2 - end.x)).toBeLessThan(30);
+  // Moving the pointer afterwards, also over the treasure, does not drag it any more.
+  await page.mouse.move(dropped.x + dropped.width / 2, dropped.y + dropped.height / 2, { steps: 4 });
+  await page.mouse.move(island.x + island.width * 0.3, island.y + island.height * 0.75, { steps: 8 });
+  const after = (await treasure.boundingBox())!;
+  expect(Math.round(after.x)).toBe(Math.round(dropped.x));
+});
+
 test('The parent area is behind a sum and shows how the goals are going', async ({ page }) => {
   await openApp(page);
   await createProfile(page, 'Lot', 2);

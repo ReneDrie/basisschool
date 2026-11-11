@@ -79,15 +79,21 @@ export function Island({
     complete = earned.length === region.rewards.length;
   const svg = useRef<SVGSVGElement>(null);
   const [wiggle, setWiggle] = useState<{ kind: string; count: number } | null>(null);
-  const [drag, setDrag] = useState<{ id: string; zone: Zone; spot: Spot; offset: Spot; start: Spot; moved: boolean } | null>(
-    null,
-  );
+  const [drag, setDrag] = useState<{
+    id: string;
+    pointer: number;
+    zone: Zone;
+    spot: Spot;
+    offset: Spot;
+    start: Spot;
+    moved: boolean;
+  } | null>(null);
   // Keeps a dropped treasure in place until the saved layout comes back.
   const [dropped, setDropped] = useState<IslandLayout>({});
   useEffect(() => setDropped({}), [layout]);
   const spotOf = (reward: IslandReward, start: Placement): Spot =>
     drag?.id === reward.id ? drag.spot : (dropped[reward.id] ?? layout?.[reward.id] ?? start);
-  function pointIn(event: PointerEvent): Spot {
+  function pointIn(event: { clientX: number; clientY: number }): Spot {
     const matrix = svg.current!.getScreenCTM()!.inverse(),
       point = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix);
     return { x: point.x, y: point.y };
@@ -96,6 +102,49 @@ export function Island({
     setDropped((current) => ({ ...current, [reward.id]: spot }));
     editing!.onPlace(reward.id, spot);
   }
+  function tapReward(reward: IslandReward) {
+    setWiggle((current) => ({ kind: reward.art, count: (current?.kind === reward.art ? current.count : 0) + 1 }));
+    onTreasure?.(reward);
+  }
+  // The drag follows the pointer on the whole window: the treasure moves between
+  // depth layers while dragging, which would drop pointer capture on the element.
+  const finishDrag = useRef<(drop: boolean) => void>(() => {});
+  finishDrag.current = (drop) => {
+    if (!drag) return;
+    const reward = region.rewards.find((item) => item.id === drag.id);
+    if (drop && reward) {
+      if (drag.moved) place(reward, drag.spot);
+      else tapReward(reward);
+    }
+    setDrag(null);
+  };
+  const dragId = drag?.id,
+    dragPointer = drag?.pointer;
+  useEffect(() => {
+    if (dragId === undefined) return;
+    const move = (event: globalThis.PointerEvent) => {
+      if (event.pointerId !== dragPointer || !svg.current) return;
+      const point = pointIn(event);
+      setDrag(
+        (current) =>
+          current && {
+            ...current,
+            moved: current.moved || Math.hypot(point.x - current.start.x, point.y - current.start.y) > 6,
+            spot: clampSpot({ x: point.x - current.offset.x, y: point.y - current.offset.y }, current.zone),
+          },
+      );
+    };
+    const up = (event: globalThis.PointerEvent) => event.pointerId === dragPointer && finishDrag.current(true);
+    const cancel = (event: globalThis.PointerEvent) => event.pointerId === dragPointer && finishDrag.current(false);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', cancel);
+    return () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', cancel);
+    };
+  }, [dragId, dragPointer]);
   function treasure(o: Treasure, node: ReactNode) {
     const { kind, reward } = o,
       wiggling = wiggle?.kind === kind,
@@ -107,10 +156,7 @@ export function Island({
           {node}
         </g>
       );
-    const tap = () => {
-      setWiggle((current) => ({ kind, count: (current?.kind === kind ? current.count : 0) + 1 }));
-      onTreasure?.(reward);
-    };
+    const tap = () => tapReward(reward);
     const keys = (event: KeyboardEvent) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -128,10 +174,11 @@ export function Island({
       ? {
           onPointerDown: (event: PointerEvent<SVGGElement>) => {
             if (!event.isPrimary) return;
-            event.currentTarget.setPointerCapture(event.pointerId);
+            event.preventDefault();
             const point = pointIn(event);
             setDrag({
               id: reward.id,
+              pointer: event.pointerId,
               zone: o.zone,
               spot: { x: o.x, y: o.y },
               offset: { x: point.x - o.x, y: point.y - o.y },
@@ -139,25 +186,6 @@ export function Island({
               moved: false,
             });
           },
-          onPointerMove: (event: PointerEvent<SVGGElement>) => {
-            if (!dragging) return;
-            const point = pointIn(event);
-            setDrag(
-              (current) =>
-                current && {
-                  ...current,
-                  moved: current.moved || Math.hypot(point.x - current.start.x, point.y - current.start.y) > 6,
-                  spot: clampSpot({ x: point.x - current.offset.x, y: point.y - current.offset.y }, current.zone),
-                },
-            );
-          },
-          onPointerUp: () => {
-            if (!drag || !dragging) return;
-            if (drag.moved) place(reward, drag.spot);
-            else tap();
-            setDrag(null);
-          },
-          onPointerCancel: () => setDrag(null),
         }
       : { onClick: tap };
     // A new key restarts the wiggle on every tap.
@@ -194,8 +222,11 @@ export function Island({
     reward: finalReward,
     zone: 'ground',
   };
-  const groundObjects = objects.filter((o) => o.grounded !== false).sort((a, b) => a.y - b.y);
-  const skyObjects = objects.filter((o) => o.grounded === false);
+  // The treasure being dragged is drawn on top until it is dropped.
+  const lifted = [...objects, ...(complete ? [finale] : [])].find((o) => o.reward.id === drag?.id);
+  const resting = objects.filter((o) => o !== lifted);
+  const groundObjects = resting.filter((o) => o.grounded !== false).sort((a, b) => a.y - b.y);
+  const skyObjects = resting.filter((o) => o.grounded === false);
   return (
     <svg
       ref={svg}
@@ -290,7 +321,9 @@ export function Island({
             ),
           )}
         {complete ? (
-          treasure(finale, <SceneObject kind={finale.kind} x={finale.x} y={finale.y} size={finale.size} />)
+          lifted === finale ? null : (
+            treasure(finale, <SceneObject kind={finale.kind} x={finale.x} y={finale.y} size={finale.size} />)
+          )
         ) : (
           <SceneCottage x={319} y={225} size={106} theme={region.theme} />
         )}
@@ -314,6 +347,16 @@ export function Island({
         </g>
         {groundObjects.filter((o) => o.y >= 240).map((o) => treasure(o, <SceneObject {...o} />))}
         {skyObjects.map((o) => treasure(o, <SceneObject {...o} />))}
+        {lifted
+          ? treasure(
+              lifted,
+              lifted.kind === 'palm' || lifted.kind === 'pine' ? (
+                <SceneTree x={lifted.x} y={lifted.y} size={lifted.size} kind={lifted.kind} />
+              ) : (
+                <SceneObject kind={lifted.kind} x={lifted.x} y={lifted.y} size={lifted.size} grounded={lifted.grounded} />
+              ),
+            )
+          : null}
         <g fill="#fff8e7" opacity=".85">
           <path d="M94 116v10m-5-5h10m350 55v8m-4-4h8" stroke="#e8c989" strokeWidth="1.25" />
           <circle cx="445" cy="107" r="2" />
