@@ -228,3 +228,23 @@ html{background:#e7f4f4}body{color:var(--app-ink)}.app-shell{min-height:100dvh;b
 .parent-gate .field-label input{width:100%;font-size:24px;text-align:center;letter-spacing:.08em}.parent-gate .primary-button{margin-top:18px}
 /* Placed cards keep their spot in the tray, so the other cards do not move under a child's finger. */
 .tile-placeholder{visibility:hidden;pointer-events:none}
+/* Vandaag: three dots fill up with the rounds played today. */
+.today-dots{display:flex;align-items:center;gap:7px;padding:9px 13px;border:2px solid #fff5;border-radius:999px;background:#fff1c7}.today-dots i{width:14px;height:14px;border-radius:50%;background:#fffdf5;box-shadow:inset 0 0 0 2px #d8bd78}.today-dots i.filled{background:#e9b949;box-shadow:inset 0 0 0 2px #c79a35}.today-dots.is-done{background:#d9f0d2}.today-dots.is-done i.filled{background:#6fb07f;box-shadow:inset 0 0 0 2px #4f9163}
+.day-done{display:flex;align-items:center;justify-content:center;gap:16px;margin:18px auto 0;padding:15px 18px;max-width:370px;border-radius:22px;background:#e6f5df;text-align:left}.day-done .story-art{width:58px;height:58px;flex:none}.day-done strong{font-size:19px}.day-done p{margin:3px 0 0}
+/* Island treasures: a new one pops in, a tapped one wiggles. */
+.island-treasure{transform-box:fill-box;transform-origin:50% 100%}.island-treasure[role=button]{cursor:pointer;outline:none}.island-treasure[role=button]:focus-visible{filter:drop-shadow(0 0 4px #087f8c)}
+.island-treasure.is-new{animation:treasure-arrive 1.1s cubic-bezier(.3,1.6,.5,1) .35s both,treasure-glow 1.6s ease-in-out 1.4s 2}
+.island-treasure.is-wiggling{animation:treasure-wiggle .6s ease-in-out}
+@keyframes treasure-arrive{from{transform:translateY(-40px) scale(.2);opacity:0}to{transform:none;opacity:1}}
+@keyframes treasure-glow{50%{filter:drop-shadow(0 0 9px #ffe58a)}}
+@keyframes treasure-wiggle{25%{transform:rotate(-8deg) scale(1.08)}50%{transform:rotate(7deg) scale(1.1)}75%{transform:rotate(-4deg) scale(1.05)}}
+.island-buddy>i{animation:bubble-pop .35s ease-out}@keyframes bubble-pop{from{transform:rotate(-6deg) scale(.6);opacity:0}}
+/* After two wrong tries the right answer pulses. */
+.answer-button.reveal-answer{border-color:#58a88a;background:#e2f5e3;animation:reveal-pulse 1.2s ease-in-out infinite}
+.answer-grid:has(.reveal-answer) .answer-button:not(.reveal-answer){filter:grayscale(.5) opacity(.5)}
+@keyframes reveal-pulse{50%{box-shadow:0 0 0 8px #7cc79a66;transform:scale(1.03)}}
+.repeat-label{background:#e4f1f6;color:#2f6475}
+/* Parent view per learning goal. */
+.parent-insights h4{margin:18px 0 8px;font-size:16px}.parent-insights ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}.parent-insights li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:14px;background:#f6f8f3}.parent-insights li small{display:block;margin-top:2px;color:#5d6d70;font-size:13px;line-height:1.35}
+.insight-status{flex:none;padding:5px 10px;border-radius:999px;font-size:13px;font-weight:800;white-space:nowrap}.status-goed{background:#d5efd6;color:#2f6b43}.status-groeit{background:#fff1c7;color:#7a5d22}.status-lastig{background:#fde0d6;color:#8a3f2a}.status-nieuw{background:#e7eef0;color:#47606a}
+.home-tip{display:flex;gap:9px;align-items:flex-start;margin:12px 0 6px;padding:11px 12px;border-radius:14px;background:#eef6e6;line-height:1.4}.home-tip svg{flex:none;margin-top:2px;color:#4f9163}

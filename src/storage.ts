@@ -1,7 +1,8 @@
 import { GROUPS, SKILLS, questionKey, repetitionKey, type Question, type Group, type Skill } from './content.ts';
 import { PRACTICE_WINDOW, type PracticeHistory, type PracticeResult } from './learning/adaptive.ts';
+import { countRoundToday, type Today } from './learning/today.ts';
 export type RecentQuestions = Partial<Record<`${Group}:${Skill}`, string[]>>;
-export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory; chooseLevel?:boolean };
+export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory; chooseLevel?:boolean; today?:Today };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
 let dbPromise:Promise<IDBDatabase>|undefined;
@@ -68,14 +69,20 @@ export function validateProfiles(value:unknown):Profile[]{
       }
     }
     if(item.chooseLevel!==undefined&&typeof item.chooseLevel!=='boolean')throw new Error('Ongeldige instelling.');
-    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{}),...(item.chooseLevel?{chooseLevel:true}:{})};
+    let today:Today|undefined;
+    if(item.today!==undefined){
+      const value=item.today as Record<string,unknown>;
+      if(!value||typeof value!=='object'||typeof value.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value.date)||!isCount(value.rounds))throw new Error('Ongeldige dagvoortgang.');
+      today={date:value.date,rounds:value.rounds};
+    }
+    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{}),...(item.chooseLevel?{chooseLevel:true}:{}),...(today?{today}:{})};
   });
 }
 export function parseBackup(text:string):Profile[]{
   const data=JSON.parse(text);if(data?.app!=='kleine-ontdekkers'||data.version!==1)throw new Error('Dit is geen reservekopie van Kleine Ontdekkers.');return validateProfiles(data.profiles);
 }
-export function reward(profile:Profile,skill:Skill):Profile{
-  return {...profile,rounds:profile.rounds+1,stars:profile.stars+1,skills:{...profile.skills,[skill]:(profile.skills[skill]??0)+1}};
+export function reward(profile:Profile,skill:Skill,now=new Date()):Profile{
+  return {...profile,rounds:profile.rounds+1,stars:profile.stars+1,skills:{...profile.skills,[skill]:(profile.skills[skill]??0)+1},today:countRoundToday(profile.today,now)};
 }
 
 function appendHistory(previous:RecentQuestions|undefined,questions:Question[],keyOf:(q:Question)=>string):RecentQuestions {

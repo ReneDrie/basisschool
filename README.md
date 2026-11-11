@@ -59,6 +59,22 @@ In groep 2 en 3 wordt elke opdracht automatisch voorgelezen zodra die verschijnt
 
 Na een goed antwoord verschijnt kort een felicitatie. Na 1,4 seconde gaat het rondje vanzelf verder; een balk in de knop laat zien wanneer. Tikken op de knop gaat meteen door. Na de laatste vraag wordt het rondje vanzelf afgerond en bewaard. Lukt bewaren niet, dan blijft de knop staan om het opnieuw te proberen.
 
+Na twee foute pogingen bij een gewone meerkeuze- of invulvraag laat de app het goede antwoord zien: bij meerkeuze licht het goede antwoord groen op en worden de andere vager, bij invullen staat het antwoord in de tip. Die vraag komt aan het eind van het rondje nog één keer terug, met het label ‘Nog een keer’ en gehusselde antwoorden. Per rondje komen maximaal twee vragen terug. Een teruggekomen vraag telt niet mee in de score (‘4 van de 6 zonder hulp’) en niet in de oefenresultaten voor de uitdaging; de ster blijft hetzelfde. De spellen (winkel, trein, verhalen enzovoort) houden hun eigen hints.
+
+### Vandaag: drie rondjes en dan klaar
+
+Een speeldag is drie rondjes (`DAILY_ROUNDS` in `src/learning/today.ts`). Op het eiland vullen drie bolletjes zich. Na het derde rondje toont de felicitatie ‘Klaar voor vandaag! Tot morgen!’ zonder knop ‘Nog een rondje’, en het eiland zegt ‘Klaar voor vandaag!’. Verder spelen mag: de grote knop heet dan ‘Nog een keer’. Er zijn geen reeksen, geen verloren voortgang en geen verdrietige vriendjes. Het profiel bewaart alleen de datum en het aantal rondjes van vandaag; dat telt om middernacht lokale tijd opnieuw en gaat mee in reservekopieën.
+
+### Eén ding om te volgen
+
+Kinderen zien sterren en schatten. Het oude ‘Level’ op het eiland is weg. Alleen de eerstvolgende schat en het eerstvolgende eiland tonen hoeveel rondjes nog nodig zijn; latere schatten en eilanden heten ‘Nog geheim’.
+
+Een nieuw verdiende schat springt na ‘Bekijk mijn eiland’ op zijn plek en gloeit even; het vriendje zegt ‘Nieuw: Fladdervriend!’. Kinderen kunnen op hun schatten tikken: de schat wiebelt en het vriendje noemt de naam. Op de wereldkaart zijn de eilanden alleen plaatjes.
+
+### Voor ouders: hoe gaat het per leerdoel?
+
+Het oudergedeelte toont per gespeeld spel in de huidige groep het leerdoel en een status: ‘Gaat goed’ (minstens 80% van de laatste opdrachten zonder fout of hint), ‘Groeit’ (50–80%), ‘Nog lastig’ (minder dan 50%) of ‘Net begonnen’ (minder dan vier opdrachten). Proefvragen uit de volgende groep tellen niet mee. Bij het spel dat het meest aandacht nodig heeft staat één tip voor thuis, zonder scherm. De berekening en de tips staan in `src/learning/parent-insights.ts`.
+
 Het tandwiel voor ouders vraagt eerst een vermenigvuldiging (bijvoorbeeld 17 × 7), zodat kinderen niet per ongeluk de groep wijzigen of een profiel verwijderen. Bij een fout antwoord verschijnt een nieuwe som.
 
 Bij Woordfabriek, Zinnenbouwer, Getallentrein en Natuurmissies blijft een neergelegd kaartje als onzichtbare plek in het vak staan. De andere kaartjes schuiven dus niet onder de vinger van een kind weg. In de Eilandwinkel staat het aantal spullen in het mandje niet meer op het scherm, omdat tellen de opdracht is; schermlezers horen het aantal nog wel.
@@ -71,7 +87,7 @@ De kinderschermen hebben geen websitefooter, promotieteksten, bijschriften of zi
 
 ## Een wereld die verder groeit
 
-De Wereldkaart op het eiland toont zes gebieden. Ontgrendelde gebieden zijn te bezoeken; komende gebieden tonen hoeveel rondjes er nog nodig zijn. Elk gebied groeit in zes stappen. De eerste zes schatten en hun mijlpalen zijn behouden, zodat oude profielen meteen dezelfde beloningen terugzien.
+De Wereldkaart op het eiland toont zes gebieden. Ontgrendelde gebieden zijn te bezoeken; het eerstvolgende gebied toont hoeveel rondjes er nog nodig zijn, latere gebieden zijn ‘Nog geheim’. Elk gebied groeit in zes stappen. De eerste zes schatten en hun mijlpalen zijn behouden, zodat oude profielen meteen dezelfde beloningen terugzien.
 
 | Gebied | Gaat open na | Laatste schat na |
 | --- | ---: | ---: |
@@ -163,7 +179,7 @@ De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelij
 
 - Profielen hebben een voornaam/bijnaam, avatar en groep; namen zijn nog niet achteraf te wijzigen.
 - Voortgang staat in IndexedDB, apart per profiel en per browser/websiteadres.
-- Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
+- Het oudergedeelte (achter een rekensom) biedt de voortgang per leerdoel met een tip voor thuis, groep wijzigen, de stapkeuze, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
 - Geen synchronisatie, advertenties of externe lettertypen. De optionele GoatCounter-statistieken tellen alleen gestarte en afgeronde rondjes per spel en groep (zie boven).
 - De voorleesknoppen gebruiken 1.253 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.

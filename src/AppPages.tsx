@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Check, Flag, LockKeyhole, Play, Trophy, Map, ChevronLeft } from 'lucide-react';
 import { activities, stickers, worlds, type Activity, type Group, type Skill, type World } from './content';
 import { Art, AvatarArt } from './Art';
-import { islandProgress, islandRegions } from './progression';
+import { islandProgress, islandRegions, type IslandReward } from './progression';
+import { DAILY_ROUNDS } from './learning/today';
 import { Island, ActivityArt } from './Island';
 import type { Profile } from './storage';
 
@@ -16,24 +17,30 @@ export function AppTabs({page,onChange}:{page:AppPage;onChange:(page:AppPage)=>v
     ['island','Eiland',Flag],['lessons','Lessen',BookOpen],['treasures','Schatten',Trophy]
   ] as const).map(([id,title,Icon])=><button key={id} className={page===id?'selected':''} aria-current={page===id?'page':undefined} onClick={()=>onChange(id)}><span><Icon size={27}/></span>{title}</button>)}</nav>;
 }
-export function IslandHome({profile,loaded,disabled,onPlay,onTreasures,onProfile}:{profile?:Profile;loaded:boolean;disabled:boolean;onPlay:()=>void;onTreasures:()=>void;onProfile:()=>void}){
+export function IslandHome({profile,loaded,disabled,today,celebrate,onPlay,onTreasures,onProfile}:{profile?:Profile;loaded:boolean;disabled:boolean;today:number;celebrate?:IslandReward;onPlay:()=>void;onTreasures:()=>void;onProfile:()=>void}){
   const rounds=profile?.rounds??0,progress=islandProgress(rounds);
-  const [selected,setSelected]=useState(progress.currentRegion.id),[showMap,setShowMap]=useState(false);
+  const [selected,setSelected]=useState(progress.currentRegion.id),[showMap,setShowMap]=useState(false),[named,setNamed]=useState<IslandReward|null>(null);
   useEffect(()=>{setSelected(islandProgress(rounds).currentRegion.id);setShowMap(false);},[profile?.id,progress.currentRegion.id]);
+  useEffect(()=>setNamed(null),[profile?.id,selected]);
   const region=islandRegions.find(r=>r.id===selected&&r.unlockAt<=rounds)??progress.currentRegion;
+  const nextRegion=islandRegions.find(r=>r.unlockAt>rounds),doneToday=!!profile&&today>=DAILY_ROUNDS;
+  const fresh=celebrate&&celebrate.regionId===region.id?celebrate:undefined;
+  const bubble=named?`${named.name}!`:fresh?`Nieuw: ${fresh.name}!`:doneToday?'Tot morgen!':'Ga je mee?';
+  const title=showMap?'Jouw eilanden':!profile?'Jouw avontuur begint hier!':doneToday?'Klaar voor vandaag!':`Hoi ${profile.name}!`;
   return <section className={`island-home theme-${region.theme}`} aria-labelledby="home-title">
-    <div className="home-heading"><h1 id="home-title" tabIndex={-1}>{showMap?'Jouw eilanden':profile?`Hoi ${profile.name}!`:'Jouw avontuur begint hier!'}</h1><span className="home-spark" aria-hidden="true">✦</span></div>
-    <div className="island-toolbar"><span className="island-level">Level {progress.level}</span><button className="world-map-button" onClick={()=>setShowMap(!showMap)}>{showMap?<ChevronLeft size={18}/>:<Map size={18}/>} {showMap?'Terug':'Wereldkaart'}</button></div>
+    <div className="home-heading"><h1 id="home-title" tabIndex={-1}>{title}</h1><span className="home-spark" aria-hidden="true">✦</span></div>
+    <div className="island-toolbar">{profile&&<span className={`today-dots ${doneToday?'is-done':''}`} role="img" aria-label={`Vandaag ${Math.min(today,DAILY_ROUNDS)} van de ${DAILY_ROUNDS} rondjes gespeeld`}>{Array.from({length:DAILY_ROUNDS},(_,i)=><i key={i} className={i<today?'filled':''}/>)}</span>}<button className="world-map-button" onClick={()=>setShowMap(!showMap)}>{showMap?<ChevronLeft size={18}/>:<Map size={18}/>} {showMap?'Terug':'Wereldkaart'}</button></div>
     {showMap?<div className="island-map" aria-label="Eilandenwereld">{islandRegions.map((r,index)=>{
-      const unlocked=rounds>=r.unlockAt;
-      return <button key={r.id} className={`island-map-card ${unlocked?'open':'locked'} ${region.id===r.id?'current':''}`} disabled={!unlocked} aria-label={`${r.name}${unlocked?'':`, nog ${r.unlockAt-rounds} ${r.unlockAt-rounds===1?'rondje':'rondjes'}`}`} onClick={()=>{setSelected(r.id);setShowMap(false);}}><span className="map-number">{index+1}</span><Island discoveries={rounds} region={r}/><strong>{r.name}</strong><span className="map-card-status">{unlocked?`${r.rewards.filter(reward=>reward.rounds<=rounds).length} / ${r.rewards.length} schatten`:<><LockKeyhole size={14}/>Nog {r.unlockAt-rounds} {r.unlockAt-rounds===1?'rondje':'rondjes'}</>}</span></button>;
+      // Only the next island shows how far away it is; later ones simply stay a surprise.
+      const unlocked=rounds>=r.unlockAt,next=r===nextRegion,left=r.unlockAt-rounds,distance=`Nog ${left} ${left===1?'rondje':'rondjes'}`;
+      return <button key={r.id} className={`island-map-card ${unlocked?'open':'locked'} ${region.id===r.id?'current':''}`} disabled={!unlocked} aria-label={`${r.name}${unlocked?'':next?`, ${distance.toLowerCase()}`:', nog geheim'}`} onClick={()=>{setSelected(r.id);setShowMap(false);}}><span className="map-number">{index+1}</span><Island discoveries={rounds} region={r}/><strong>{r.name}</strong><span className="map-card-status">{unlocked?`${r.rewards.filter(reward=>reward.rounds<=rounds).length} / ${r.rewards.length} schatten`:<><LockKeyhole size={14}/>{next?distance:'Nog geheim'}</>}</span></button>;
     })}</div>:<>
       <div className="island-scene"><div className="scene-sun" aria-hidden="true"><Art kind={region.theme==='stars'?'moon':'sun'}/></div><div className="scene-cloud cloud-one" aria-hidden="true"/><div className="scene-cloud cloud-two" aria-hidden="true"/>
-        <div className="home-island"><Island discoveries={rounds} region={region}/></div>
-        <div className="island-buddy" aria-hidden="true"><AvatarArt avatar={profile?.avatar}/><i>Ga je mee?</i></div>
+        <div className="home-island"><Island discoveries={rounds} region={region} highlight={fresh?.art} onTreasure={profile?setNamed:undefined}/></div>
+        <div className="island-buddy" aria-live="polite"><AvatarArt avatar={profile?.avatar}/><i key={bubble}>{bubble}</i></div>
         <span className="island-name">{region.name}</span>
       </div>
-      <div className="home-actions"><button className="big-play" disabled={!loaded||disabled} onClick={profile?onPlay:onProfile}><Play size={26} fill="currentColor"/>{profile?'Ga spelen':'Kies je vriendje'}<ArrowRight size={25}/></button>
+      <div className="home-actions"><button className="big-play" disabled={!loaded||disabled} onClick={profile?onPlay:onProfile}><Play size={26} fill="currentColor"/>{!profile?'Kies je vriendje':doneToday?'Nog een keer':'Ga spelen'}<ArrowRight size={25}/></button>
         {profile&&<button className="next-treasure" onClick={onTreasures}><Art kind={progress.nextReward?.art??'gem'}/><span>Nog {progress.nextAt-rounds} {progress.nextAt-rounds===1?'rondje':'rondjes'}</span></button>}
       </div>
     </>}
@@ -53,10 +60,10 @@ export function LessonsPage({group,disabled,onChoose}:{group:Group;disabled:bool
 export function TreasuresPage({rounds,disabled,onPlay}:{rounds:number;disabled:boolean;onPlay:()=>void}){
   const progress=islandProgress(rounds),[selected,setSelected]=useState(progress.currentRegion.id);
   const region=islandRegions.find(r=>r.id===selected)??islandRegions[0];
-  return <section className="treasures-page" aria-labelledby="treasures-title"><div className="page-heading"><span className="heading-badge treasure-heading"><Trophy size={27}/></span><h1 id="treasures-title" tabIndex={-1}>Jouw schatten</h1><span className="treasure-total">{progress.earned.length} / {stickers.length}</span></div>
+  return <section className="treasures-page" aria-labelledby="treasures-title"><div className="page-heading"><span className="heading-badge treasure-heading"><Trophy size={27}/></span><h1 id="treasures-title" tabIndex={-1}>Jouw schatten</h1></div>
     <div className="region-picker" role="group" aria-label="Kies een eiland">{islandRegions.map(r=><button key={r.id} aria-pressed={selected===r.id} onClick={()=>setSelected(r.id)}><Art kind={r.art}/><span>{r.name}</span>{r.unlockAt>rounds&&<LockKeyhole size={13}/>}</button>)}</div>
     <div className="region-heading"><h2>{region.name}</h2><span>{region.rewards.filter(r=>r.rounds<=rounds).length} / {region.rewards.length}</span></div>
-    <div className="treasure-shelf">{region.rewards.map(s=><div key={s.id} className={`treasure-card ${rounds>=s.rounds?'earned':'locked'}`}><div className="treasure-token"><Art kind={s.art}/></div><h2>{s.name}</h2>{rounds>=s.rounds?<span className="treasure-owned"><Check size={17}/>Verzameld!</span>:<span className="treasure-lock"><LockKeyhole size={16}/>Nog {s.rounds-rounds} {s.rounds-rounds===1?'rondje':'rondjes'}</span>}</div>)}</div>
+    <div className="treasure-shelf">{region.rewards.map(s=><div key={s.id} className={`treasure-card ${rounds>=s.rounds?'earned':'locked'}`}><div className="treasure-token"><Art kind={s.art}/></div><h2>{s.name}</h2>{rounds>=s.rounds?<span className="treasure-owned"><Check size={17}/>Verzameld!</span>:<span className="treasure-lock"><LockKeyhole size={16}/>{s===progress.nextReward?`Nog ${s.rounds-rounds} ${s.rounds-rounds===1?'rondje':'rondjes'}`:'Nog geheim'}</span>}</div>)}</div>
     {rounds>=stickers.at(-1)!.rounds&&<div className="expedition-card"><Art kind="gem"/><div><h2>Verkennersrang {progress.expeditionRank+1}</h2><p>{progress.expeditionRank} {progress.expeditionRank===1?'edelsteen':'edelstenen'} · Nog {progress.nextAt-rounds} rondjes</p></div></div>}
     <button className="big-play treasure-play" disabled={disabled} onClick={onPlay}><Play fill="currentColor" size={23}/>Ga spelen<ArrowRight size={24}/></button>
   </section>;
