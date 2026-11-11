@@ -1,0 +1,51 @@
+/* Vandaag: three dots fill up with the rounds played today. */
+.today-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 2px solid #fff5;
+  border-radius: 999px;
+  background: #fff1c7;
+}
+.today-dots i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fffdf5;
+  box-shadow: inset 0 0 0 2px #d8bd78;
+}
+.today-dots i.filled {
+  background: #e9b949;
+  box-shadow: inset 0 0 0 2px #c79a35;
+}
+.today-dots.is-done {
+  background: #d9f0d2;
+}
+.today-dots.is-done i.filled {
+  background: #6fb07f;
+  box-shadow: inset 0 0 0 2px #4f9163;
+}
+.day-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 18px auto 0;
+  padding: 15px 18px;
+  max-width: 370px;
+  border-radius: 22px;
+  background: #e6f5df;
+  text-align: left;
+}
+.day-done .story-art {
+  width: 58px;
+  height: 58px;
+  flex: none;
+}
+.day-done strong {
+  font-size: 19px;
+}
+.day-done p {
+  margin: 3px 0 0;
+}

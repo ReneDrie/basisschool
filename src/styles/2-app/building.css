@@ -1,0 +1,375 @@
+/* Construction games share the island's timber, water and storybook palette. */
+.building-game {
+  max-width: 690px;
+  margin: 0 auto 15px;
+  border: 2px solid #c7d6d2;
+  border-radius: 23px;
+  overflow: hidden;
+  background: #f5f5e7;
+  color: #46616a;
+  box-shadow: 0 4px 0 #809b9a16;
+}
+.building-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 62px;
+  background: #e1e9d3;
+  border-bottom: 2px solid #cbd7c2;
+  position: relative;
+  font-size: 18px;
+}
+.building-banner > .story-art {
+  position: absolute;
+  right: 19px;
+  width: 44px;
+  height: 44px;
+}
+.building-timber {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 35px;
+}
+.building-order-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 19px;
+  padding: 21px 20px 5px;
+}
+.building-supply,
+.building-order-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.building-supply > button,
+.building-order-slots > button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #d7d5bb;
+  border-radius: 13px;
+  background: #fffdf3;
+  padding: 9px;
+  min-height: 57px;
+  text-align: left;
+}
+.building-supply > button > b,
+.building-order-slots > button > b {
+  width: 21px;
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #7b8e84;
+  text-align: center;
+}
+.building-supply > button:disabled {
+  opacity: 0.25;
+}
+.building-order-slots > button {
+  border: 2px dashed #bdcbb9;
+  background: #e9efde;
+}
+.building-order-slots > button:has(svg) {
+  border-style: solid;
+  background: #fff7e5;
+}
+.building-order-slots > button:disabled {
+  opacity: 1;
+}
+.building-slot-guide {
+  height: 6px;
+  background: #d5dfcb;
+  border-radius: 10px;
+  flex: 1;
+}
+.building-instruction {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 650;
+  color: #779189;
+  padding: 12px 15px;
+}
+.building-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 20px 18px;
+}
+.building-reset {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background: none;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #7b9087;
+}
+.building-submit {
+  border: 2px solid #b8cd9a;
+  background: #d7e6b7;
+  box-shadow: 0 3px 0 #a8bf8d;
+  border-radius: 15px;
+  font-size: 18px;
+  min-height: 50px;
+  color: #4e6952;
+}
+.building-controls button:disabled {
+  opacity: 0.5;
+}
+.building-block {
+  display: block;
+  width: 52px;
+  height: 52px;
+  max-width: 100%;
+}
+.building-pieces {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 20px 15px 5px;
+}
+.building-pieces > button {
+  position: relative;
+  border: 2px solid #e4dfc8;
+  border-radius: 15px;
+  background: #fffdf3;
+  padding: 7px;
+  min-width: 65px;
+  min-height: 65px;
+}
+.building-pieces > button[aria-pressed='true'] {
+  border-color: #e4b85e;
+  background: #fff2c8;
+  box-shadow: 0 0 0 3px #efd9a3;
+}
+.building-pieces > button:disabled {
+  opacity: 0.24;
+}
+.building-bins {
+  display: grid;
+  gap: 13px;
+  padding: 4px 20px 9px;
+}
+.building-bin {
+  border: 2px solid #c6d2bf;
+  border-radius: 17px;
+  background: #e6eddc;
+  overflow: hidden;
+  min-width: 0;
+}
+.building-bin-target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  min-height: 94px;
+  border: 0;
+  border-bottom: 2px solid #c6d2bf;
+  background: #f6f7ec;
+  padding: 12px 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.building-bin-target > .building-block {
+  opacity: 0.4;
+  width: 42px;
+  height: 42px;
+  filter: grayscale(1);
+}
+.building-bin-target:disabled {
+  opacity: 1;
+}
+.building-bin-target:not(:disabled):hover {
+  background: #fff3d6;
+}
+.building-bin-pieces {
+  display: flex;
+  justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 5px;
+  min-height: 104px;
+}
+.building-bin-pieces > button {
+  border: 0;
+  border-radius: 9px;
+  background: #fff9e9;
+  padding: 3px;
+  min-width: 42px;
+  min-height: 42px;
+}
+.building-bin-pieces .building-block {
+  width: 36px;
+  height: 36px;
+}
+.building-bin-pieces > button:disabled {
+  opacity: 1;
+}
+.building-bridge {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 4px auto 0;
+  max-height: 310px;
+}
+.building-measure-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px 20px 5px;
+}
+.building-measure-options > button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 68px;
+  border: 2px solid #d6d7c3;
+  border-radius: 16px;
+  background: #fffdf3;
+  padding: 12px;
+}
+.building-measure-options strong {
+  white-space: nowrap;
+  font-size: 19px;
+  min-width: 55px;
+}
+.building-measure-options .building-timber {
+  flex: 1;
+  min-width: 0;
+}
+.building-measure-options > button[aria-pressed='true'] {
+  border-color: #e3b568;
+  background: #fff1ca;
+  box-shadow: 0 2px 0 #d3b77d;
+}
+.building-measure-options > button:disabled {
+  opacity: 1;
+}
+@media (max-width: 540px) {
+  .building-banner {
+    min-height: 54px;
+    font-size: 16px;
+  }
+  .building-banner > .story-art {
+    width: 37px;
+    height: 37px;
+    right: 12px;
+  }
+  .building-order-layout {
+    padding: 14px 10px 2px;
+    gap: 10px;
+  }
+  .building-supply,
+  .building-order-slots {
+    gap: 9px;
+  }
+  .building-supply > button,
+  .building-order-slots > button {
+    min-height: 52px;
+    padding: 7px 4px;
+    gap: 3px;
+    border-radius: 11px;
+  }
+  .building-supply > button > b,
+  .building-order-slots > button > b {
+    width: 16px;
+    font-size: 11px;
+  }
+  .building-instruction {
+    font-size: 12px;
+    padding: 11px 10px;
+  }
+  .building-controls {
+    padding: 11px 12px 15px;
+    gap: 8px;
+  }
+  .building-submit {
+    font-size: 16px;
+    padding: 10px 13px;
+    gap: 8px;
+  }
+  .building-reset {
+    font-size: 12px;
+  }
+  .building-pieces {
+    gap: 8px;
+    padding: 15px 9px 4px;
+  }
+  .building-pieces > button {
+    min-width: 52px;
+    min-height: 52px;
+    padding: 5px;
+    border-radius: 12px;
+  }
+  .building-pieces .building-block {
+    width: 39px;
+    height: 39px;
+  }
+  .building-bins {
+    gap: 8px;
+    padding: 3px 9px 8px;
+  }
+  .building-bin {
+    border-radius: 12px;
+  }
+  .building-bin-target {
+    font-size: 11px;
+    padding: 8px 3px;
+    min-height: 80px;
+  }
+  .building-bin-target > .building-block {
+    width: 34px;
+    height: 34px;
+  }
+  .building-bin-pieces {
+    gap: 5px;
+    min-height: 100px;
+    padding: 8px 3px;
+  }
+  .building-bin-pieces > button {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 3px;
+  }
+  .building-bin-pieces .building-block {
+    width: 30px;
+    height: 30px;
+  }
+  .building-measure-options {
+    gap: 9px;
+    padding: 10px 10px 4px;
+  }
+  .building-measure-options > button {
+    padding: 8px;
+    gap: 6px;
+    min-height: 59px;
+    border-radius: 12px;
+    flex-direction: column;
+  }
+  .building-measure-options strong {
+    font-size: 16px;
+    min-width: 0;
+  }
+  .building-measure-options .building-timber {
+    width: 100%;
+    height: 25px;
+    flex: auto;
+  }
+  .building-bridge {
+    margin-top: 5px;
+  }
+}
+.building-supply .building-timber,
+.building-order-slots .building-timber {
+  min-width: 0;
+  flex: 1;
+}

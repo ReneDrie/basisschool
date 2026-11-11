@@ -1,0 +1,109 @@
+.leave-round-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border: 3px solid #fff;
+  border-radius: 32px;
+  padding: 28px 26px;
+  text-align: center;
+  color: var(--app-ink);
+  background: radial-gradient(ellipse at 50% 0%, #d9efdc, transparent 65%), #fffef5;
+  box-shadow:
+    0 7px 0 #bdcfbb,
+    0 24px 70px #25465d35;
+  animation: celebration-pop 0.3s both;
+}
+.leave-round-dialog::backdrop {
+  background: #284b6052;
+  backdrop-filter: blur(3px);
+}
+.leave-round-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  min-width: 40px;
+  min-height: 40px;
+  color: #597d7e;
+}
+.leave-round-art {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 8px;
+  width: 110px;
+  height: 110px;
+}
+.leave-round-art .story-art {
+  width: 100%;
+  height: 100%;
+}
+.leave-round-dialog h2 {
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px;
+}
+.leave-round-dialog p {
+  font-size: 17px;
+  line-height: 1.5;
+  color: #56736e;
+  margin: 0;
+}
+.leave-round-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+.leave-round-actions > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 56px;
+  border-radius: 18px;
+  font-size: 19px;
+}
+.leave-round-actions > .secondary-button {
+  background: #f2f5ec;
+  border: 2px solid #dbe6d7;
+  color: #536f6d;
+  font-size: 17px;
+}
+.leave-round-dialog button:focus-visible {
+  outline: 3px solid #087f8c;
+  outline-offset: 4px;
+}
+@media (max-height: 500px) {
+  .leave-round-dialog {
+    padding: 16px 22px;
+    border-radius: 25px;
+  }
+  .leave-round-art {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 4px;
+  }
+  .leave-round-dialog h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+  .leave-round-dialog p {
+    font-size: 15px;
+  }
+  .leave-round-actions {
+    margin-top: 16px;
+    gap: 10px;
+  }
+  .leave-round-actions > button {
+    min-height: 48px;
+    font-size: 17px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .leave-round-dialog {
+    animation: none;
+  }
+}

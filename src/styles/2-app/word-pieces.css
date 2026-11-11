@@ -1,0 +1,338 @@
+/* Word pieces and sentence cards share the same drag and tap controls. */
+.language-game {
+  max-width: 660px;
+  margin: 0 auto;
+}
+.language-clue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 19px;
+  padding: 16px 18px;
+  border-radius: 23px;
+  background: #ffffff75;
+  margin: 0 0 12px;
+}
+.language-picture {
+  flex: 0 0 90px;
+  display: grid;
+  place-items: center;
+}
+.language-picture .story-art {
+  width: 90px;
+  height: 90px;
+}
+.language-clue p {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+.language-listen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 9px 14px;
+  background: #fffdf5;
+  border: 2px solid #fff;
+  border-radius: 16px;
+  color: #42697a;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 3px 0 #b9ccd04d;
+}
+.language-model {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 17px;
+  background: #fffdf5;
+  text-align: center;
+  line-height: 1.4;
+  margin: 12px 0;
+}
+.language-model small {
+  font-size: 13px;
+  color: #667f87;
+}
+.language-model strong {
+  font-size: 23px;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.language-show-model {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: #597483;
+  margin: 2px auto 8px;
+  padding: 7px 12px;
+}
+.language-instruction {
+  text-align: center;
+  color: #42697a;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 12px 0 16px;
+  line-height: 1.4;
+}
+.language-instruction span {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.language-slots {
+  display: grid;
+  gap: 9px;
+}
+.language-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 79px;
+  padding: 7px 5px 10px;
+  background: #ffffff55;
+  border: 2px dashed #9a95b5;
+  border-radius: 15px;
+  color: #294c60;
+  font: inherit;
+  font-size: 25px;
+  font-weight: 750;
+  touch-action: none;
+  overflow-wrap: anywhere;
+}
+.language-slot small {
+  font-size: 11px;
+  color: #7b8498;
+  line-height: 1;
+}
+.language-slot.has-card {
+  background: #fffdf5;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 0 #b9ccd04d;
+  cursor: grab;
+}
+.sentence-game .language-slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.sentence-game .language-slot {
+  flex: 1 1 88px;
+  min-height: 66px;
+  font-size: 19px;
+  padding: 5px 10px 9px;
+}
+.language-reading {
+  text-align: center;
+  font-size: 23px;
+  font-weight: 750;
+  color: #42697a;
+  line-height: 1.4;
+  min-height: 33px;
+  margin: 13px 0;
+  overflow-wrap: anywhere;
+}
+.sentence-game .language-reading {
+  font-size: 19px;
+}
+.language-bank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 98px;
+  padding: 16px 8px;
+  border: 2px solid #ffffff80;
+  border-radius: 20px;
+  background: #ffffff35;
+  margin: 0 0 18px;
+}
+.language-tile {
+  display: grid;
+  place-items: center;
+  min-width: 54px;
+  min-height: 61px;
+  max-width: 100%;
+  padding: 9px 13px;
+  border: 2px solid #fff;
+  border-radius: 16px;
+  background: #fffdf5;
+  color: #294c60;
+  box-shadow: 0 4px 0 #b9ccd04d;
+  font: inherit;
+  font-size: 25px;
+  font-weight: 750;
+  cursor: grab;
+  touch-action: none;
+  overflow-wrap: anywhere;
+}
+.sentence-game .language-tile {
+  font-size: 19px;
+  min-height: 49px;
+  padding: 8px 12px;
+}
+.language-game .is-selected {
+  background: #e6f6f2;
+  border-color: #318f9b;
+}
+.language-game .is-dragging {
+  opacity: 0.25;
+  cursor: grabbing;
+}
+.language-game .is-drop-target {
+  background: #e6f6f2;
+  border-color: #318f9b;
+  border-style: solid;
+  box-shadow: 0 0 0 4px #318f9b30;
+}
+.language-tile.language-drag-preview {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+  transform: rotate(-3deg) scale(1.04);
+  border-color: #318f9b;
+  box-shadow: 0 14px 28px #294c604d;
+  opacity: 1;
+  font-size: inherit;
+}
+.language-bank-ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #426f5a;
+  text-align: center;
+}
+.language-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.language-controls > .secondary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 16px;
+  min-height: 50px;
+}
+.language-controls > .primary-button {
+  font-size: 19px;
+  min-height: 54px;
+  gap: 9px;
+}
+@media (max-width: 540px) {
+  .language-clue {
+    gap: 12px;
+    padding: 12px 10px;
+  }
+  .language-picture {
+    flex-basis: 66px;
+  }
+  .language-picture .story-art {
+    width: 66px;
+    height: 66px;
+  }
+  .language-clue p {
+    font-size: 16px;
+  }
+  .language-listen {
+    font-size: 14px;
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .language-model strong {
+    font-size: 21px;
+  }
+  .language-instruction {
+    font-size: 16px;
+  }
+  .language-slots {
+    gap: 7px;
+  }
+  .language-slot {
+    font-size: 21px;
+    min-height: 65px;
+    padding: 6px 3px 9px;
+    border-radius: 13px;
+  }
+  .sentence-game .language-slot {
+    flex-basis: 78px;
+    min-height: 58px;
+    font-size: 17px;
+    padding: 5px 7px 8px;
+  }
+  .language-tile {
+    min-width: 45px;
+    min-height: 54px;
+    font-size: 22px;
+    padding: 7px 10px;
+    border-radius: 13px;
+  }
+  .sentence-game .language-tile {
+    font-size: 17px;
+    padding: 7px 10px;
+    min-height: 46px;
+  }
+  .language-bank {
+    gap: 8px;
+    padding: 13px 7px;
+    min-height: 88px;
+  }
+  .language-reading {
+    font-size: 21px;
+  }
+  .sentence-game .language-reading {
+    font-size: 17px;
+  }
+  .language-bank-ready {
+    font-size: 14px;
+  }
+  .language-controls > .secondary-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .language-controls > .primary-button {
+    font-size: 17px;
+    padding: 11px 14px;
+  }
+}
+
+@media (max-width: 540px) {
+  .sentence-game .language-slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 360px) {
+  .language-controls {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .language-controls > button {
+    width: 100%;
+  }
+}

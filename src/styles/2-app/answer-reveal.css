@@ -1,0 +1,19 @@
+/* After two wrong tries the right answer pulses. */
+.answer-button.reveal-answer {
+  border-color: #58a88a;
+  background: #e2f5e3;
+  animation: reveal-pulse 1.2s ease-in-out infinite;
+}
+.answer-grid:has(.reveal-answer) .answer-button:not(.reveal-answer) {
+  filter: grayscale(0.5) opacity(0.5);
+}
+@keyframes reveal-pulse {
+  50% {
+    box-shadow: 0 0 0 8px #7cc79a66;
+    transform: scale(1.03);
+  }
+}
+.repeat-label {
+  background: #e4f1f6;
+  color: #2f6475;
+}

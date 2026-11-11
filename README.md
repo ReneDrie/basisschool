@@ -15,7 +15,7 @@ De app gebruikt React, TypeScript, Vite en vite-plugin-pwa. Alle oefeningen zitt
 
 ## Gebruiksstatistieken met GoatCounter
 
-De productiebuild is ingesteld op [renedrie.goatcounter.com](https://renedrie.goatcounter.com/). Een extra omgevingsvariabele of API-sleutel is niet nodig. Dit adres staat als publieke standaard in `src/main.tsx`.
+De productiebuild is ingesteld op [renedrie.goatcounter.com](https://renedrie.goatcounter.com/). Een extra omgevingsvariabele of API-sleutel is niet nodig. Dit adres staat als publieke standaard in `src/app/environment.ts`.
 
 Het dashboard blijft voorlopig privé: alleen wie bij GoatCounter kan inloggen heeft toegang. Dit heeft geen invloed op het verzamelen van statistieken. Na publicatie van de nieuwe appbuild staat bij **Voor ouders → Gebruik van de app → Bekijk de statistieken** een link naar het dashboard; daar moet je inloggen.
 
@@ -197,10 +197,15 @@ De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelij
 
 ```sh
 npm test
+npm run lint
+npm run format:check
 npm run build
 npm run check:offline
+npm run test:e2e
 npm run preview
 ```
+
+`npm run test:e2e` bouwt de app en draait vier Playwright-smoketests op de productiebuild (`e2e/`), stil met `?test=1` en zonder service worker: in één tik een rondje starten, een heel rondje met het tonen van het antwoord, het eiland versieren en bewaren, en het oudergedeelte achter de som. De eerste keer is `npx playwright install chromium` nodig. `npm run format` zet de opmaak goed met Prettier.
 
 Browsercontroles draaien stil. De ontwikkelserver (`npm run dev`) dempt zowel voorleesfragmenten als de geluidjes bij goede antwoorden. Gebruik bij automatische browsercontroles altijd `?test=1`, ook op een productiepreview, bijvoorbeeld `http://127.0.0.1:4173/?test=1`. Deze testmodus blijft stil wanneer een test de geluidsknop aanzet. De luisterfragmenten worden wel geladen en stil afgespeeld, zodat laadfouten en afspeelvolgordes gecontroleerd kunnen worden.
 
@@ -208,7 +213,7 @@ De normale productie-URL heeft standaard geluid. Er wordt geen stille productieb
 
 De inhoudstests controleren alle groepen en niveaus, zes, acht of tien unieke opdrachten per ronde volgens de groep, leerdoelen, rekenantwoorden, overeenstemming tussen diagrammen en antwoorden, eenduidige antwoordopties, de audiolijst, beloningen en reservekopieën. Oude reservekopieën (versie 1) blijven leesbaar; groep 3 en de nieuwe onderwerpen worden ook geaccepteerd. Tests voor de PWA-updater controleren het wachten op volledige installatie, bestaande updates, netwerkfouten, time-outs, mislukte downloads en expliciete activatie vóór herladen. De offline-controle controleert of de productiebuild alle benodigde luisterfragmenten, afbeeldingen, code en stijlen in de precachelijst bevat.
 
-De 66 tests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Vijf verhalenrondjes in groep 2 bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
+De unittests controleren onder meer alle gegenereerde antwoorden, niveaus, luisterfragmenten, kleine uitgeputte oefenbanken en behoud van beide geschiedenissen in reservekopieën. Een simulatie van honderd groep 4-rekenrondjes bevat duizend verschillende vragen; in de eerste vijftig rondjes herhaalt ook de onderliggende som zich niet. Vijf verhalenrondjes in groep 2 bevatten samen dertig verschillende verhaalsoorten. De maximale geschiedenis en een reservekopie met twintig volle profielen blijven binnen de opslag- en importgrenzen.
 
 Twee volledige groep 4-rekenrondjes zijn in de browser afgerond, waarvan het tweede na herladen met de productieserver uit. Alle twintig vragen verschilden en beide sterren bleven bewaard. Ook volledige rondjes met de nieuwe vormtelvragen en breuken zijn offline afgerond en op telefoonformaat bekeken; de taartpunten, stroken en roosters gaven de juiste antwoorden.
 
@@ -241,6 +246,19 @@ De service worker bewaart de app, oefeningen, illustraties en audio. Het control
 
 Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen verdwijnen wanneer websitegegevens worden gewist of de browser opslag opruimt. Download daarom af en toe een reservekopie. Een andere browser, ander domein of andere iPad deelt deze opslag niet automatisch.
 
+## Codestructuur
+
+- `src/main.tsx`: alleen het startpunt.
+- `src/app/`: de app-schil (`App.tsx`, kop), hooks voor profielen (`useProfiles`), voorlezen (`useSpeech`) en updates, en kleine hulpjes zoals reservekopieën, analytics en het antwoordgeluidje.
+- `src/screens/`: één bestand per scherm; `screens/round/` bevat het rondje, de vraagkaart, het feestje na een goed antwoord en de uitslag.
+- `src/dialogs/`: profielen, de oudersom, het oudergedeelte met inzichten, de stapkeuze en de installatie-uitleg.
+- `src/components/`: gedeelde onderdelen zoals `Modal` en de navigatie.
+- `src/questions/`: meerkeuze, invullen en vraagplaatjes. `src/games/`: de minispellen. `src/island/` en `src/art/`: het eiland en de illustraties.
+- `src/learning/`: alle leerinhoud en regels, zonder React, met unittests in `tests/`.
+- `src/styles/`: de stijlen. Latere bestanden overschrijven eerdere, dus houd de volgorde in `index.css` aan.
+
+Prettier en ESLint (met de react-hooks-regels) houden de opmaak gelijk. Bewuste uitzonderingen op de afhankelijkheden van hooks staan met uitleg in de code.
+
 ## Inhoud uitbreiden
 
 - `src/content.ts`: publieke ingang voor de oefenbanken, niveaus, rondjes en stickers.
@@ -250,27 +268,26 @@ Profielen worden niet naar Vercel gestuurd. Ze zijn apparaatgebonden en kunnen v
 - `src/learning/group3.ts`: het startaanbod voor groep 3.
 - `src/learning/new-topics.ts`: de zes nieuwe onderwerpen, ieder met twee niveaus.
 - `src/learning/rounds.ts`: rondjes samenstellen, recente herhaling beperken, oefensoorten spreiden en antwoorden controleren.
-- `src/MatchingGame.tsx` en `src/learning/matching.ts`: open paren en memory, met leeftijdsspecifieke kaarten en controle van koppelingen.
+- `src/games/MatchingGame.tsx` en `src/learning/matching.ts`: open paren en memory, met leeftijdsspecifieke kaarten en controle van koppelingen.
 - `src/learning/variants.ts`: varianten genereren binnen het getalbereik en leerdoel.
 - `src/learning/repetition.ts`: herkenning van inhoudelijk dezelfde oefening, los van vormgeving en antwoordvolgorde.
 - `src/learning/extended-content.ts`: extra letter-, spelling- en leesvragen.
-- `src/learning/rhymes.ts`, `src/RhymeWord.tsx` en `src/WordArt.tsx`: veertig rijmvragen met geïllustreerde vraagwoorden en antwoordkaarten.
+- `src/learning/rhymes.ts`, `src/questions/RhymeWord.tsx` en `src/art/WordArt.tsx`: veertig rijmvragen met geïllustreerde vraagwoorden en antwoordkaarten.
 - `src/learning/variation-assets.ts`: gedeelde patronen en vormnamen voor oefeningen en audio.
 - `src/learning/audio.ts`: gedeelde lijst van instructies, hints en antwoordaudio.
-- `src/QuestionAnswers.tsx` en `src/OpenAnswer.tsx`: meerkeuze en invullen.
-- `src/QuestionVisual.tsx`: klokken, munten, breuken, patronen, vergelijkingen en grafieken.
+- `src/questions/QuestionAnswers.tsx` en `src/questions/OpenAnswer.tsx`: meerkeuze en invullen.
+- `src/questions/QuestionVisual.tsx`: klokken, munten, breuken, patronen, vergelijkingen en grafieken.
 - `src/storage.ts`: profielmodel, opslag en controle van reservekopieën.
-- `src/main.tsx`: profielen, niveaukeuze, speelrondjes en ouderfuncties.
-- `src/touch-controls.ts`: Safari-gebaren en lange-drukmenu's beperken, met behoud van normale invoer en snelle antwoordtikken.
-- `src/AppPages.tsx`: Eiland, Lessen, Schatten en de vaste navigatie.
-- `src/app.css`: de app-indeling, grotere knoppen en speelsere kinderschermen.
-- `src/StoryGame.tsx`, `src/StoryScene.tsx`, `src/ExtraStoryScene.tsx` en `src/learning/stories.ts`: verhaalvolgordes, illustraties, begripsvragen en lokale vertellingen.
-- `src/BuildingGame.tsx` en `src/learning/building.ts`: blokken sorteren, plankvolgordes en brugmetingen.
-- `src/ShopGame.tsx` en `src/learning/shop.ts`: winkelbediening, opdrachten en controle van boodschappen/betalingen.
+- `src/app/App.tsx`: profielen, niveaukeuze, speelrondjes en ouderfuncties; `src/learning/round-state.ts` bevat de regels van een rondje.
+- `src/app/touch-controls.ts`: Safari-gebaren en lange-drukmenu's beperken, met behoud van normale invoer en snelle antwoordtikken.
+- `src/screens/`: Eiland, Lessen, Schatten en het speelrondje; `src/components/AppTabs.tsx` is de vaste navigatie.
+- `src/games/StoryGame.tsx`, `src/games/StoryScene.tsx`, `src/games/ExtraStoryScene.tsx` en `src/learning/stories.ts`: verhaalvolgordes, illustraties, begripsvragen en lokale vertellingen.
+- `src/games/BuildingGame.tsx` en `src/learning/building.ts`: blokken sorteren, plankvolgordes en brugmetingen.
+- `src/games/ShopGame.tsx` en `src/learning/shop.ts`: winkelbediening, opdrachten en controle van boodschappen/betalingen.
 - `src/progression.ts`: gebieden, mijlpalen en verkennersrangen.
-- `src/Art.tsx` en `src/art-catalog.ts`: de gedeelde vectorillustraties en koppeling met bestaande avatars/oefenplaatjes.
-- `src/Island.tsx` en `src/IslandScenery.tsx`: compositie per gebied, landschap en schaalvaste contouren.
-- `src/styles.css` en `src/app.css`: responsive vormgeving.
+- `src/art/Art.tsx` en `src/art/art-catalog.ts`: de gedeelde vectorillustraties en koppeling met bestaande avatars/oefenplaatjes.
+- `src/island/Island.tsx` en `src/island/IslandScenery.tsx`: compositie per gebied, landschap en schaalvaste contouren.
+- `src/styles/`: responsive vormgeving, in kleine bestanden; `src/styles/index.css` laadt ze in cascadevolgorde.
 
 Elke runtimevraag bevat een groep, onderwerp, leerdoel en moeilijkheid. Voeg groepen toe aan `GROUPS`, onderwerpen aan `SKILLS`, en registreer het aanbod in de catalogus. De profielvalidatie gebruikt deze gedeelde lijsten. Voor ieder aangeboden niveau zijn minimaal zes verschillende opdrachten in groep 2, acht in groep 3 en tien in groep 4 en 5 nodig. De gedeelde instelling staat in `QUESTIONS_PER_ADVENTURE` in `src/learning/model.ts`.
 
@@ -364,7 +381,7 @@ Onder **Lessen → Ontdekken → Natuurmissies** staan voor groep 2–5 afwissel
 
 Vragen, hints, aanwijzingen, antwoordkaarten en doelplekken hebben lokale voorleesfragmenten. Cycli hebben een vast genoemd beginpunt; de voedselketen legt uit dat een pijl ‘wordt gegeten door’ betekent. Plaatjes geven nooit alleen het juiste keuzeantwoord weg. De missies gebruiken de bestaande sterren, oefengeschiedenis, felicitaties en opbouw per eiland via **Verras me!**, binnen de gekozen groep.
 
-De inhoud staat in `src/learning/nature.ts`, de eigen illustraties in `src/NatureArt.tsx` en controles op inhoud, volgorde, niveaus, voortgang en audiobestanden in `tests/nature.test.ts`. Nieuwe gesproken tekst wordt op macOS gemaakt met:
+De inhoud staat in `src/learning/nature.ts`, de eigen illustraties in `src/art/NatureArt.tsx` en controles op inhoud, volgorde, niveaus, voortgang en audiobestanden in `tests/nature.test.ts`. Nieuwe gesproken tekst wordt op macOS gemaakt met:
 
 ```sh
 node --experimental-strip-types scripts/generate-audio.mjs --prefix=nature- --encoder=afconvert

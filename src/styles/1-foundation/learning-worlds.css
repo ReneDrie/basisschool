@@ -1,0 +1,330 @@
+/* Pick a learning world first; each world contains a small set of topics. */
+.world-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.world-picker button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  border: 1px solid #e0e5d6;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fffdf7;
+  font-size: 12px;
+  font-weight: 700;
+}
+.world-picker button[aria-pressed='true'] {
+  background: #e7efcf;
+  border-color: #aebf87;
+}
+.world-picker button > span {
+  font-size: 15px;
+  color: #7c8d64;
+}
+.world-picker small {
+  background: #303f380c;
+  border-radius: 50%;
+  min-width: 22px;
+  padding: 2px 5px;
+  text-align: center;
+}
+.world-intro {
+  font-size: 12px;
+  color: #7b8470;
+  margin: 0 0 17px;
+}
+.activity-start-info {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #7b8470;
+  margin: 12px 0 20px;
+}
+.level-picker {
+  display: grid;
+  gap: 12px;
+}
+.level-picker > .secondary-button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  text-align: left;
+  padding: 15px;
+  min-height: 76px;
+  font-size: 15px;
+}
+.level-picker > .secondary-button span {
+  grid-column: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: #7b8470;
+}
+.level-picker > .secondary-button svg {
+  grid-column: 2;
+  grid-row: 1/3;
+}
+.group-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.group-picker button {
+  margin-right: 0 !important;
+  min-height: 46px;
+  flex: 1;
+  padding: 9px 10px !important;
+  white-space: nowrap;
+}
+.learning-clock {
+  display: block;
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 27px;
+}
+.learning-coins {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 17px;
+  margin: 10px auto 30px;
+}
+.learning-coin {
+  height: 95px;
+  width: 95px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 6px double #b37c57;
+  background: #e6b28a;
+  box-shadow: 0 4px 0 #9a77412b;
+  color: #60402e;
+}
+.learning-coin.gold {
+  border-color: #bea24c;
+  background: #f0d990;
+  color: #68571f;
+}
+.learning-coin.euros {
+  border-color: #b0ac91;
+  background: #f0d990;
+  color: #645827;
+  box-shadow:
+    inset 0 0 0 7px #eee9d5,
+    0 4px 0 #9a77412b;
+}
+.learning-coin strong {
+  font-size: 29px;
+  line-height: 1.1;
+}
+.learning-coin span {
+  font-size: 13px;
+}
+.learning-fraction {
+  display: grid;
+  gap: 3px;
+  border: 3px solid #987c64;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #987c64;
+  max-width: 380px;
+  margin: 10px auto 30px;
+}
+.learning-fraction > span {
+  min-height: 65px;
+  background: #fffef8;
+}
+.learning-fraction > span.filled {
+  background: #b87846;
+  background-image: repeating-linear-gradient(135deg, transparent, transparent 12px, #d6a269 12px, #d6a269 16px);
+}
+.learning-pattern {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 5px 0 30px;
+}
+.learning-pattern > span {
+  display: grid;
+  place-items: center;
+  font-size: 35px;
+  width: 49px;
+  height: 54px;
+}
+.learning-pattern > .empty {
+  border: 2px dashed #b0a1bd;
+  border-radius: 10px;
+  font-size: 30px;
+  color: #7d6d8b;
+}
+.learning-comparison {
+  display: grid;
+  gap: 10px;
+  margin: 0 auto 28px;
+  max-width: 500px;
+}
+.comparison-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 8px;
+  background: #fffdf777;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.comparison-row strong {
+  font-size: 13px;
+}
+.comparison-row > span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 25px;
+}
+.learning-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto 28px;
+  background: #fffdf8;
+  font-size: 16px;
+}
+.learning-table caption {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 0 14px;
+}
+.learning-table th,
+.learning-table td {
+  padding: 10px 15px;
+  border: 1px solid #c9d7db;
+  text-align: left;
+}
+.learning-table thead {
+  background: #dce9ed;
+}
+.learning-table td {
+  font-variant-numeric: tabular-nums;
+}
+.learning-chart {
+  max-width: 510px;
+  margin: 0 auto 30px;
+  padding: 18px;
+  background: #fffdf8;
+  border-radius: 13px;
+}
+.learning-chart figcaption {
+  font-size: 16px;
+  font-weight: 700;
+}
+.learning-chart > p {
+  font-size: 12px;
+  color: #778575;
+  margin: 4px 0 13px;
+}
+.chart-row {
+  display: grid;
+  grid-template-columns: 85px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  margin: 11px 0;
+  font-size: 13px;
+}
+.chart-row > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 30px;
+}
+.chart-row span {
+  display: block;
+  height: 26px;
+  min-width: 3px;
+  background: #9ebbc8;
+  border-radius: 0 5px 5px 0;
+  background-image: none;
+}
+.chart-row b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.learning-picture {
+  font-size: 95px;
+  line-height: 1.4;
+  text-align: center;
+  margin: 0 auto 22px;
+}
+@media (max-width: 680px) {
+  .world-picker {
+    gap: 7px;
+  }
+  .world-picker button {
+    font-size: 11px;
+    padding: 9px;
+    flex: 1;
+    justify-content: center;
+  }
+  .world-picker button > span {
+    display: none;
+  }
+  .learning-clock {
+    width: 215px;
+  }
+  .learning-coin {
+    width: 77px;
+    height: 77px;
+  }
+  .learning-coin strong {
+    font-size: 24px;
+  }
+  .learning-coins {
+    gap: 10px;
+  }
+  .comparison-row {
+    grid-template-columns: 90px 1fr;
+    padding: 8px;
+  }
+  .comparison-row strong {
+    font-size: 11px;
+  }
+  .comparison-row > span {
+    font-size: 23px;
+  }
+  .learning-pattern {
+    gap: 5px;
+  }
+  .learning-pattern > span {
+    font-size: 30px;
+    width: 40px;
+    height: 46px;
+  }
+  .learning-fraction > span {
+    min-height: 53px;
+  }
+  .learning-chart {
+    padding: 14px;
+  }
+  .chart-row {
+    grid-template-columns: 66px 1fr;
+    font-size: 11px;
+  }
+  .group-picker button {
+    font-size: 12px;
+  }
+  .learning-picture {
+    font-size: 80px;
+  }
+}
+
+.comparison-animal {
+  display: block;
+  font-size: 30px;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}

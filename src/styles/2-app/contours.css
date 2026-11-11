@@ -1,0 +1,197 @@
+/* Contours share one weight. Broad coloured strokes are illustration fills
+   (rainbow bands, stems, etc.), rather than outlines, and retain their shape. */
+.art-shape [stroke='#526568'],
+.art-shape g[stroke='#526568'] > :not([stroke]) {
+  stroke-width: var(--art-outline, 2px);
+}
+.scenery-contour {
+  stroke-width: var(--scenery-outline, 1.25px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.home-island > .island-art {
+  filter: none;
+  animation: none;
+}
+.island-toolbar + .island-scene {
+  height: clamp(340px, 47dvh, 510px);
+  margin-top: 0;
+}
+.home-island {
+  top: 50%;
+  width: min(790px, 90%);
+  height: 100%;
+}
+.home-island > .island-art {
+  height: 100%;
+  width: 100%;
+}
+.island-buddy {
+  left: 14%;
+  bottom: 8%;
+  gap: 5px;
+  filter: none;
+}
+.island-buddy > .story-art {
+  width: 72px;
+  height: 72px;
+}
+.island-buddy > i {
+  font-size: 13px;
+  padding: 8px 12px;
+}
+.scene-sun {
+  right: 18%;
+  top: 7%;
+  opacity: 0.7;
+}
+.scene-sun .story-art {
+  width: 58px;
+  height: 58px;
+}
+.scene-cloud {
+  width: 70px;
+  height: 19px;
+  left: 18%;
+  top: 19%;
+  opacity: 0.75;
+  transform: scale(0.8);
+}
+.cloud-two {
+  right: 13%;
+  left: auto;
+  top: 38%;
+  transform: scale(0.55);
+}
+.island-name {
+  bottom: 7px;
+  background: #fff9;
+  border: 1px solid #fff7;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 15px;
+}
+.theme-stars .island-scene {
+  background: radial-gradient(ellipse at 50% 35%, #afb8d24a, transparent 65%);
+}
+.theme-snow .island-scene {
+  background: radial-gradient(ellipse at 50% 35%, #ffffff75, transparent 65%);
+}
+@media (max-height: 750px) and (min-width: 700px) {
+  .island-toolbar + .island-scene {
+    height: 330px;
+  }
+  .home-island {
+    width: 660px;
+  }
+  .island-buddy {
+    bottom: 7%;
+    left: 18%;
+  }
+}
+@media (max-width: 820px) {
+  .home-island {
+    width: 94%;
+  }
+  .island-buddy {
+    left: 8%;
+    bottom: 10%;
+  }
+  .island-buddy > .story-art {
+    width: 65px;
+    height: 65px;
+  }
+  .scene-sun {
+    right: 12%;
+  }
+}
+@media (max-width: 540px) {
+  .island-toolbar + .island-scene {
+    height: clamp(290px, 42dvh, 370px);
+    margin-top: 8px;
+  }
+  .home-island {
+    width: 120%;
+  }
+  .island-buddy {
+    left: 7%;
+    bottom: 9%;
+  }
+  .island-buddy > .story-art {
+    width: 54px;
+    height: 54px;
+  }
+  .island-buddy > i {
+    font-size: 11px;
+    padding: 7px 9px;
+  }
+  .scene-sun {
+    right: 9%;
+    top: 3%;
+  }
+  .scene-sun .story-art {
+    width: 43px;
+    height: 43px;
+  }
+  .scene-cloud {
+    left: 10%;
+    top: 13%;
+    transform: scale(0.55);
+  }
+  .cloud-two {
+    right: 5%;
+    left: auto;
+    top: 30%;
+    transform: scale(0.4);
+  }
+  .island-name {
+    font-size: 12px;
+    bottom: 0;
+  }
+  .home-actions {
+    margin-top: 8px;
+  }
+}
+@media (max-height: 850px) and (min-width: 700px) {
+  .home-actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+  }
+  .home-actions .next-treasure {
+    background: #fffc;
+  }
+}
+.creature-contour {
+  stroke-width: var(--art-outline, 2px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 540px) and (max-height: 740px) {
+  .island-home {
+    padding-top: 16px;
+  }
+  .home-heading h1 {
+    font-size: 25px;
+  }
+  .island-toolbar + .island-scene {
+    height: 255px;
+  }
+  .home-island {
+    width: 105%;
+  }
+  .home-actions {
+    gap: 10px;
+  }
+  .big-play {
+    min-height: 58px;
+  }
+  .island-buddy {
+    bottom: 7%;
+  }
+  .island-buddy > .story-art {
+    width: 46px;
+    height: 46px;
+  }
+}

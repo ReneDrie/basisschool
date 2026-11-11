@@ -1,0 +1,517 @@
+/* Story cards use local illustrations and one-tap ordering, with spoken cards. */
+.story-game {
+  max-width: 720px;
+  margin: 0 auto 15px;
+  border: 2px solid #d4cce1;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #faf6eb;
+  box-shadow: 0 4px 0 #a99bbc17;
+  color: #4f5d6a;
+}
+.story-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 15px 18px;
+  background: #e4dced;
+  border-bottom: 2px solid #d4cce1;
+  font-size: 17px;
+}
+.story-banner strong {
+  text-align: center;
+}
+.story-listen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 53px;
+  margin: 16px auto 13px;
+  padding: 10px 18px;
+  border: 2px solid #d1c0e1;
+  border-radius: 17px;
+  background: #eee3f6;
+  box-shadow: 0 3px 0 #ccbadb;
+  color: #6f5989;
+  font-size: 17px;
+  font-weight: 750;
+  max-width: calc(100% - 24px);
+}
+.story-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  padding: 5px 18px 15px;
+}
+.story-cards.four-cards {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.story-card {
+  border: 2px solid #e0d7c5;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fffdf6;
+  box-shadow: 0 3px 0 #cfbea521;
+  min-width: 0;
+}
+.story-card.used {
+  opacity: 0.25;
+  box-shadow: none;
+}
+.story-card-pick {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  background: none;
+  min-height: 90px;
+}
+.story-card-pick:hover:not(:disabled) {
+  background: #f2ecdb;
+}
+.story-scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.story-card-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 37px;
+  padding: 0 4px 2px 12px;
+  color: #94859f;
+  font-size: 12px;
+  font-weight: 750;
+}
+.story-card-tools > button,
+.story-reader > button,
+.story-check-heading > button {
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  display: grid;
+  place-items: center;
+  min-width: 43px;
+  min-height: 43px;
+  color: #8c79a6;
+  padding: 8px;
+}
+.story-card-tools > button:hover,
+.story-reader > button:hover {
+  background: #eee7f4;
+}
+.story-card-pick:disabled {
+  opacity: 1;
+}
+.story-path {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px 18px;
+  background: #ede8df;
+  border-top: 2px solid #e1d9c9;
+  border-bottom: 2px solid #e1d9c9;
+}
+.story-path:has(> button:nth-child(4)) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.story-path > button {
+  position: relative;
+  min-width: 0;
+  min-height: 91px;
+  padding: 22px 5px 5px;
+  background: #fffaf0;
+  border: 2px dashed #c9bdd2;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.story-path > button:has(svg) {
+  border-style: solid;
+  border-color: #cabbda;
+}
+.story-path > button > b {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 12px;
+  color: #93829c;
+}
+.story-path > button:disabled {
+  opacity: 1;
+}
+.story-path-empty {
+  color: #b2a8bc;
+  font-size: 23px;
+  letter-spacing: 2px;
+}
+.story-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 18px 8px;
+}
+.story-reset {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  border: 0;
+  background: none;
+  color: #8a8191;
+  font-weight: 700;
+  font-size: 14px;
+}
+.story-submit {
+  font-size: 17px;
+  min-height: 50px;
+  border: 2px solid #c8b6da;
+  border-radius: 16px;
+  background: #e3d7ef;
+  box-shadow: 0 3px 0 #bda7d1;
+  color: #6b5286;
+}
+.story-controls button:disabled {
+  opacity: 0.5;
+}
+.story-undo {
+  font-size: 11px;
+  color: #968d97;
+  text-align: center;
+  padding: 4px 12px 14px;
+  line-height: 1.5;
+}
+.story-instruction {
+  font-size: 14px;
+  font-weight: 650;
+  color: #8b8096;
+  text-align: center;
+  padding: 13px 15px 7px;
+}
+.story-sentences .story-cards {
+  grid-template-columns: 1fr;
+  gap: 9px;
+  padding: 5px 18px 14px;
+}
+.story-sentences .story-card {
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+}
+.story-sentences .story-card-pick {
+  min-height: 62px;
+  text-align: left;
+  font-size: 17px;
+  line-height: 1.45;
+  flex: 1;
+  padding: 11px 14px;
+}
+.story-sentences .story-card-tools {
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px;
+  min-width: 48px;
+}
+.story-sentences .story-card-tools > span {
+  font-size: 10px;
+}
+.story-sentences .story-path,
+.story-sentences .story-path:has(> button:nth-child(4)) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+.story-sentences .story-path > button {
+  min-height: 68px;
+  padding: 19px 10px 8px;
+  align-items: flex-start;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.4;
+  border-style: solid;
+}
+.story-sentences .story-path > button > span:not(.story-path-empty) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.story-reader {
+  position: relative;
+  margin: 17px 18px;
+  background: #fffdf6;
+  border: 1px solid #e3dacc;
+  border-radius: 16px;
+  padding: 16px 54px 16px 17px;
+  font-size: 18px;
+  line-height: 1.75;
+}
+.story-reader > button {
+  position: absolute;
+  right: 5px;
+  top: 7px;
+}
+.story-check-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 18px 14px;
+}
+.story-check-heading h2 {
+  font-size: 23px;
+  line-height: 1.3;
+  flex: 1;
+}
+.story-check-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 18px 20px;
+}
+.story-check-options > div {
+  display: flex;
+  border: 2px solid #ded5e3;
+  border-radius: 15px;
+  background: #fffdf7;
+  overflow: hidden;
+}
+.story-check-options > div > button:first-child {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  border: 0;
+  background: none;
+  padding: 14px 16px;
+  font-size: 17px;
+  min-height: 57px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.story-check-options > div > button:last-child {
+  border: 0;
+  border-left: 1px solid #e6deeb;
+  min-width: 48px;
+  background: #eee8f5;
+  color: #8b75a5;
+  display: grid;
+  place-items: center;
+}
+.story-check-options button.correct {
+  background: #e4efce !important;
+  color: #54744c;
+}
+.story-check-options button.incorrect {
+  background: #fae8dc !important;
+}
+.story-check-options button:disabled {
+  opacity: 1;
+}
+@media (max-width: 540px) {
+  .story-banner {
+    font-size: 15px;
+    padding: 12px 10px;
+    gap: 7px;
+  }
+  .story-banner > svg {
+    width: 19px;
+  }
+  .story-listen {
+    font-size: 14px;
+    min-height: 49px;
+    margin: 12px auto;
+    padding: 9px 12px;
+    gap: 8px;
+  }
+  .story-cards {
+    gap: 8px;
+    padding: 3px 9px 12px;
+  }
+  .story-cards.four-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .story-card {
+    border-radius: 13px;
+  }
+  .story-card-pick {
+    padding: 4px;
+    min-height: 66px;
+  }
+  .story-card-tools {
+    padding-left: 8px;
+    font-size: 10px;
+  }
+  .story-card-tools > button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 7px;
+  }
+  .story-path {
+    padding: 12px 9px;
+    gap: 7px;
+  }
+  .story-path > button {
+    padding: 19px 3px 4px;
+    min-height: 76px;
+    border-radius: 10px;
+  }
+  .story-path > button > b {
+    font-size: 10px;
+    left: 6px;
+    top: 3px;
+  }
+  .story-controls {
+    padding: 11px 10px 5px;
+  }
+  .story-reset {
+    font-size: 12px;
+  }
+  .story-submit {
+    font-size: 15px;
+    padding: 10px 12px;
+    gap: 7px;
+    min-height: 47px;
+  }
+  .story-undo {
+    font-size: 10px;
+    padding-bottom: 12px;
+  }
+  .story-instruction {
+    font-size: 12px;
+    padding: 11px 10px 6px;
+  }
+  .story-sentences .story-cards {
+    padding: 5px 9px 12px;
+    gap: 8px;
+  }
+  .story-sentences .story-card-pick {
+    font-size: 15px;
+    padding: 10px;
+    min-height: 58px;
+    line-height: 1.4;
+  }
+  .story-sentences .story-card-tools {
+    min-width: 41px;
+    padding: 3px;
+  }
+  .story-sentences .story-path > button {
+    font-size: 11px;
+    min-height: 64px;
+    padding: 17px 7px 7px;
+  }
+  .story-reader {
+    margin: 12px 10px;
+    padding: 13px 44px 13px 13px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .story-reader > button {
+    right: 1px;
+    top: 3px;
+    min-width: 40px;
+  }
+  .story-check-heading {
+    padding: 2px 10px 13px;
+    gap: 6px;
+  }
+  .story-check-heading h2 {
+    font-size: 20px;
+  }
+  .story-check-options {
+    padding: 0 10px 15px;
+    gap: 10px;
+  }
+  .story-check-options > div > button:first-child {
+    padding: 12px;
+    font-size: 15px;
+    min-height: 54px;
+  }
+  .story-check-options > div > button:last-child {
+    min-width: 44px;
+  }
+}
+.story-sentences .story-cards.four-cards {
+  grid-template-columns: 1fr;
+}
+
+.story-check-heading h2:focus {
+  outline: none;
+}
+
+.counting-objects.layout-pairs {
+  display: grid;
+  grid-template-columns: repeat(2, 58px);
+  justify-content: center;
+  gap: 8px 24px;
+}
+.counting-objects.layout-scatter {
+  gap: 17px 21px;
+  padding: 14px 9px 23px;
+}
+.counting-objects.layout-scatter > button:nth-child(3n) {
+  translate: 0 10px;
+  rotate: 8deg;
+}
+.counting-objects.layout-scatter > button:nth-child(3n + 1) {
+  translate: 0 -7px;
+  rotate: -7deg;
+}
+.learning-shapes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 15px;
+  max-width: 530px;
+  margin: 0 auto 25px;
+}
+.learning-shapes .story-art {
+  width: 53px;
+  height: 53px;
+}
+.learning-fraction-pie {
+  display: block;
+  width: 230px;
+  max-width: 85%;
+  height: auto;
+  margin: 8px auto 28px;
+}
+.learning-clock.face-1 > circle:first-child {
+  fill: #f7f5e6;
+  stroke: #9db8a6;
+}
+.learning-clock.face-2 > circle:first-child {
+  fill: #fbf2ee;
+  stroke: #c7a8b4;
+}
+.learning-clock.face-2 > line:last-of-type {
+  stroke: #aa7397;
+}
+.fraction-bar {
+  max-width: 520px;
+}
+@media (max-width: 540px) {
+  .counting-objects.layout-pairs {
+    grid-template-columns: repeat(2, 50px);
+    gap: 8px 20px;
+  }
+  .learning-shapes {
+    gap: 12px;
+    padding: 10px;
+  }
+  .learning-shapes .story-art {
+    width: 43px;
+    height: 43px;
+  }
+}
+
+.shop-stock:has(> button:nth-child(6)) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}

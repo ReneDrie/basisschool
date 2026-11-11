@@ -1,0 +1,35 @@
+/*
+ * All styles, in cascade order. Later files override earlier ones, so keep this order.
+ * 1-foundation is the first design; 2-app is the current look of the child's app and its games.
+ */
+@import './1-foundation/tokens-and-layout.css';
+@import './1-foundation/adventure.css';
+@import './1-foundation/collection.css';
+@import './1-foundation/profiles-and-parents.css';
+@import './1-foundation/storybook-island.css';
+@import './1-foundation/open-answers.css';
+@import './1-foundation/learning-worlds.css';
+@import './2-app/app-shell.css';
+@import './2-app/lesson.css';
+@import './2-app/artwork.css';
+@import './2-app/contours.css';
+@import './2-app/shop.css';
+@import './2-app/building.css';
+@import './2-app/stories.css';
+@import './2-app/rhymes.css';
+@import './2-app/matching.css';
+@import './2-app/question-motion.css';
+@import './2-app/train.css';
+@import './2-app/word-pieces.css';
+@import './2-app/sound-studio.css';
+@import './2-app/bus.css';
+@import './2-app/round-labels.css';
+@import './2-app/nature.css';
+@import './2-app/leave-round.css';
+@import './2-app/auto-advance.css';
+@import './2-app/tile-placeholders.css';
+@import './2-app/today.css';
+@import './2-app/island-treasures.css';
+@import './2-app/answer-reveal.css';
+@import './2-app/parent-insights.css';
+@import './2-app/decorate.css';

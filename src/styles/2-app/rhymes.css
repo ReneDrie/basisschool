@@ -1,0 +1,104 @@
+/* Picture cards let children name the rhyme words before they can read. */
+.rhyme-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.rhyme-word > .story-art {
+  width: 85px;
+  height: 85px;
+}
+.rhyme-word > span {
+  font-size: 18px;
+  line-height: 1.25;
+  font-weight: 750;
+}
+.rhyme-prompt {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.rhyme-prompt > .rhyme-word {
+  background: #fffaf4b3;
+  border: 2px solid #fff;
+  border-radius: 22px;
+  padding: 9px 28px 11px;
+}
+.rhyme-prompt .story-art {
+  width: 100px;
+  height: 100px;
+}
+.rhyme-prompt .rhyme-word > span {
+  font-size: 21px;
+}
+.rhyme-answers .answer-wrap {
+  display: grid;
+  grid-template-rows: 1fr 44px;
+}
+.rhyme-answers .answer-wrap .answer-button {
+  position: relative;
+  min-height: 126px;
+  border-radius: 19px 19px 4px 4px;
+  padding: 11px 8px;
+  box-shadow: none;
+}
+.rhyme-answers .answer-button > svg {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 21px;
+  height: 21px;
+}
+.rhyme-answers .choice-listen {
+  min-height: 44px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-radius: 4px 4px 17px 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: #fff9ed;
+  box-shadow: 0 4px 0 #b8cbd048;
+}
+.rhyme-answers .choice-listen:hover {
+  background: #f5efdf;
+}
+@media (max-width: 540px) {
+  .rhyme-question .question-heading {
+    margin-bottom: 14px;
+  }
+  .rhyme-question .question-heading h1 {
+    font-size: 24px;
+  }
+  .rhyme-prompt {
+    margin-bottom: 16px;
+  }
+  .rhyme-prompt > .rhyme-word {
+    padding: 5px 25px 8px;
+    border-radius: 19px;
+  }
+  .rhyme-prompt .story-art {
+    width: 78px;
+    height: 78px;
+  }
+  .rhyme-prompt .rhyme-word > span {
+    font-size: 19px;
+  }
+  .rhyme-answers .answer-wrap .answer-button {
+    min-height: 106px;
+    padding: 7px 8px;
+  }
+  .rhyme-answers .rhyme-word > .story-art {
+    width: 66px;
+    height: 66px;
+  }
+  .rhyme-answers .rhyme-word > span {
+    font-size: 17px;
+  }
+  .rhyme-answers {
+    gap: 12px;
+  }
+}

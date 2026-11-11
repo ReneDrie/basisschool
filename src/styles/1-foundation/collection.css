@@ -1,0 +1,94 @@
+/* A collection that grows at the child's own pace. */
+.island-page {
+  text-align: center;
+  padding: 10px 0 25px;
+}
+.island-page .eyebrow {
+  justify-content: center;
+}
+.island-page h1 {
+  font-size: 33px;
+}
+.island-page > p:not(.eyebrow) {
+  font-size: 13px;
+  color: #87907b;
+  margin-top: 10px;
+}
+.island-showcase {
+  max-width: 650px;
+  margin: 22px auto;
+  position: relative;
+  background: #edf2e3;
+  border: 1px solid #e8eddc;
+  border-radius: 100% 100% 20px 20px;
+  padding: 0 25px;
+}
+.island-showcase .island-art {
+  display: block;
+  width: 100%;
+}
+.island-total {
+  background: #fffdf4;
+  border: 1px solid #e7e6ce;
+  border-radius: 30px;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 17px;
+  font-size: 12px;
+  color: #8a8f6d;
+}
+.island-total svg {
+  color: #cfb562;
+  width: 16px;
+  height: 16px;
+}
+.island-total strong {
+  color: #697553;
+}
+.sticker-collection {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 13px;
+  margin: 35px 0 28px;
+}
+.collection-card {
+  position: relative;
+  background: #f4f3eb;
+  border: 1px dashed #dfe2d3;
+  border-radius: 15px;
+  padding: 20px 10px;
+}
+.collection-card.earned {
+  background: #faf8e9;
+  border: 1px solid #e3e7c4;
+}
+.collection-card > span {
+  display: grid;
+  place-items: center;
+  font-size: 39px;
+  height: 60px;
+  color: #b8bea9;
+  font-weight: 700;
+}
+.collection-card h3 {
+  font-size: 13px;
+  letter-spacing: -0.2px;
+  margin-top: 7px;
+}
+.collection-card p {
+  font-size: 10px;
+  color: #949a88;
+  margin-top: 4px;
+}
+.collection-card > svg {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #90a76e;
+}

@@ -1,0 +1,484 @@
+/* All decorative and learning pictures share the same local, flat storybook artwork. */
+.story-art {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  flex-shrink: 0;
+  overflow: visible;
+}
+.app-home .story-art {
+  width: 36px;
+  height: 36px;
+}
+.player-chip .story-art {
+  width: 39px;
+  height: 39px;
+}
+.island-buddy > .story-art {
+  width: 90px;
+  height: 90px;
+  transform: rotate(-7deg);
+}
+.next-treasure > .story-art {
+  width: 30px;
+  height: 30px;
+}
+.scene-sun .story-art {
+  width: 85px;
+  height: 85px;
+}
+.treasure-token .story-art {
+  width: 88px;
+  height: 88px;
+}
+.result-avatar > .story-art {
+  width: 95px;
+  height: 95px;
+}
+.new-sticker .story-art,
+.new-region > .story-art {
+  width: 65px;
+  height: 65px;
+}
+.level-picker > .secondary-button strong .story-art {
+  width: 43px;
+  height: 43px;
+}
+.avatar-picker button > .story-art {
+  width: 43px;
+  height: 43px;
+}
+.profile-list button > span > .story-art,
+.parent-profile > span > .story-art {
+  width: 49px;
+  height: 49px;
+}
+.counting-objects button > .story-art {
+  width: 50px;
+  height: 50px;
+}
+.learning-picture > .story-art {
+  width: 100px;
+  height: 100px;
+}
+.learning-pattern > span > .story-art {
+  width: 42px;
+  height: 42px;
+}
+.comparison-animal > .story-art {
+  width: 32px;
+  height: 32px;
+}
+.comparison-row > span > span > .story-art {
+  width: 29px;
+  height: 29px;
+}
+.answer-button .story-art {
+  width: 40px;
+  height: 40px;
+}
+.new-region {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 2px solid #e5ca7f;
+  border-radius: 22px;
+  background: #fff1c4;
+  padding: 13px 18px;
+  max-width: 370px;
+  margin: 18px auto 0;
+  text-align: left;
+}
+.new-region strong {
+  font-size: 18px;
+}
+.new-region p {
+  font-size: 16px;
+  color: #7e6b40;
+  margin-top: 2px;
+}
+.island-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px auto 0;
+  padding: 0 18px;
+  position: relative;
+  z-index: 2;
+}
+.island-level {
+  font-size: 14px;
+  font-weight: 800;
+  border: 2px solid #fff5;
+  background: #fff1c7;
+  padding: 6px 13px;
+  border-radius: 15px;
+  color: #7c6428;
+}
+.world-map-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  border: 2px solid #fff9;
+  border-radius: 15px;
+  background: #fff8;
+  color: #3f7180;
+  font-size: 14px;
+  font-weight: 750;
+  padding: 7px 13px;
+}
+.world-map-button:hover {
+  background: #fff;
+}
+.island-name {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  font-size: 15px;
+  font-weight: 750;
+  color: #4a7781;
+  background: #fff8;
+  border-radius: 12px;
+  padding: 5px 14px;
+  white-space: nowrap;
+}
+.island-toolbar + .island-scene {
+  margin-top: -12px;
+  height: clamp(270px, 43dvh, 470px);
+}
+.island-name + .island-buddy {
+  bottom: 20px;
+}
+.theme-stars .island-scene {
+  background:
+    radial-gradient(circle at 20% 20%, #f5e2a3 1px, transparent 2px) 0 0/50px 45px,
+    radial-gradient(ellipse at 50% 30%, #a8b6ce90, transparent 70%);
+}
+.theme-snow .island-scene {
+  background: radial-gradient(circle, #fff 2px, transparent 3px) 0 0/64px 56px;
+}
+.theme-clouds .island-scene {
+  background: radial-gradient(ellipse at 50% 40%, #dbc9ec70, transparent 70%);
+}
+.island-map {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1050px;
+  margin: 22px auto 0;
+  padding: 0 30px 30px;
+}
+.island-map-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px 15px;
+  background: #ffffffa0;
+  border: 3px solid #fff;
+  border-radius: 26px;
+  box-shadow: 0 5px 0 #799eae30;
+  color: #345767;
+  min-width: 0;
+}
+.island-map-card .island-art {
+  width: 100%;
+  height: auto;
+  margin: -8px 0 -13px;
+  animation: none;
+}
+.island-map-card .island-art > g,
+.island-map-card .island-art .clouds {
+  animation: none;
+}
+.island-map-card strong {
+  font-size: 19px;
+}
+.island-map-card.current {
+  border-color: #edc26c;
+  background: #fff8de;
+}
+.island-map-card.locked {
+  opacity: 1;
+  background: #e7f0f0a0;
+  border-color: #ffffff80;
+  box-shadow: 0 5px 0 #799eae17;
+}
+.island-map-card.locked .island-art {
+  filter: grayscale(0.85);
+  opacity: 0.5;
+}
+.island-map-card.locked strong {
+  color: #83969c;
+}
+.map-number {
+  align-self: flex-start;
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border-radius: 10px;
+  width: 28px;
+  height: 28px;
+  font-weight: 800;
+}
+.map-card-status {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+  min-height: 22px;
+}
+.region-picker {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 3px 12px;
+  margin: -5px -3px 15px;
+  scrollbar-width: thin;
+}
+.region-picker > button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  border: 2px solid #d7e5e5;
+  border-radius: 16px;
+  background: #fff;
+  padding: 7px 10px;
+  min-height: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.region-picker > button[aria-pressed='true'] {
+  border-color: #6ca6ad;
+  background: #e1f0ed;
+}
+.region-picker .story-art {
+  width: 31px;
+  height: 31px;
+}
+.region-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0 18px;
+  padding: 0 2px;
+}
+.region-heading h2 {
+  font-size: 25px;
+}
+.region-heading > span {
+  font-weight: 800;
+  font-size: 15px;
+  color: #78929c;
+}
+.expedition-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #e0ebf4;
+  border: 3px solid #fff;
+  border-radius: 23px;
+  padding: 18px;
+  margin-top: 25px;
+}
+.expedition-card > .story-art {
+  width: 68px;
+  height: 68px;
+}
+.expedition-card h2 {
+  font-size: 22px;
+}
+.expedition-card p {
+  font-size: 15px;
+  margin-top: 5px;
+}
+.home-island > .island-art {
+  filter: drop-shadow(0 12px 0 #538c9320);
+}
+.home-island .island-art text {
+  stroke: none;
+}
+@media (max-width: 820px) {
+  .island-map {
+    gap: 17px;
+    padding-left: 24px;
+    padding-right: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 720px;
+  }
+  .island-map-card .island-art {
+    max-height: 170px;
+  }
+  .island-map-card strong {
+    font-size: 18px;
+  }
+  .island-buddy > .story-art {
+    width: 78px;
+    height: 78px;
+  }
+}
+@media (max-width: 540px) {
+  .app-home .story-art {
+    width: 33px;
+    height: 33px;
+  }
+  .player-chip .story-art {
+    width: 32px;
+    height: 32px;
+  }
+  .island-buddy > .story-art {
+    width: 64px;
+    height: 64px;
+  }
+  .scene-sun .story-art {
+    width: 63px;
+    height: 63px;
+  }
+  .treasure-token .story-art {
+    width: 64px;
+    height: 64px;
+  }
+  .result-avatar > .story-art {
+    width: 80px;
+    height: 80px;
+  }
+  .avatar-picker button > .story-art {
+    width: 33px;
+    height: 33px;
+  }
+  .level-picker > .secondary-button strong .story-art {
+    width: 38px;
+    height: 38px;
+  }
+  .learning-picture > .story-art {
+    width: 95px;
+    height: 95px;
+  }
+  .learning-pattern > span > .story-art {
+    width: 35px;
+    height: 35px;
+  }
+  .comparison-row > span > span > .story-art {
+    width: 27px;
+    height: 27px;
+  }
+  .counting-objects button > .story-art {
+    width: 43px;
+    height: 43px;
+  }
+  .island-toolbar {
+    margin-top: 10px;
+    gap: 9px;
+  }
+  .world-map-button {
+    font-size: 12px;
+    min-height: 39px;
+    padding: 6px 10px;
+  }
+  .island-level {
+    font-size: 12px;
+    padding: 6px 11px;
+  }
+  .island-toolbar + .island-scene {
+    height: clamp(260px, 40dvh, 350px);
+    margin-top: -8px;
+  }
+  .island-name {
+    font-size: 12px;
+    bottom: -1px;
+    padding: 4px 10px;
+  }
+  .island-map {
+    gap: 15px;
+    padding: 0 17px 20px;
+    margin-top: 20px;
+  }
+  .island-map-card {
+    padding: 7px 8px 12px;
+    border-radius: 22px;
+  }
+  .island-map-card .island-art {
+    margin: -5px -5px -7px;
+    width: calc(100% + 10px);
+    max-height: 115px;
+  }
+  .island-map-card strong {
+    font-size: 15px;
+    letter-spacing: -0.4px;
+  }
+  .map-number {
+    font-size: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+  }
+  .map-card-status {
+    font-size: 10px;
+    gap: 4px;
+    margin-top: 5px;
+  }
+  .map-card-status svg {
+    width: 12px;
+  }
+  .region-heading h2 {
+    font-size: 22px;
+  }
+  .region-picker {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .region-picker > button {
+    min-height: 45px;
+    font-size: 12px;
+  }
+  .region-picker .story-art {
+    width: 26px;
+    height: 26px;
+  }
+  .expedition-card {
+    gap: 12px;
+    padding: 14px;
+  }
+  .expedition-card > .story-art {
+    width: 52px;
+    height: 52px;
+  }
+  .expedition-card h2 {
+    font-size: 18px;
+  }
+  .expedition-card p {
+    font-size: 13px;
+  }
+  .new-region {
+    gap: 12px;
+    padding: 12px;
+  }
+  .new-region strong {
+    font-size: 16px;
+  }
+  .new-region .story-art {
+    width: 53px;
+    height: 53px;
+  }
+}
+
+@media (min-width: 541px) and (max-width: 820px) {
+  .island-map-card .island-art {
+    max-height: 140px;
+  }
+}
+.island-map-card .map-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}

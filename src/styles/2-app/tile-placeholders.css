@@ -1,0 +1,5 @@
+/* Placed cards keep their spot in the tray, so the other cards do not move under a child's finger. */
+.tile-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}

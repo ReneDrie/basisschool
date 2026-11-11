@@ -1,0 +1,30 @@
+/* Decorating: treasures gently bob to show they can be moved; the one being dragged lifts up. */
+.island-art.is-editing {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.island-art.is-editing .island-treasure {
+  cursor: grab;
+  animation: treasure-bob 2.4s ease-in-out infinite;
+}
+.island-art.is-editing .island-treasure:nth-of-type(2n) {
+  animation-delay: -1.2s;
+}
+.island-art.is-editing .island-treasure.is-dragging {
+  cursor: grabbing;
+  animation: none;
+  transform: scale(1.12);
+  filter: drop-shadow(0 8px 6px #294c6040);
+}
+.island-art.is-editing .island-treasure.is-wiggling {
+  animation: treasure-wiggle 0.6s ease-in-out;
+}
+@keyframes treasure-bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.decorate-button {
+  background: #fff8e3;
+}

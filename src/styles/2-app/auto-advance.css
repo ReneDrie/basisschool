@@ -1,0 +1,42 @@
+/* The bar fills while the celebration waits to move on by itself. */
+.answer-celebration .celebration-next {
+  overflow: hidden;
+}
+.answer-celebration .celebration-next::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 6px;
+  background: #294c6033;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: auto-advance var(--auto-advance, 1400ms) linear forwards;
+}
+@keyframes auto-advance {
+  to {
+    transform: scaleX(1);
+  }
+}
+.parent-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0 4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.parent-toggle input {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  accent-color: #318f9b;
+}
+.parent-gate .field-label input {
+  width: 100%;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+.parent-gate .primary-button {
+  margin-top: 18px;
+}

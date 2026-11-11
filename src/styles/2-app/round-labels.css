@@ -1,0 +1,20 @@
+.adaptive-intro {
+  font-size: 15px;
+  color: #597483;
+  line-height: 1.5;
+  margin: 0 0 19px;
+}
+.challenge-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 7px 12px;
+  border-radius: 14px;
+  background: #fff4cd;
+  color: #795f35;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 15px;
+}

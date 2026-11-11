@@ -1,0 +1,320 @@
+/* Passengers keep their identities while moving between the bus and the stop. */
+.bus-journey {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 17px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.bus-journey span {
+  padding: 6px 10px;
+  border: 2px solid #fff;
+  border-radius: 13px;
+  background: #ffffff80;
+}
+.bus-journey .current {
+  background: #fff4cd;
+  border-color: #d9ae72;
+}
+.bus-journey .visited {
+  background: #dcefd9;
+  border-color: #99c4a6;
+}
+.bus-stop-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.bus-stop-heading h2 {
+  font-size: 23px;
+  line-height: 1.3;
+  margin: 0;
+}
+.bus-stop-heading h2:focus {
+  outline: none;
+}
+.bus-stop-heading > .icon-button {
+  flex-shrink: 0;
+  background: #ffffff80;
+  border-radius: 50%;
+}
+.bus-body {
+  position: relative;
+  background: #f1cc7e;
+  border: 4px solid #d2a75c;
+  border-radius: 28px 36px 22px 22px;
+  padding: 35px 17px 26px;
+  box-shadow: inset 0 -9px #e4b56a;
+  margin-bottom: 27px;
+  animation: bus-arrive 0.24s ease-out both;
+}
+.bus-body:before,
+.bus-body:after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  width: 31px;
+  height: 31px;
+  border: 7px solid #526568;
+  border-radius: 50%;
+  background: #e4e9df;
+}
+.bus-body:before {
+  left: 26px;
+}
+.bus-body:after {
+  right: 26px;
+}
+.bus-roof {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #795f35;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.bus-seats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  justify-items: center;
+  gap: 9px;
+}
+.bus-passenger {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 49px;
+  padding: 3px;
+  border: 2px solid #fff;
+  border-radius: 14px;
+  background: #fffdf5;
+  box-shadow: 0 3px 0 #52656820;
+  cursor: grab;
+  touch-action: none;
+}
+.bus-passenger > .story-art {
+  width: 37px;
+  height: 37px;
+}
+.bus-passenger:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.bus-passenger.is-dragging {
+  opacity: 0.25;
+  cursor: grabbing;
+}
+.bus-empty-seat {
+  display: block;
+  width: 48px;
+  height: 49px;
+  border: 2px dashed #bc954e66;
+  border-radius: 14px;
+  background: #fff9e940;
+}
+.bus-instruction {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 16px 0 12px;
+  color: #42697a;
+}
+.bus-instruction > span {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.bus-platform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 87px;
+  padding: 15px 12px;
+  border: 3px dashed #b38e68;
+  border-radius: 23px;
+  background: #ffffff60;
+}
+.bus-platform > span {
+  text-align: center;
+  color: #667f78;
+  font-size: 16px;
+}
+.bus-game .is-drop-target {
+  border-color: #318f9b;
+  background: #e6f6f2;
+  box-shadow: 0 0 0 4px #318f9b30;
+}
+.bus-counter {
+  font-size: 16px;
+  text-align: center;
+  min-height: 25px;
+  color: #426f5a;
+  margin: 13px 0;
+}
+.bus-counter.too-many {
+  color: #94632b;
+}
+.bus-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 55px;
+  font-size: 20px;
+}
+.bus-answers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 27px 0 8px;
+}
+.bus-answers button {
+  min-height: 65px;
+  border: 3px solid #fff;
+  border-radius: 18px;
+  background: #fffdf5;
+  font: inherit;
+  font-size: 28px;
+  font-weight: 750;
+  color: #294c60;
+  box-shadow: 0 4px 0 #b9ccd04d;
+}
+.bus-answers button.is-incorrect {
+  background: #fff0d5;
+  border-color: #d9ae72;
+}
+.bus-answers button.is-correct {
+  background: #dcefd9;
+  border-color: #99c4a6;
+}
+.bus-passenger.bus-drag-preview {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  min-height: 0;
+  margin: 0;
+  transform: rotate(-5deg) scale(1.12);
+  border-color: #318f9b;
+  box-shadow: 0 12px 24px #294c604d;
+  opacity: 1;
+}
+.bus-reset {
+  margin-top: 14px;
+}
+@keyframes bus-arrive {
+  from {
+    opacity: 0.6;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 540px) {
+  .studio-play {
+    font-size: 19px;
+    gap: 9px;
+    min-height: 62px;
+    padding: 12px;
+  }
+  .studio-play > svg {
+    width: 25px;
+    flex-shrink: 0;
+  }
+  .studio-pads {
+    gap: 9px;
+    margin-top: 16px;
+  }
+  .studio-pad {
+    min-width: 58px;
+    min-height: 71px;
+    border-radius: 16px;
+  }
+  .studio-pad strong {
+    font-size: 23px;
+  }
+  .studio-options {
+    gap: 13px;
+  }
+  .studio-option {
+    min-height: 125px;
+    padding: 10px;
+  }
+  .studio-option > .story-art {
+    width: 76px;
+    height: 76px;
+  }
+  .studio-instruction {
+    font-size: 17px;
+  }
+  .bus-journey {
+    font-size: 14px;
+    gap: 6px;
+  }
+  .bus-journey span {
+    padding: 5px 8px;
+  }
+  .bus-stop-heading h2 {
+    font-size: 20px;
+  }
+  .bus-body {
+    padding: 33px 10px 24px;
+    border-radius: 24px 30px 20px 20px;
+  }
+  .bus-seats {
+    gap: 6px;
+  }
+  .bus-passenger,
+  .bus-empty-seat {
+    width: 44px;
+    height: 45px;
+    border-radius: 12px;
+  }
+  .bus-passenger > .story-art {
+    width: 33px;
+    height: 33px;
+  }
+  .bus-platform {
+    gap: 8px;
+    padding: 12px 9px;
+  }
+  .bus-instruction {
+    font-size: 16px;
+  }
+  .bus-next {
+    font-size: 18px;
+  }
+  .bus-answers {
+    gap: 9px;
+  }
+  .bus-answers button {
+    font-size: 25px;
+    min-height: 59px;
+  }
+  .bus-counter {
+    font-size: 15px;
+  }
+}
+@media (max-width: 360px) {
+  .studio-play {
+    font-size: 17px;
+  }
+  .bus-seats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

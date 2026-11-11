@@ -1,0 +1,279 @@
+/* Arrange the train with a finger, mouse, or two deliberate taps. */
+.train-game,
+.detective-game {
+  max-width: 660px;
+  margin: 0 auto;
+}
+.train-instruction {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #42697a;
+  line-height: 1.4;
+  margin: 0 0 22px;
+}
+.train-instruction > span {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+.train-track {
+  display: grid;
+  align-items: end;
+  gap: 10px;
+  padding-bottom: 16px;
+  position: relative;
+  border-bottom: 5px double #779898;
+}
+.train-engine {
+  display: grid;
+  place-items: center;
+  align-self: center;
+}
+.train-engine .story-art {
+  width: 100%;
+  height: auto;
+}
+.train-wagon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 107px;
+  padding: 8px 4px 14px;
+  background: #ffffff70;
+  border: 3px dashed #b38e68;
+  border-radius: 17px;
+  color: #294c60;
+  font: inherit;
+  font-size: 29px;
+  font-weight: 750;
+  touch-action: none;
+}
+.train-wagon:before,
+.train-wagon:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #526568;
+  border-radius: 50%;
+  background: #e6d8b7;
+}
+.train-wagon:before {
+  left: 12px;
+}
+.train-wagon:after {
+  right: 12px;
+}
+.train-wagon small {
+  font-size: 12px;
+  color: #8e856e;
+  line-height: 1;
+}
+.train-empty {
+  opacity: 0.4;
+}
+.train-wagon.has-card {
+  background: #fffdf5;
+  border-style: solid;
+  border-color: #fff;
+  cursor: grab;
+  box-shadow: 0 4px 0 #b9ccd04d;
+}
+.train-bank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: 118px;
+  padding: 22px 8px 12px;
+  margin: 12px 0 18px;
+  border: 2px solid #ffffff80;
+  border-radius: 20px;
+  background: #ffffff35;
+}
+.train-tile {
+  display: grid;
+  place-items: center;
+  width: 100px;
+  min-height: 82px;
+  padding: 10px;
+  border: 3px solid #fff;
+  border-radius: 18px;
+  background: #fffdf5;
+  color: #294c60;
+  box-shadow: 0 4px 0 #b9ccd04d;
+  font: inherit;
+  font-size: 29px;
+  font-weight: 750;
+  cursor: grab;
+  touch-action: none;
+}
+.train-game .is-selected {
+  background: #e6f6f2;
+  border-color: #318f9b;
+}
+.train-game .is-dragging {
+  opacity: 0.25;
+  cursor: grabbing;
+}
+.train-game .is-drop-target {
+  background: #e6f6f2;
+  border-color: #318f9b;
+  border-style: solid;
+  box-shadow: 0 0 0 4px #318f9b30;
+}
+.train-tile.train-drag-preview {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  min-height: 0;
+  margin: 0;
+  transform: rotate(-3deg) scale(1.04);
+  background: #fffdf5;
+  border-color: #318f9b;
+  box-shadow: 0 14px 28px #294c604d;
+  opacity: 1;
+  cursor: grabbing;
+}
+.train-bank-ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #426f5a;
+  text-align: center;
+}
+.train-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.train-controls > .secondary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 16px;
+  min-height: 50px;
+}
+.train-controls > .primary-button {
+  font-size: 19px;
+  min-height: 54px;
+  gap: 9px;
+}
+.detective-clue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 19px;
+  text-align: center;
+  color: #42697a;
+  margin: 0 auto 23px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: #ffffff80;
+}
+.detective-clue svg {
+  flex-shrink: 0;
+}
+.detective-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.detective-card {
+  min-height: 135px;
+  cursor: pointer;
+}
+.detective-card:hover:not(:disabled) {
+  border-color: #8fb9b4;
+}
+.detective-card .match-text {
+  font-size: 30px;
+}
+@media (max-width: 540px) {
+  .train-instruction {
+    font-size: 17px;
+    margin-bottom: 18px;
+  }
+  .train-instruction > span {
+    font-size: 13px;
+  }
+  .train-track {
+    gap: 6px;
+  }
+  .train-wagon {
+    min-height: 90px;
+    font-size: 21px;
+    border-radius: 13px;
+    padding: 7px 2px 12px;
+  }
+  .train-wagon:before,
+  .train-wagon:after {
+    width: 12px;
+    height: 12px;
+    bottom: -9px;
+    border-width: 2px;
+  }
+  .train-wagon:before {
+    left: 7px;
+  }
+  .train-wagon:after {
+    right: 7px;
+  }
+  .train-wagon small {
+    font-size: 11px;
+  }
+  .train-bank {
+    min-height: 102px;
+    gap: 9px;
+    padding: 17px 7px 12px;
+  }
+  .train-tile {
+    width: 60px;
+    min-height: 70px;
+    font-size: 21px;
+    padding: 7px 3px;
+    border-radius: 14px;
+  }
+  .train-controls {
+    gap: 8px;
+  }
+  .train-controls > .secondary-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .train-controls > .primary-button {
+    font-size: 17px;
+    padding: 11px 14px;
+  }
+  .train-bank-ready {
+    font-size: 14px;
+  }
+  .detective-clue {
+    font-size: 17px;
+    padding: 11px 10px;
+    margin-bottom: 17px;
+    gap: 7px;
+  }
+  .detective-board {
+    gap: 13px;
+  }
+  .detective-card {
+    min-height: 122px;
+  }
+  .detective-card .match-text {
+    font-size: 24px;
+  }
+}

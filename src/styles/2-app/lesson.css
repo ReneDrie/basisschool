@@ -1,0 +1,943 @@
+/* During a lesson, only the question, answers and help compete for attention. */
+.app-shell.in-adventure {
+  background: #eff5f6;
+  padding-bottom: 20px;
+}
+.in-adventure .app-header {
+  height: 70px;
+}
+.in-adventure .app-home {
+  font-size: 17px;
+}
+.in-adventure .player-chip {
+  font-size: 14px;
+  min-height: 46px;
+}
+.in-adventure .player-chip > span {
+  height: 35px;
+  width: 35px;
+  font-size: 29px;
+}
+.in-adventure .star-wallet {
+  font-size: 18px;
+  min-height: 43px;
+}
+.in-adventure .parent-gear {
+  display: none;
+}
+.app-main .round-page {
+  padding: 22px 25px 35px;
+  max-width: 910px;
+  min-height: 0;
+}
+.round-toolbar {
+  margin: 0 0 19px;
+  min-height: 48px;
+}
+.round-toolbar > .text-button {
+  font-size: 17px;
+  gap: 8px;
+}
+.round-category {
+  font-size: 15px;
+}
+.round-category > span {
+  font-size: 12px;
+}
+.round-progress {
+  font-size: 15px;
+  margin-bottom: 20px;
+  font-weight: 750;
+  gap: 7px;
+  color: #547587;
+}
+.round-progress > div {
+  height: 12px;
+  background: #dbe7e9;
+  border: 2px solid #fff;
+  overflow: visible;
+}
+.round-progress i {
+  background: #4eada1;
+  box-shadow: 0 2px 0 #288779;
+  max-width: 100%;
+}
+.question-card {
+  border: 3px solid #fff;
+  border-radius: 30px;
+  padding: 25px 32px;
+  box-shadow: 0 7px 0 #cbdce0;
+  min-height: 0;
+}
+.question-card.peach {
+  background: #ffedce;
+}
+.question-card.purple {
+  background: #eae0ff;
+}
+.question-card.blue {
+  background: #dceff6;
+}
+.question-card.green {
+  background: #dfefdc;
+}
+.question-number {
+  display: none;
+}
+.question-heading {
+  margin: 0 0 22px;
+  gap: 14px;
+}
+.question-heading h1 {
+  font-size: 29px;
+  color: #25465d;
+}
+.listen-button {
+  min-width: 53px;
+  height: 53px;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 0 #315a6d15;
+  color: #247787;
+}
+.answer-button {
+  border: 3px solid #fff;
+  box-shadow: 0 4px 0 #b8cbd048;
+  border-radius: 19px;
+  min-height: 78px;
+  color: #25465d;
+  font-size: 27px;
+  padding: 16px 18px;
+  justify-content: center;
+}
+.answer-button:hover:not(:disabled) {
+  border-color: #88bbc5;
+}
+.answer-letter {
+  display: none;
+}
+.answer-button.correct {
+  border-color: #58a88a;
+  background: #cdefd0;
+}
+.answer-button.incorrect {
+  border-color: #e7ae57;
+  background: #fff3d5;
+}
+.long-answers .answer-button {
+  font-size: 17px;
+  min-height: 78px;
+  text-align: left;
+  justify-content: flex-start;
+}
+.choice-listen {
+  border-radius: 0 19px 19px 0;
+  min-width: 48px;
+}
+.answer-wrap:has(.choice-listen) .answer-button {
+  border-radius: 19px 0 0 19px;
+}
+.feedback {
+  margin-top: 21px;
+  min-height: 53px;
+}
+.hint-button {
+  font-size: 16px;
+  min-height: 50px;
+  color: #627f88;
+  gap: 9px;
+}
+.hint-feedback {
+  font-size: 15px;
+  border: 2px solid #fff;
+  border-radius: 18px;
+  padding: 15px;
+  color: #426273;
+}
+.success-feedback {
+  border: 2px solid #add6b8;
+  background: #edf9e6;
+  border-radius: 18px;
+  min-height: 72px;
+}
+.success-feedback strong {
+  font-size: 18px;
+}
+.success-feedback .primary-button {
+  font-size: 17px;
+  border-radius: 15px;
+  min-height: 48px;
+}
+.open-answer > label {
+  font-size: 16px;
+  margin-bottom: 9px;
+  color: #426273;
+}
+.open-input-row input {
+  font-size: 31px;
+  border: 3px solid #abc3cc;
+  min-height: 70px;
+  border-radius: 20px;
+  box-shadow: 0 4px 0 #315a6d10;
+}
+.number-pad {
+  margin-top: 18px;
+  max-width: 295px;
+  gap: 9px;
+}
+.number-pad button {
+  border: 2px solid #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 0 #b8cbd0;
+  font-size: 24px;
+  min-height: 49px;
+}
+.number-pad .erase-button {
+  border-color: #fff;
+  background: #e4ecec;
+  color: #66818d;
+}
+.check-answer {
+  min-height: 53px;
+  min-width: 190px;
+  font-size: 18px;
+  border-radius: 17px;
+  background: #ffbd59;
+  border-color: #ffd891;
+  box-shadow: 0 4px 0 #d38e36;
+  color: #634414;
+}
+.check-answer:hover:not(:disabled) {
+  background: #ffc975;
+}
+.learning-clock {
+  width: 215px;
+  margin-bottom: 23px;
+}
+.learning-picture {
+  font-size: 83px;
+  margin-bottom: 18px;
+}
+.learning-pattern {
+  margin-bottom: 25px;
+}
+.result-card {
+  background: #e4f3e8;
+  border: 3px solid #fff;
+  border-radius: 32px;
+  box-shadow: 0 7px 0 #bed8ce;
+  padding: 30px;
+}
+.result-card h1 {
+  color: #25465d;
+  font-size: 37px;
+}
+.result-avatar {
+  font-size: 78px;
+}
+.result-card .earned-star {
+  font-size: 26px;
+  border: 3px solid #ffe2a3;
+  background: #ffedb6;
+  margin-top: 22px;
+  padding: 15px 25px;
+  box-shadow: 0 4px 0 #dfbf6e;
+}
+.result-card .result-detail {
+  font-size: 15px !important;
+}
+.result-actions .primary-button {
+  min-height: 58px;
+  font-size: 18px;
+  border-radius: 18px;
+  background: #ffbd59;
+  border-color: #ffd891;
+  box-shadow: 0 4px 0 #d38e36;
+}
+.result-actions .text-button {
+  font-size: 16px;
+}
+.new-sticker {
+  border-radius: 22px;
+}
+.new-sticker strong {
+  font-size: 17px;
+}
+.new-sticker p {
+  font-size: 14px;
+}
+.new-sticker > span {
+  font-size: 49px;
+}
+@media (min-width: 1100px) {
+  .world-doors:has(> .world-door:nth-child(2):last-child) {
+    max-width: 810px;
+    margin: auto;
+  }
+  .world-door {
+    min-height: 340px;
+  }
+  .door-art {
+    width: 210px;
+    height: 190px;
+  }
+  .door-art .activity-art {
+    height: 160px;
+  }
+  .home-island {
+    width: 790px;
+  }
+  .home-actions {
+    margin-top: 0;
+  }
+}
+@media (max-width: 820px) {
+  .app-header {
+    padding: 0 23px;
+    gap: 10px;
+  }
+  .app-status {
+    gap: 10px;
+  }
+  .lessons-page,
+  .treasures-page {
+    padding: 28px 25px;
+  }
+  .page-heading h1 {
+    font-size: 30px;
+  }
+  .world-doors {
+    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-top: 12px;
+  }
+  .world-door {
+    min-height: 280px;
+  }
+  .world-door:last-child:nth-child(odd) {
+    grid-column: 1/-1;
+    max-width: 330px;
+    width: 100%;
+    justify-self: center;
+  }
+  .door-art {
+    height: 150px;
+    width: 170px;
+  }
+  .world-door strong {
+    font-size: 24px;
+  }
+  .lesson-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .treasure-shelf {
+    gap: 18px;
+  }
+  .treasure-card {
+    padding: 18px 10px;
+  }
+  .treasure-card h2 {
+    font-size: 17px;
+  }
+  .treasure-token {
+    font-size: 60px;
+    height: 85px;
+  }
+  .treasure-lock,
+  .treasure-owned {
+    font-size: 12px;
+  }
+  .scene-sun {
+    font-size: 68px;
+    right: 8%;
+    top: 7%;
+  }
+  .island-buddy {
+    left: 9%;
+    bottom: 5%;
+  }
+  .island-buddy > span {
+    font-size: 70px;
+  }
+  .island-buddy > i {
+    font-size: 14px;
+  }
+  .home-island {
+    width: 94%;
+  }
+  .home-heading {
+    padding-top: 5px;
+  }
+  .home-heading h1 {
+    font-size: 34px;
+  }
+  .map-pin .pin-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 21px;
+  }
+  .map-pin strong {
+    font-size: 15px;
+  }
+  .parent-gear {
+    display: grid !important;
+  }
+}
+@media (max-width: 540px) {
+  .app-shell {
+    padding-bottom: 104px;
+  }
+  .app-header {
+    height: 70px;
+    padding: 0 15px;
+    gap: 8px;
+  }
+  .app-home {
+    font-size: 0;
+    gap: 0;
+    min-width: 42px;
+  }
+  .app-home > strong {
+    display: none;
+  }
+  .app-home > span {
+    font-size: 33px;
+  }
+  .app-status {
+    gap: 8px;
+  }
+  .player-chip {
+    font-size: 13px;
+    max-width: 185px;
+    min-height: 48px;
+    padding: 4px 9px 4px 4px;
+    border-radius: 18px;
+    gap: 6px;
+    line-height: 1.1;
+  }
+  .player-chip > span {
+    font-size: 29px;
+    height: 35px;
+    width: 35px;
+    border-radius: 13px;
+  }
+  .star-wallet {
+    font-size: 18px;
+    gap: 5px;
+    min-height: 43px;
+    border-radius: 15px;
+    padding: 6px 9px;
+  }
+  .star-wallet svg {
+    width: 19px;
+  }
+  .parent-gear {
+    width: 40px;
+    height: 44px;
+    color: #5c7b88;
+  }
+  .parent-gear svg {
+    width: 22px;
+  }
+  .app-tabs {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    height: calc(83px + env(safe-area-inset-bottom));
+    padding: 7px 20px calc(7px + env(safe-area-inset-bottom));
+    border-radius: 26px 26px 0 0;
+    border-bottom: 0;
+    gap: 10px;
+    box-shadow: 0 -3px 20px #315a6d14;
+    background: #fffefa;
+  }
+  .app-tabs > button {
+    font-size: 13px;
+    gap: 0;
+    border-radius: 19px;
+  }
+  .app-tabs > button > span {
+    height: 34px;
+  }
+  .app-tabs > button.selected:before {
+    right: 13px;
+    top: 6px;
+  }
+  .island-home {
+    padding-top: 23px;
+  }
+  .home-heading {
+    gap: 10px;
+    padding: 0 20px;
+  }
+  .home-heading h1 {
+    font-size: 28px;
+  }
+  .home-spark {
+    font-size: 23px;
+  }
+  .island-scene {
+    height: clamp(260px, 44dvh, 390px);
+    margin-top: 3px;
+  }
+  .home-island {
+    width: 125%;
+    top: 48%;
+  }
+  .scene-sun {
+    font-size: 56px;
+    top: 5%;
+    right: 8%;
+  }
+  .scene-cloud {
+    left: 4%;
+    top: 21%;
+    transform: scale(0.65);
+  }
+  .cloud-two {
+    right: 0;
+    left: auto;
+    top: 49%;
+    transform: scale(0.55);
+  }
+  .sea-ripple {
+    top: 61%;
+    height: 31%;
+    width: 95%;
+    left: 2.5%;
+  }
+  .ripple-two {
+    width: 110%;
+    left: -5%;
+    top: 58%;
+    height: 39%;
+  }
+  .map-pin {
+    min-width: 70px;
+    padding: 6px;
+    gap: 0;
+  }
+  .map-pin .pin-icon {
+    height: 49px;
+    width: 49px;
+    border-width: 3px;
+    border-radius: 17px;
+    box-shadow: inset 0 -4px 0 #e9a242;
+  }
+  .map-pin .pin-icon svg {
+    width: 24px;
+  }
+  .map-pin strong {
+    font-size: 12px;
+    padding: 5px 9px;
+    border-radius: 10px;
+  }
+  .treasure-pin {
+    left: 69%;
+    top: 72%;
+  }
+  .lesson-pin {
+    left: 57%;
+    top: 36%;
+  }
+  .treasure-pin .pin-icon {
+    box-shadow: inset 0 -4px 0 #a58cdb;
+  }
+  .island-buddy {
+    left: 9%;
+    bottom: 0;
+    gap: 4px;
+  }
+  .island-buddy > span {
+    font-size: 58px;
+  }
+  .island-buddy > i {
+    font-size: 12px;
+    padding: 8px 10px;
+    margin-top: 0;
+  }
+  .home-actions {
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .big-play {
+    min-height: 63px;
+    font-size: 22px;
+    min-width: 240px;
+    border-radius: 21px;
+    gap: 14px;
+  }
+  .next-treasure {
+    font-size: 13px;
+    min-height: 41px;
+    padding: 6px 12px;
+  }
+  .lessons-page,
+  .treasures-page {
+    padding: 23px 18px 20px;
+  }
+  .page-heading {
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+    min-height: 49px;
+  }
+  .page-heading h1 {
+    font-size: 26px;
+    min-width: 0;
+    letter-spacing: -0.7px;
+  }
+  .heading-badge,
+  .round-back {
+    width: 45px;
+    height: 45px;
+    border-radius: 16px;
+  }
+  .heading-badge svg,
+  .round-back svg {
+    width: 23px;
+  }
+  .group-badge {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 13px;
+  }
+  .world-doors {
+    gap: 18px;
+    padding-top: 5px;
+  }
+  .world-door {
+    min-height: 237px;
+    border-radius: 27px;
+    border-width: 3px;
+    padding: 15px 9px;
+    box-shadow: 0 6px 0 #b7d5dc;
+  }
+  .world-door:last-child:nth-child(odd) {
+    max-width: 240px;
+    min-height: 220px;
+  }
+  .world-door strong {
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    margin-top: 7px;
+  }
+  .door-art {
+    width: 125px;
+    height: 125px;
+  }
+  .door-art .activity-art {
+    height: 105px;
+    width: 150px;
+  }
+  .door-spark {
+    font-size: 29px;
+    right: -2px;
+    top: -3px;
+  }
+  .door-go {
+    width: 39px;
+    height: 39px;
+    border-radius: 14px;
+    margin-top: 12px;
+  }
+  .world-door:last-child:nth-child(odd) .door-art {
+    height: 111px;
+  }
+  .lesson-tiles {
+    gap: 17px;
+  }
+  .lesson-tile {
+    padding: 13px 9px;
+    min-height: 188px;
+    border-radius: 24px;
+  }
+  .lesson-tile .activity-art {
+    height: 112px;
+    width: 100%;
+  }
+  .lesson-tile strong {
+    font-size: 20px;
+    padding-right: 0;
+    margin-top: 1px;
+  }
+  .tile-play {
+    position: static;
+    width: 27px;
+    height: 27px;
+    border-radius: 10px;
+    margin-top: 9px;
+  }
+  .tile-play svg {
+    width: 15px;
+  }
+  .treasure-total {
+    font-size: 16px;
+    border-radius: 14px;
+    padding: 6px 10px;
+  }
+  .treasure-shelf {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+  }
+  .treasure-card {
+    border-radius: 24px;
+    padding: 14px 8px;
+  }
+  .treasure-token {
+    font-size: 57px;
+    height: 72px;
+  }
+  .treasure-card h2 {
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    margin: 7px 0;
+  }
+  .treasure-lock,
+  .treasure-owned {
+    font-size: 11px;
+    gap: 4px;
+  }
+  .treasure-lock svg,
+  .treasure-owned svg {
+    width: 13px;
+  }
+  .treasure-play {
+    min-width: 230px;
+    margin-top: 26px;
+  }
+  .app-main .round-page {
+    padding: 15px 16px 25px;
+  }
+  .in-adventure .app-header {
+    height: 65px;
+  }
+  .in-adventure .player-chip {
+    font-size: 12px;
+    max-width: 190px;
+  }
+  .in-adventure .app-home {
+    font-size: 0;
+  }
+  .in-adventure .star-wallet {
+    font-size: 16px;
+    min-height: 39px;
+  }
+  .in-adventure .parent-gear {
+    display: none !important;
+  }
+  .round-toolbar {
+    gap: 10px;
+    margin: 0 0 14px;
+  }
+  .round-toolbar > .text-button {
+    font-size: 14px;
+    gap: 4px;
+  }
+  .round-category {
+    font-size: 13px;
+    max-width: 190px;
+    text-align: center;
+  }
+  .round-category > span {
+    display: block;
+    font-size: 11px;
+  }
+  .round-toolbar .icon-button {
+    min-width: 40px;
+    padding: 6px;
+  }
+  .round-progress {
+    font-size: 14px;
+    margin-bottom: 17px;
+  }
+  .question-card {
+    padding: 22px 16px;
+    border-radius: 26px;
+  }
+  .question-heading {
+    margin-bottom: 22px;
+    gap: 9px;
+  }
+  .question-heading h1 {
+    font-size: 25px;
+    line-height: 1.25;
+  }
+  .listen-button {
+    min-width: 47px;
+    height: 47px;
+  }
+  .listen-button svg {
+    width: 23px;
+  }
+  .answer-grid {
+    gap: 13px;
+  }
+  .answer-button {
+    min-height: 74px;
+    font-size: 27px;
+    border-radius: 17px;
+    padding: 13px 10px;
+  }
+  .long-answers .answer-button {
+    font-size: 16px;
+    min-height: 69px;
+  }
+  .choice-listen {
+    padding: 0 10px;
+    min-width: 44px;
+  }
+  .feedback {
+    margin-top: 20px;
+    min-height: 48px;
+  }
+  .hint-button {
+    font-size: 15px;
+  }
+  .hint-feedback {
+    font-size: 14px;
+    padding: 12px;
+    gap: 8px;
+  }
+  .success-feedback {
+    gap: 9px;
+    padding: 11px;
+  }
+  .success-feedback strong {
+    font-size: 17px;
+  }
+  .success-feedback > .primary-button {
+    width: 100%;
+    margin-top: 4px;
+    font-size: 17px;
+  }
+  .open-answer > label {
+    font-size: 15px;
+  }
+  .open-input-row input {
+    font-size: 29px;
+    min-height: 65px;
+    border-radius: 18px;
+  }
+  .number-pad {
+    max-width: 260px;
+    gap: 9px;
+    margin-top: 19px;
+  }
+  .number-pad button {
+    min-height: 48px;
+    font-size: 24px;
+    border-radius: 13px;
+  }
+  .check-answer {
+    font-size: 18px;
+    min-height: 52px;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .learning-clock {
+    width: 210px;
+  }
+  .learning-picture {
+    font-size: 83px;
+  }
+  .passage {
+    font-size: 17px;
+    padding: 16px;
+    line-height: 1.8;
+  }
+  .result-card {
+    padding: 27px 18px;
+    border-radius: 27px;
+  }
+  .result-card h1 {
+    font-size: 31px;
+  }
+  .result-card .result-detail {
+    font-size: 14px !important;
+  }
+  .result-avatar {
+    font-size: 72px;
+  }
+  .result-card .earned-star {
+    font-size: 23px;
+    padding: 12px 19px;
+  }
+  .result-actions .primary-button {
+    font-size: 17px;
+  }
+  .new-sticker {
+    padding: 12px;
+    gap: 12px;
+  }
+  .new-sticker strong {
+    font-size: 16px;
+  }
+  .new-sticker p {
+    font-size: 13px;
+  }
+  .level-picker > .secondary-button {
+    font-size: 22px;
+    min-height: 78px;
+    padding: 12px 18px;
+  }
+  .choose-step {
+    font-size: 18px;
+  }
+}
+@media (max-height: 750px) and (min-width: 700px) {
+  .island-home {
+    padding-top: 14px;
+  }
+  .home-heading h1 {
+    font-size: 32px;
+  }
+  .island-scene {
+    height: 340px;
+  }
+  .home-island {
+    width: 680px;
+  }
+  .home-actions {
+    gap: 10px;
+  }
+  .big-play {
+    min-height: 57px;
+    font-size: 21px;
+  }
+  .island-buddy > span {
+    font-size: 65px;
+  }
+  .island-buddy {
+    bottom: 0;
+  }
+  .app-tabs {
+    height: 78px;
+    bottom: 10px;
+  }
+  .app-shell {
+    padding-bottom: 100px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-door,
+  .lesson-tile,
+  .map-pin,
+  .big-play {
+    transition: none;
+  }
+  .world-door:hover,
+  .lesson-tile:hover,
+  .big-play:hover {
+    translate: none;
+  }
+  .map-pin:hover {
+    scale: 1;
+  }
+}
+.app-main h1[tabindex='-1']:focus {
+  outline: none;
+}
