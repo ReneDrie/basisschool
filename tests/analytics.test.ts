@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyticsDashboard, startAnalytics } from '../src/analytics.ts';
+import { analyticsDashboard, startAnalytics } from '../src/app/analytics.ts';
 import { activities } from '../src/learning/catalog.ts';
 import { GROUPS } from '../src/learning/model.ts';
 

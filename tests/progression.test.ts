@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { islandRegions, stickers, islandProgress, discoveriesBetween, EXPEDITION_ROUNDS } from '../src/progression.ts';
-import { ART_KINDS, avatarKinds, pictureKinds } from '../src/art-catalog.ts';
+import { ART_KINDS, avatarKinds, pictureKinds } from '../src/art/art-catalog.ts';
 import { GROUPS, activities, questionBank } from '../src/content.ts';
 import { avatars, validateProfiles, parseBackup, reward, type Profile } from '../src/storage.ts';
 

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { muteTestAudio } from '../src/audio-settings.ts';
+import { muteTestAudio } from '../src/app/audio-settings.ts';
 
 test('The ordinary production app keeps its audio, including on localhost previews', () => {
   for (const search of ['', '?test=0', '?audio=on', '?other=value']) assert.equal(muteTestAudio(false, search), false);

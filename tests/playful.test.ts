@@ -14,7 +14,7 @@ import {
   QUESTIONS_PER_ADVENTURE,
 } from '../src/content.ts';
 import { detectiveBank, placeTrainItem, trainBank, trainOrder, trainResponse } from '../src/learning/playful.ts';
-import { ART_KINDS } from '../src/art-catalog.ts';
+import { ART_KINDS } from '../src/art/art-catalog.ts';
 import { emptyProfile, parseBackup, rememberQuestions, reward } from '../src/storage.ts';
 
 const games = ['getallentrein', 'speurneus'] as const;

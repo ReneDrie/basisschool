@@ -14,7 +14,7 @@ import {
   QUESTIONS_PER_ADVENTURE,
 } from '../src/content.ts';
 import { natureBank, natureLabelAudio, natureResponse } from '../src/learning/nature.ts';
-import { ART_KINDS } from '../src/art-catalog.ts';
+import { ART_KINDS } from '../src/art/art-catalog.ts';
 import { makeAdaptiveRound, type PracticeResult } from '../src/learning/adaptive.ts';
 import { emptyProfile, rememberQuestions, reward, parseBackup } from '../src/storage.ts';
 

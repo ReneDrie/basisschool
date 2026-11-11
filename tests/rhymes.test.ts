@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { questionBank, makeRound, questionKey, audioFragments, choiceAudioPath } from '../src/content.ts';
 import { rhymePictures } from '../src/learning/rhymes.ts';
-import { ART_KINDS, pictureKinds } from '../src/art-catalog.ts';
+import { ART_KINDS, pictureKinds } from '../src/art/art-catalog.ts';
 import { emptyProfile, rememberQuestions } from '../src/storage.ts';
 
 // Spoken rhyme families, independent of how the question bank picks distractors.

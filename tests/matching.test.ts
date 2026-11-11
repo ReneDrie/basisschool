@@ -14,7 +14,7 @@ import {
   audioFragments,
 } from '../src/content.ts';
 import { matchingBank, matchingCards, matches, faceLabel, MATCH_COMPLETE } from '../src/learning/matching.ts';
-import { ART_KINDS } from '../src/art-catalog.ts';
+import { ART_KINDS } from '../src/art/art-catalog.ts';
 import { emptyProfile, rememberQuestions, reward, parseBackup, validateProfiles } from '../src/storage.ts';
 
 test('All four groups have both matching and memory with balanced, stable banks', () => {

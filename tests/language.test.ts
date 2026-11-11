@@ -15,7 +15,7 @@ import {
 } from '../src/content.ts';
 import { languageResponse, sentenceBuilderBank, wordFactoryBank, wordPieces } from '../src/learning/language.ts';
 import { placeBoardTile } from '../src/learning/tiles.ts';
-import { ART_KINDS } from '../src/art-catalog.ts';
+import { ART_KINDS } from '../src/art/art-catalog.ts';
 import { emptyProfile, parseBackup, rememberQuestions, reward } from '../src/storage.ts';
 
 const languages = (group: number) => (group === 2 ? ['woordfabriek' as const] : (['woordfabriek', 'zinnenbouwer'] as const));

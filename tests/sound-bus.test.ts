@@ -24,7 +24,7 @@ import {
   transferPassenger,
   waitingPassengers,
 } from '../src/learning/bus.ts';
-import { ART_KINDS } from '../src/art-catalog.ts';
+import { ART_KINDS } from '../src/art/art-catalog.ts';
 import { emptyProfile, parseBackup, rememberQuestions, reward } from '../src/storage.ts';
 
 const games = ['klankstudio', 'rekenbus'] as const;

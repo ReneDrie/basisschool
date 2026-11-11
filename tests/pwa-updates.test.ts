@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { activateAppUpdate, checkForAppUpdate } from '../src/pwa-updates.ts';
+import { activateAppUpdate, checkForAppUpdate } from '../src/app/pwa-updates.ts';
 
 class Worker extends EventTarget {
   state = 'installing';
