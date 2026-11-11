@@ -248,3 +248,11 @@ html{background:#e7f4f4}body{color:var(--app-ink)}.app-shell{min-height:100dvh;b
 .parent-insights h4{margin:18px 0 8px;font-size:16px}.parent-insights ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}.parent-insights li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:14px;background:#f6f8f3}.parent-insights li small{display:block;margin-top:2px;color:#5d6d70;font-size:13px;line-height:1.35}
 .insight-status{flex:none;padding:5px 10px;border-radius:999px;font-size:13px;font-weight:800;white-space:nowrap}.status-goed{background:#d5efd6;color:#2f6b43}.status-groeit{background:#fff1c7;color:#7a5d22}.status-lastig{background:#fde0d6;color:#8a3f2a}.status-nieuw{background:#e7eef0;color:#47606a}
 .home-tip{display:flex;gap:9px;align-items:flex-start;margin:12px 0 6px;padding:11px 12px;border-radius:14px;background:#eef6e6;line-height:1.4}.home-tip svg{flex:none;margin-top:2px;color:#4f9163}
+/* Decorating: treasures gently bob to show they can be moved; the one being dragged lifts up. */
+.island-art.is-editing{touch-action:none;user-select:none;-webkit-user-select:none}
+.island-art.is-editing .island-treasure{cursor:grab;animation:treasure-bob 2.4s ease-in-out infinite}
+.island-art.is-editing .island-treasure:nth-of-type(2n){animation-delay:-1.2s}
+.island-art.is-editing .island-treasure.is-dragging{cursor:grabbing;animation:none;transform:scale(1.12);filter:drop-shadow(0 8px 6px #294c6040)}
+.island-art.is-editing .island-treasure.is-wiggling{animation:treasure-wiggle .6s ease-in-out}
+@keyframes treasure-bob{50%{transform:translateY(-4px)}}
+.decorate-button{background:#fff8e3}

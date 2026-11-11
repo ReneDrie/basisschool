@@ -71,6 +71,12 @@ Kinderen zien sterren en schatten. Het oude ‘Level’ op het eiland is weg. Al
 
 Een nieuw verdiende schat springt na ‘Bekijk mijn eiland’ op zijn plek en gloeit even; het vriendje zegt ‘Nieuw: Fladdervriend!’. Kinderen kunnen op hun schatten tikken: de schat wiebelt en het vriendje noemt de naam. Op de wereldkaart zijn de eilanden alleen plaatjes.
 
+### Je eiland versieren
+
+Met **Versieren** op het eiland (zodra er een schat is) kunnen kinderen hun verdiende schatten verslepen. Er zijn geen doelen of punten: het is een rustige plek om mee te spelen, bijvoorbeeld na ‘Klaar voor vandaag!’. Schatten op de grond blijven op het gras, vliegende schatten in de lucht en boten in het water (`src/learning/island-layout.ts`). Tikken zonder slepen laat een schat wiebelen en het vriendje zegt de naam. Met het toetsenbord verplaats je een schat met de pijltjes. **Alles terug** zet de schatten van dat eiland op hun oorspronkelijke plek; andere eilanden blijven zoals ze zijn. **Klaar** sluit het versieren.
+
+De plekken horen bij het profiel, gaan mee in reservekopieën en zijn ook op de wereldkaart te zien. Ze worden opgeslagen in de coördinaten van de eilandtekening, zodat ze op telefoon en iPad hetzelfde blijven. Onbekende schatten of plekken buiten de tekening worden bij het laden geweigerd.
+
 ### Voor ouders: hoe gaat het per leerdoel?
 
 Het oudergedeelte toont per gespeeld spel in de huidige groep het leerdoel en een status: ‘Gaat goed’ (minstens 80% van de laatste opdrachten zonder fout of hint), ‘Groeit’ (50–80%), ‘Nog lastig’ (minder dan 50%) of ‘Net begonnen’ (minder dan vier opdrachten). Proefvragen uit de volgende groep tellen niet mee. Bij het spel dat het meest aandacht nodig heeft staat één tip voor thuis, zonder scherm. De berekening en de tips staan in `src/learning/parent-insights.ts`.

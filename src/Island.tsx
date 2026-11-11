@@ -1,7 +1,8 @@
 import { ArtShape } from './Art';
-import { useId, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { islandRegions, type IslandRegion, type IslandReward } from './progression';
 import { SceneCottage, SceneObject, SceneTree, SceneryLayer } from './IslandScenery';
+import { clampSpot, zoneOf, type IslandLayout, type Spot, type Zone } from './learning/island-layout';
 
 type Placement = {x:number;y:number;size:number;grounded?:boolean};
 // Each discovery belongs in the landscape: boats in the water, creatures on the
@@ -15,27 +16,55 @@ const placements:Record<string,Placement[]> = {
   clouds:[{x:162,y:152,size:51,grounded:false},{x:413,y:151,size:70,grounded:false},{x:235,y:91,size:91,grounded:false},{x:344,y:103,size:55,grounded:false},{x:181,y:259,size:73}]
 };
 
+type Editing={onPlace:(rewardId:string,spot:Spot)=>void};
+type Treasure=Placement&{kind:string;reward:IslandReward;zone:Zone};
 /**
  * highlight: the art of a treasure that was just earned; it pops onto the island.
  * onTreasure: makes treasures tappable on the home island (they wiggle and the buddy names them).
+ * layout: where the child moved treasures to. editing: treasures can be dragged (or moved with the arrow keys).
  */
-export function Island({discoveries=0,region=islandRegions[0],highlight,onTreasure}:{discoveries?:number;region?:IslandRegion;highlight?:string;onTreasure?:(reward:IslandReward)=>void}) {
+export function Island({discoveries=0,region=islandRegions[0],highlight,onTreasure,layout,editing}:{discoveries?:number;region?:IslandRegion;highlight?:string;onTreasure?:(reward:IslandReward)=>void;layout?:IslandLayout;editing?:Editing}) {
   const id=useId(),earned=region.rewards.filter(reward=>reward.rounds<=discoveries),complete=earned.length===region.rewards.length;
+  const svg=useRef<SVGSVGElement>(null);
   const [wiggle,setWiggle]=useState<{kind:string;count:number}|null>(null);
-  function treasure(kind:string,node:ReactNode){
-    const reward=region.rewards.find(item=>item.art===kind),wiggling=wiggle?.kind===kind;
-    const className=`island-treasure ${wiggling?'is-wiggling':highlight===kind?'is-new':''}`;
-    if(!onTreasure||!reward)return <g key={kind} className={className}>{node}</g>;
-    const tap=()=>{setWiggle(current=>({kind,count:(current?.kind===kind?current.count:0)+1}));onTreasure(reward);};
+  const [drag,setDrag]=useState<{id:string;zone:Zone;spot:Spot;offset:Spot;start:Spot;moved:boolean}|null>(null);
+  // Keeps a dropped treasure in place until the saved layout comes back.
+  const [dropped,setDropped]=useState<IslandLayout>({});
+  useEffect(()=>setDropped({}),[layout]);
+  const spotOf=(reward:IslandReward,start:Placement):Spot=>drag?.id===reward.id?drag.spot:dropped[reward.id]??layout?.[reward.id]??start;
+  function pointIn(event:PointerEvent):Spot{
+    const matrix=svg.current!.getScreenCTM()!.inverse(),point=new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix);
+    return {x:point.x,y:point.y};
+  }
+  function place(reward:IslandReward,spot:Spot){setDropped(current=>({...current,[reward.id]:spot}));editing!.onPlace(reward.id,spot);}
+  function treasure(o:Treasure,node:ReactNode){
+    const {kind,reward}=o,wiggling=wiggle?.kind===kind,dragging=drag?.id===reward.id;
+    const className=`island-treasure ${dragging?'is-dragging':wiggling?'is-wiggling':highlight===kind?'is-new':''}`;
+    if(!onTreasure&&!editing)return <g key={kind} className={className}>{node}</g>;
+    const tap=()=>{setWiggle(current=>({kind,count:(current?.kind===kind?current.count:0)+1}));onTreasure?.(reward);};
+    const keys=(event:KeyboardEvent)=>{
+      if(event.key==='Enter'||event.key===' '){event.preventDefault();tap();return;}
+      const step=({ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-8],ArrowDown:[0,8]} as Record<string,number[]>)[event.key];
+      if(!editing||!step)return;
+      event.preventDefault();place(reward,clampSpot({x:o.x+step[0],y:o.y+step[1]},o.zone));
+    };
+    const pointer=editing?{
+      onPointerDown:(event:PointerEvent<SVGGElement>)=>{if(!event.isPrimary)return;event.currentTarget.setPointerCapture(event.pointerId);const point=pointIn(event);setDrag({id:reward.id,zone:o.zone,spot:{x:o.x,y:o.y},offset:{x:point.x-o.x,y:point.y-o.y},start:point,moved:false});},
+      onPointerMove:(event:PointerEvent<SVGGElement>)=>{if(!dragging)return;const point=pointIn(event);setDrag(current=>current&&{...current,moved:current.moved||Math.hypot(point.x-current.start.x,point.y-current.start.y)>6,spot:clampSpot({x:point.x-current.offset.x,y:point.y-current.offset.y},current.zone)});},
+      onPointerUp:()=>{if(!drag||!dragging)return;if(drag.moved)place(reward,drag.spot);else tap();setDrag(null);},
+      onPointerCancel:()=>setDrag(null)
+    }:{onClick:tap};
     // A new key restarts the wiggle on every tap.
-    return <g key={`${kind}-${wiggling?wiggle.count:0}`} className={className} role="button" tabIndex={0} aria-label={reward.name} onClick={tap} onKeyDown={(event:KeyboardEvent)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();tap();}}}>{node}</g>;
+    return <g key={`${kind}-${wiggling?wiggle.count:0}`} className={className} role="button" tabIndex={0} aria-label={editing?`${reward.name}. Sleep of verplaats met de pijltjes.`:reward.name} onKeyDown={keys} {...pointer}>{node}</g>;
   }
   const bay=region.theme==='bay',snow=region.theme==='snow',stars=region.theme==='stars',clouds=region.theme==='clouds',forest=region.theme==='forest';
   const scale=.91+earned.length*.015;
-  const objects=earned.slice(0,5).map((reward,index)=>({...placements[region.id][index],kind:reward.art}));
+  const objects:Treasure[]=earned.slice(0,5).map((reward,index)=>{const start=placements[region.id][index];return {...start,...spotOf(reward,start),kind:reward.art,reward,zone:zoneOf(start)};});
+  const finalStart:Placement={x:321,y:226,size:forest?125:114},finalReward=region.rewards[5];
+  const finale:Treasure={...finalStart,...spotOf(finalReward,finalStart),kind:finalReward.art,reward:finalReward,zone:'ground'};
   const groundObjects=objects.filter(o=>o.grounded!==false).sort((a,b)=>a.y-b.y);
   const skyObjects=objects.filter(o=>o.grounded===false);
-  return <svg className="island-art" viewBox="0 0 560 360" role={onTreasure?'group':'img'} aria-label={`${region.name}: ${earned.length} van ${region.rewards.length} schatten ontdekt`}>
+  return <svg ref={svg} className={`island-art ${editing?'is-editing':''}`} viewBox="0 0 560 360" role={onTreasure||editing?'group':'img'} aria-label={`${region.name}: ${earned.length} van ${region.rewards.length} schatten ontdekt`}>
     <defs>
       <linearGradient id={`${id}-earth`} x1="0" y1="0" x2="0" y2="1"><stop stopColor={region.earth}/><stop offset="1" stopColor={snow?'#849eac':stars||clouds?'#8c829f':'#ab856d'}/></linearGradient>
       <linearGradient id={`${id}-ground`} x1="0" y1="0" x2=".25" y2="1"><stop stopColor={region.grass}/><stop offset="1" stopColor={region.ground}/></linearGradient>
@@ -60,8 +89,8 @@ export function Island({discoveries=0,region=islandRegions[0],highlight,onTreasu
       <g fill={bay?'#d8b47d':snow?'#d6e6e3':stars?'#a0a2c2':'#9cbd8a'} opacity=".7"><ellipse cx="173" cy="219" rx="32" ry="9"/><ellipse cx="405" cy="242" rx="37" ry="9"/></g>
       {!(snow||bay)||earned.length===0?<SceneTree x={155} y={221} size={113} kind={bay?'palm':snow||stars?'pine':forest?'blossom':'round'}/>:null}
       <SceneTree x={415} y={237} size={76} kind={bay?'palm':snow||stars?'pine':forest?'blossom':'round'}/>
-      {groundObjects.filter(o=>o.y<240).map(o=>treasure(o.kind,o.kind==='palm'||o.kind==='pine'?<SceneTree x={o.x} y={o.y} size={o.size} kind={o.kind}/>:<SceneObject {...o}/>))}
-      {complete?treasure(region.rewards[5].art,<SceneObject kind={region.rewards[5].art} x={321} y={226} size={forest?125:114}/>):<SceneCottage x={319} y={225} size={106} theme={region.theme}/>}
+      {groundObjects.filter(o=>o.y<240).map(o=>treasure(o,o.kind==='palm'||o.kind==='pine'?<SceneTree x={o.x} y={o.y} size={o.size} kind={o.kind}/>:<SceneObject {...o}/>))}
+      {complete?treasure(finale,<SceneObject kind={finale.kind} x={finale.x} y={finale.y} size={finale.size}/>):<SceneCottage x={319} y={225} size={106} theme={region.theme}/>}
       <g fill={snow?'#fff9ed':stars?'#c0c0da':bay?'#e4c992':'#7da586'}>
         <ellipse cx="117" cy="244" rx="15" ry="6"/><ellipse cx="427" cy="258" rx="12" ry="5"/>
         <ellipse cx="186" cy="216" rx="9" ry="4"/><ellipse cx="349" cy="270" rx="13" ry="4"/>
@@ -69,8 +98,8 @@ export function Island({discoveries=0,region=islandRegions[0],highlight,onTreasu
       <g stroke={bay?'#bfaa7d':snow?'#9cbfc3':stars?'#8f91b1':'#789e79'} strokeWidth="1.25" fill="none"><path d="M113 243l-2-5m5 6 3-5m282 8 2-5m3 5 2-3m-53 23 2-5m4 5 2-3"/></g>
       <g fill={snow?'#fffdf5':'#efd29b'}><circle cx="121" cy="242" r="2"/><circle cx="403" cy="244" r="2"/><circle cx="358" cy="267" r="1.8"/></g>
       <g fill={snow?'#c4d6da':'#b3b7a1'}><ellipse cx="130" cy="268" rx="7" ry="3.4"/><ellipse cx="141" cy="270" rx="4" ry="2.3"/></g>
-      {groundObjects.filter(o=>o.y>=240).map(o=>treasure(o.kind,<SceneObject {...o}/>))}
-      {skyObjects.map(o=>treasure(o.kind,<SceneObject {...o}/>))}
+      {groundObjects.filter(o=>o.y>=240).map(o=>treasure(o,<SceneObject {...o}/>))}
+      {skyObjects.map(o=>treasure(o,<SceneObject {...o}/>))}
       <g fill="#fff8e7" opacity=".85"><path d="M94 116v10m-5-5h10m350 55v8m-4-4h8" stroke="#e8c989" strokeWidth="1.25"/><circle cx="445" cy="107" r="2"/><circle cx="203" cy="103" r="1.5"/></g>
     </SceneryLayer>
   </svg>;

@@ -10,6 +10,7 @@ import { activities, availableLevels, stickers, shuffle, GROUPS, isCorrectAnswer
 import { nextActivity } from './learning/next-activity';
 import { DAILY_ROUNDS, roundsToday } from './learning/today';
 import { insightLabels, parentInsights } from './learning/parent-insights';
+import { resetRegion, type IslandLayout } from './learning/island-layout';
 import { avatars, emptyProfile, loadProfiles, parseBackup, rememberQuestions, MAX_BACKUP_BYTES, reward, recordPractice, saveProfiles, type Profile } from './storage';
 import { QuestionAnswers, revealable } from './QuestionAnswers';
 import { AnswerCelebration } from './AnswerCelebration';
@@ -60,6 +61,14 @@ function App(){
   useEffect(()=>{if(!round)return;const heading=document.querySelector<HTMLElement>('.question-heading h1, .result-card h1');heading?.focus({preventScroll:true});},[round?.index,round?.done]);
   useEffect(()=>{if(!round)document.querySelector<HTMLElement>('.app-main h1')?.focus({preventScroll:true});},[page,!!round]);
   async function persist(next:Profile[]){await saveProfiles(next);setProfiles(next);}
+  // Island moves come quickly one after another (arrow keys), so they build on the latest profiles instead of the last render.
+  const latestProfiles=useRef(profiles);latestProfiles.current=profiles;
+  function changeLayout(change:(layout:IslandLayout)=>IslandLayout){
+    if(!profile)return;
+    const next=latestProfiles.current.map(p=>{if(p.id!==profile.id)return p;const {layout:_,...rest}=p,layout=change(p.layout??{});return Object.keys(layout).length?{...rest,layout}:rest;});
+    latestProfiles.current=next;setProfiles(next);
+    saveProfiles(next).catch(()=>setMessage('Je eiland kon niet worden bewaard.'));
+  }
   // One shared element: once it has played after a tap, Safari also lets it play the next instruction without a new tap.
   function audioElement(){if(!audioRef.current){audioRef.current=new Audio();audioRef.current.muted=silentTestAudio;}return audioRef.current;}
   function speak(source:string|string[],automatic=false){
@@ -202,7 +211,7 @@ function App(){
         </section>
         {round.selected===round.questions[round.index].answer&&!leaving&&<AnswerCelebration key={`celebration-${round.index}`} helped={round.helped} index={round.index} total={round.questions.length+(willRepeat(round)?1:0)} busy={busy||updating} error={advanceError} onNext={()=>void advance()}/>}
       </>}
-    </div>:page==='island'?<IslandHome profile={profile} loaded={loaded} disabled={updating||busy} today={today} celebrate={celebrate} onPlay={playNext} onTreasures={()=>navigate('treasures')} onProfile={()=>setDialog('profiles')}/>:page==='lessons'?<LessonsPage group={currentGroup} disabled={!loaded||updating||busy} onChoose={chooseActivity}/>:<TreasuresPage rounds={rounds} disabled={!loaded||updating||busy} onPlay={playNext}/>}
+    </div>:page==='island'?<IslandHome profile={profile} loaded={loaded} disabled={updating||busy} today={today} celebrate={celebrate} onPlay={playNext} onTreasures={()=>navigate('treasures')} onProfile={()=>setDialog('profiles')} onPlace={(rewardId,spot)=>changeLayout(layout=>({...layout,[rewardId]:spot}))} onResetLayout={regionId=>changeLayout(layout=>resetRegion(layout,regionId))}/>:page==='lessons'?<LessonsPage group={currentGroup} disabled={!loaded||updating||busy} onChoose={chooseActivity}/>:<TreasuresPage rounds={rounds} disabled={!loaded||updating||busy} onPlay={playNext}/>}
     </main>
     {!round&&<AppTabs page={page} onChange={navigate}/>}
     {leaveDestination&&round&&!round.done&&<LeaveRoundDialog onContinue={()=>setLeaveDestination(null)} onLeave={()=>{const next=leaveDestination;setLeaveDestination(null);setRound(null);navigate(next);}}/>}

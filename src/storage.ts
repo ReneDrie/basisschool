@@ -1,8 +1,9 @@
 import { GROUPS, SKILLS, questionKey, repetitionKey, type Question, type Group, type Skill } from './content.ts';
 import { PRACTICE_WINDOW, type PracticeHistory, type PracticeResult } from './learning/adaptive.ts';
 import { countRoundToday, type Today } from './learning/today.ts';
+import { validateLayout, type IslandLayout } from './learning/island-layout.ts';
 export type RecentQuestions = Partial<Record<`${Group}:${Skill}`, string[]>>;
-export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory; chooseLevel?:boolean; today?:Today };
+export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory; chooseLevel?:boolean; today?:Today; layout?:IslandLayout };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
 let dbPromise:Promise<IDBDatabase>|undefined;
@@ -75,7 +76,8 @@ export function validateProfiles(value:unknown):Profile[]{
       if(!value||typeof value!=='object'||typeof value.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value.date)||!isCount(value.rounds))throw new Error('Ongeldige dagvoortgang.');
       today={date:value.date,rounds:value.rounds};
     }
-    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{}),...(item.chooseLevel?{chooseLevel:true}:{}),...(today?{today}:{})};
+    const layout=item.layout===undefined?undefined:validateLayout(item.layout);
+    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{}),...(item.chooseLevel?{chooseLevel:true}:{}),...(today?{today}:{}),...(layout&&Object.keys(layout).length?{layout}:{})};
   });
 }
 export function parseBackup(text:string):Profile[]{
