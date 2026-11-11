@@ -47,9 +47,21 @@ Analytics staat altijd uit in ontwikkeling, op localhost, bij Do Not Track en me
 
 De app opent op het eiland en heeft drie vaste tabs met grote pictogrammen:
 
-- **Eiland:** je eigen eiland, je sterren en de knop Ga spelen. Het huisje opent Lessen en de schattenknop opent je verzameling.
-- **Lessen:** grote vakknoppen, daarna de onderwerpen met een kort label. Heeft een vak maar één onderwerp, dan opent dat direct. Een onderwerp met één niveau start meteen; bij twee niveaus kies je stap 1, stap 2 of Verras me.
+- **Eiland:** je eigen eiland, je sterren en de knop Ga spelen. Ga spelen start met één tik een rondje; de schattenknop opent je verzameling.
+- **Lessen:** grote vakknoppen, daarna de onderwerpen met een kort label. Heeft een vak maar één onderwerp, dan opent dat direct. Een onderwerp start meteen als ‘Verras me!’. Alleen bij Koppelplein kies je eerst Koppelen of Memory.
 - **Schatten:** je verdiende stickers en hoeveel rondjes je nog nodig hebt voor de volgende.
+
+**Ga spelen** kiest het spel zelf (`src/learning/next-activity.ts`). De rondjes wisselen tussen Rekenen, Taal & lezen en Ontdekken; binnen dat vak komt het minst gespeelde onderwerp eerst. Zo krijgt een kind afwisseling zonder te hoeven kiezen of lezen. Zelf kiezen blijft mogelijk via Lessen.
+
+Wil een kind zelf een vaste stap kiezen, dan zet een ouder bij **Voor ouders → Profiel & niveau** het vinkje ‘Mijn kind kiest zelf stap 1 of stap 2’ aan. Deze keuze hoort bij het profiel en gaat mee in reservekopieën. Daarna verschijnt bij een onderwerp weer stap 1, stap 2 of Verras me.
+
+In groep 2 en 3 wordt elke opdracht automatisch voorgelezen zodra die verschijnt; de luisterknop speelt hem opnieuw af. Hiervoor gebruikt de app één gedeeld audio-element dat bij de tik op een spel wordt vrijgegeven, zodat Safari ook de volgende opdrachten zonder nieuwe tik mag afspelen. Met het geluid uit wordt niets voorgelezen.
+
+Na een goed antwoord verschijnt kort een felicitatie. Na 1,4 seconde gaat het rondje vanzelf verder; een balk in de knop laat zien wanneer. Tikken op de knop gaat meteen door. Na de laatste vraag wordt het rondje vanzelf afgerond en bewaard. Lukt bewaren niet, dan blijft de knop staan om het opnieuw te proberen.
+
+Het tandwiel voor ouders vraagt eerst een vermenigvuldiging (bijvoorbeeld 17 × 7), zodat kinderen niet per ongeluk de groep wijzigen of een profiel verwijderen. Bij een fout antwoord verschijnt een nieuwe som.
+
+Bij Woordfabriek, Zinnenbouwer, Getallentrein en Natuurmissies blijft een neergelegd kaartje als onzichtbare plek in het vak staan. De andere kaartjes schuiven dus niet onder de vinger van een kind weg. In de Eilandwinkel staat het aantal spullen in het mandje niet meer op het scherm, omdat tellen de opdracht is; schermlezers horen het aantal nog wel.
 
 De nieuwe tabs en schermen zijn bekeken op telefoon- en iPad-formaat. Een volledig rondje met fout antwoord en hint is afgerond met de juiste beloning. In de productieversie zijn na herladen met de server uit de tabs, luisterknop en een volledig rondje getest; de ster bleef na opnieuw herladen behouden.
 
@@ -133,9 +145,9 @@ Alle plaatjes zijn bestaande eigen vectorillustraties. Drie nieuwe luisterfragme
 | 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
 | 5 | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken, tabellen/grafieken en Koppelplein |
 
-De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Onder Lessen kiezen kinderen een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Automatische niveau-aanpassing is nog niet ingebouwd.
+De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Ga spelen kiest het volgende spel; onder Lessen kiezen kinderen zelf een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Binnen de groep groeit de uitdaging per spel mee; zie ‘Geleidelijke uitdaging per eiland en spel’.
 
-Veel onderwerpen hebben twee niveaus. Vóór een rondje kies je stap 1, stap 2 of beide door elkaar. De oorspronkelijke onderwerpen voor groep 4 en 5 bieden voorlopig alleen stap 1. De moeilijkheid blijft binnen het gekozen niveau.
+Veel onderwerpen hebben twee niveaus. Standaard mengt ‘Verras me!’ ze; met de oudervink ‘Mijn kind kiest zelf stap 1 of stap 2’ kies je vóór een rondje stap 1, stap 2 of beide door elkaar. De oorspronkelijke onderwerpen voor groep 4 en 5 bieden voorlopig alleen stap 1. De moeilijkheid blijft binnen het gekozen niveau.
 
 Rekenen maakt lokaal grote oefenbanken: 499 vragen voor groep 3, 5.226 voor groep 4 en 10.803 voor groep 5. Naast gewone sommen zijn er ontbrekende getallen en bij tafels vragen over groepjes. Groep 2 telt verschillende voorwerpen in rijtjes, verspreid of in tweetallen. Ook vergelijken, vormen tellen, patronen, muntcombinaties, klokken, breuken en grafieken hebben extra varianten. Patronen gebruiken kleuren, voorwerpen en vormen; breuken wisselen stroken, roosters en taartpunten. Antwoordopties wisselen mee.
 
@@ -153,7 +165,7 @@ De nieuwe visuele opdrachten gebruiken eigen illustraties: hoeveelheden vergelij
 - Voortgang staat in IndexedDB, apart per profiel en per browser/websiteadres.
 - Het oudergedeelte biedt groep wijzigen, reservekopie downloaden, reservekopie terugzetten en profiel verwijderen.
 - Terugzetten vervangt de huidige profielen pas na controle van het bestand en bevestiging.
-- Geen synchronisatie, advertenties, externe lettertypen of analytics.
+- Geen synchronisatie, advertenties of externe lettertypen. De optionele GoatCounter-statistieken tellen alleen gestarte en afgeronde rondjes per spel en groep (zie boven).
 - De voorleesknoppen gebruiken 1.253 meegeleverde Nederlandse audiofragmenten, inclusief de spelopdrachten voor groep 4. Er is geen online spraakdienst nodig.
 - Open getallen worden exact gecontroleerd; voorloopnullen zijn toegestaan. Bij open woorden worden hoofdletters en spaties aan het begin en einde genegeerd, maar spelfouten tellen als een nieuwe poging. Lege antwoorden kunnen niet worden ingestuurd.
 - Hints, opnieuw proberen en dezelfde beloning per afgerond avontuur werken ook bij open vragen.
@@ -193,7 +205,7 @@ In een eerdere versie is een volledig avontuur van tien vragen in de browser get
 3. De configuratie staat in `vercel.json`: bouwopdracht `npm run build`, uitvoermap `dist`.
 4. Open de HTTPS-link die Vercel na publicatie geeft.
 
-Deze oplevering is lokaal voorbereid; er is nog geen Vercel-project aangemaakt of gepubliceerd. Persoonlijk, niet-commercieel gezinsgebruik past bij Vercel Hobby, binnen de geldende limieten. Een eigen domeinnaam is optioneel.
+De app staat op Vercel: [basisschool-seven.vercel.app](https://basisschool-seven.vercel.app/). Persoonlijk, niet-commercieel gezinsgebruik past bij Vercel Hobby, binnen de geldende limieten. Een eigen domeinnaam is optioneel.
 
 ## Op de iPad installeren en offline testen
 

@@ -16,7 +16,7 @@ export function AppTabs({page,onChange}:{page:AppPage;onChange:(page:AppPage)=>v
     ['island','Eiland',Flag],['lessons','Lessen',BookOpen],['treasures','Schatten',Trophy]
   ] as const).map(([id,title,Icon])=><button key={id} className={page===id?'selected':''} aria-current={page===id?'page':undefined} onClick={()=>onChange(id)}><span><Icon size={27}/></span>{title}</button>)}</nav>;
 }
-export function IslandHome({profile,loaded,disabled,onLessons,onTreasures,onProfile}:{profile?:Profile;loaded:boolean;disabled:boolean;onLessons:()=>void;onTreasures:()=>void;onProfile:()=>void}){
+export function IslandHome({profile,loaded,disabled,onPlay,onTreasures,onProfile}:{profile?:Profile;loaded:boolean;disabled:boolean;onPlay:()=>void;onTreasures:()=>void;onProfile:()=>void}){
   const rounds=profile?.rounds??0,progress=islandProgress(rounds);
   const [selected,setSelected]=useState(progress.currentRegion.id),[showMap,setShowMap]=useState(false);
   useEffect(()=>{setSelected(islandProgress(rounds).currentRegion.id);setShowMap(false);},[profile?.id,progress.currentRegion.id]);
@@ -33,7 +33,7 @@ export function IslandHome({profile,loaded,disabled,onLessons,onTreasures,onProf
         <div className="island-buddy" aria-hidden="true"><AvatarArt avatar={profile?.avatar}/><i>Ga je mee?</i></div>
         <span className="island-name">{region.name}</span>
       </div>
-      <div className="home-actions"><button className="big-play" disabled={!loaded||disabled} onClick={profile?onLessons:onProfile}><Play size={26} fill="currentColor"/>{profile?'Ga spelen':'Kies je vriendje'}<ArrowRight size={25}/></button>
+      <div className="home-actions"><button className="big-play" disabled={!loaded||disabled} onClick={profile?onPlay:onProfile}><Play size={26} fill="currentColor"/>{profile?'Ga spelen':'Kies je vriendje'}<ArrowRight size={25}/></button>
         {profile&&<button className="next-treasure" onClick={onTreasures}><Art kind={progress.nextReward?.art??'gem'}/><span>Nog {progress.nextAt-rounds} {progress.nextAt-rounds===1?'rondje':'rondjes'}</span></button>}
       </div>
     </>}
@@ -50,7 +50,7 @@ export function LessonsPage({group,disabled,onChoose}:{group:Group;disabled:bool
     <div className="lesson-tiles">{available.filter(a=>a.world===world).map(a=><button key={a.id} className={`lesson-tile ${a.color}`} onClick={()=>onChoose(a)} disabled={disabled}><ActivityArt kind={a.symbol}/><strong>{topicLabel(a,group)}</strong><span className="tile-play"><Play size={19} fill="currentColor"/></span></button>)}</div>}
   </section>;
 }
-export function TreasuresPage({rounds,onLessons}:{rounds:number;onLessons:()=>void}){
+export function TreasuresPage({rounds,disabled,onPlay}:{rounds:number;disabled:boolean;onPlay:()=>void}){
   const progress=islandProgress(rounds),[selected,setSelected]=useState(progress.currentRegion.id);
   const region=islandRegions.find(r=>r.id===selected)??islandRegions[0];
   return <section className="treasures-page" aria-labelledby="treasures-title"><div className="page-heading"><span className="heading-badge treasure-heading"><Trophy size={27}/></span><h1 id="treasures-title" tabIndex={-1}>Jouw schatten</h1><span className="treasure-total">{progress.earned.length} / {stickers.length}</span></div>
@@ -58,6 +58,6 @@ export function TreasuresPage({rounds,onLessons}:{rounds:number;onLessons:()=>vo
     <div className="region-heading"><h2>{region.name}</h2><span>{region.rewards.filter(r=>r.rounds<=rounds).length} / {region.rewards.length}</span></div>
     <div className="treasure-shelf">{region.rewards.map(s=><div key={s.id} className={`treasure-card ${rounds>=s.rounds?'earned':'locked'}`}><div className="treasure-token"><Art kind={s.art}/></div><h2>{s.name}</h2>{rounds>=s.rounds?<span className="treasure-owned"><Check size={17}/>Verzameld!</span>:<span className="treasure-lock"><LockKeyhole size={16}/>Nog {s.rounds-rounds} {s.rounds-rounds===1?'rondje':'rondjes'}</span>}</div>)}</div>
     {rounds>=stickers.at(-1)!.rounds&&<div className="expedition-card"><Art kind="gem"/><div><h2>Verkennersrang {progress.expeditionRank+1}</h2><p>{progress.expeditionRank} {progress.expeditionRank===1?'edelsteen':'edelstenen'} · Nog {progress.nextAt-rounds} rondjes</p></div></div>}
-    <button className="big-play treasure-play" onClick={onLessons}><Play fill="currentColor" size={23}/>Ga spelen<ArrowRight size={24}/></button>
+    <button className="big-play treasure-play" disabled={disabled} onClick={onPlay}><Play fill="currentColor" size={23}/>Ga spelen<ArrowRight size={24}/></button>
   </section>;
 }

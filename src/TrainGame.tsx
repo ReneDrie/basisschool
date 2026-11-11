@@ -18,7 +18,7 @@ export function TrainGame({task,correct,onAnswer}:{task:TrainTask;correct:boolea
       })}
     </div>
     <div className="train-bank" data-train-bank="true" data-board-bank="true" role="group" aria-label="Kaartjes om in de trein te leggen">
-      {items.filter(item=>!slots.includes(item.id)).map(item=><button type="button" key={item.id} data-train-item={item.id} disabled={correct} className={`train-tile ${selected===item.id?'is-selected':''} ${drag?.item.id===item.id?'is-dragging':''}`} aria-label={`Kaartje ${item.label}`} aria-pressed={selected===item.id} {...handlers(item)} onClick={event=>click(event,()=>choose(item.id))}>{item.label}</button>)}
+      {(items.every(item=>slots.includes(item.id))?[]:items).map(item=>slots.includes(item.id)?<button type="button" key={item.id} className="train-tile tile-placeholder" aria-hidden="true" tabIndex={-1} disabled>{item.label}</button>:<button type="button" key={item.id} data-train-item={item.id} disabled={correct} className={`train-tile ${selected===item.id?'is-selected':''} ${drag?.item.id===item.id?'is-dragging':''}`} aria-label={`Kaartje ${item.label}`} aria-pressed={selected===item.id} {...handlers(item)} onClick={event=>click(event,()=>choose(item.id))}>{item.label}</button>)}
       {complete&&<span className="train-bank-ready"><Check size={20}/>Alle kaartjes liggen in de trein!</span>}
     </div>
     <div className="train-controls"><button className="secondary-button" type="button" disabled={correct||slots.every(id=>id===null)} onClick={reset}><RotateCcw size={18}/>Opnieuw</button><button className="primary-button" type="button" disabled={correct||!complete} onClick={()=>onAnswer(trainResponse(task,slots))}>Trein klaar!<ArrowRight size={21}/></button></div>

@@ -1,7 +1,7 @@
 import { GROUPS, SKILLS, questionKey, repetitionKey, type Question, type Group, type Skill } from './content.ts';
 import { PRACTICE_WINDOW, type PracticeHistory, type PracticeResult } from './learning/adaptive.ts';
 export type RecentQuestions = Partial<Record<`${Group}:${Skill}`, string[]>>;
-export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory };
+export type Profile = { id:string; name:string; avatar:string; group:Group; rounds:number; stars:number; skills:Partial<Record<Skill,number>>; recentQuestions?:RecentQuestions; recentConcepts?:RecentQuestions; practice?:PracticeHistory; chooseLevel?:boolean };
 export const avatars=['🦊','🐻','🐰','🐼','🐸','🦁'];
 export const emptyProfile=(name:string,avatar:string,group:Group):Profile=>({id:crypto.randomUUID(),name:name.trim(),avatar,group,rounds:0,stars:0,skills:{}});
 let dbPromise:Promise<IDBDatabase>|undefined;
@@ -67,7 +67,8 @@ export function validateProfiles(value:unknown):Profile[]{
         });
       }
     }
-    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{})};
+    if(item.chooseLevel!==undefined&&typeof item.chooseLevel!=='boolean')throw new Error('Ongeldige instelling.');
+    ids.add(item.id);return {id:item.id,name:item.name.trim(),avatar:item.avatar as string,group:item.group as Group,rounds:item.rounds,stars:item.stars,skills,...histories,...(practice?{practice}:{}),...(item.chooseLevel?{chooseLevel:true}:{})};
   });
 }
 export function parseBackup(text:string):Profile[]{
