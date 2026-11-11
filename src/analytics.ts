@@ -24,10 +24,10 @@ const titles: Record<AnalyticsEvent, string> = {
 
 function eventCounts(event: AnalyticsEvent, game?: GameContext): Count[] {
   const result: Count[] = [];
-  const add = (path: string, title: string) => result.push({path, title, referrer: '', event: true, no_session: true});
+  const add = (path: string, title: string) => result.push({ path, title, referrer: '', event: true, no_session: true });
   if (event !== 'game-started' && event !== 'round-completed') add(event, titles[event]);
   if ((event === 'game-started' || event === 'round-completed') && game && GROUPS.includes(game.group)) {
-    const activity = activities(game.group).find(a => a.id === game.skill);
+    const activity = activities(game.group).find((a) => a.id === game.skill);
     if (!activity) return result;
     // Resolve labels from the catalog, never from profile data or arbitrary caller text.
     const memory = game.skill === 'koppelen' && game.difficulty === 2;
@@ -43,8 +43,7 @@ function eventCounts(event: AnalyticsEvent, game?: GameContext): Count[] {
 // Only accept a hosted GoatCounter site; this URL is public, never an API key.
 export function analyticsDashboard(site: string | undefined): string | undefined {
   const value = site?.trim().replace(/\/$/, '');
-  return value && /^https:\/\/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.goatcounter\.com$/.test(value)
-    ? `${value}/` : undefined;
+  return value && /^https:\/\/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.goatcounter\.com$/.test(value) ? `${value}/` : undefined;
 }
 
 export function startAnalytics(
@@ -54,21 +53,29 @@ export function startAnalytics(
 ): (event: AnalyticsEvent, game?: GameContext) => void {
   const dashboard = analyticsDashboard(options.site);
   const local = /^(localhost|127(?:\.\d+){3}|\[::1\])$/.test(browser.location.hostname);
-  if (!dashboard || !options.production || local ||
-      new URLSearchParams(browser.location.search).get('test') === '1' ||
-      browser.navigator.doNotTrack === '1') return () => {};
+  if (
+    !dashboard ||
+    !options.production ||
+    local ||
+    new URLSearchParams(browser.location.search).get('test') === '1' ||
+    browser.navigator.doNotTrack === '1'
+  )
+    return () => {};
 
   let loading = false;
   let opened = false;
   const pending: Count[] = [];
-  const standalone = () => browser.matchMedia('(display-mode: standalone)').matches ||
+  const standalone = () =>
+    browser.matchMedia('(display-mode: standalone)').matches ||
     (browser.navigator as Navigator & { standalone?: boolean }).standalone === true;
 
   function count(path: string, title: string, event: boolean) {
     // Explicit constants prevent URL queries, profile names, answers or referrers leaking.
     try {
       browser.goatcounter?.count?.({ path, title, referrer: '', event, no_session: event });
-    } catch { /* Analytics must never interrupt playing or saving progress. */ }
+    } catch {
+      /* Analytics must never interrupt playing or saving progress. */
+    }
   }
 
   function flush() {
@@ -83,7 +90,10 @@ export function startAnalytics(
 
   function load() {
     if (!browser.navigator.onLine) return;
-    if (browser.goatcounter?.count) { flush(); return; }
+    if (browser.goatcounter?.count) {
+      flush();
+      return;
+    }
     if (loading) return;
     loading = true;
     browser.goatcounter = { no_onload: true };
@@ -92,8 +102,14 @@ export function startAnalytics(
     script.src = 'https://gc.zgo.at/count.js';
     script.referrerPolicy = 'no-referrer';
     script.dataset.goatcounter = `${dashboard}count`;
-    script.onload = () => { loading = false; flush(); };
-    script.onerror = () => { loading = false; script.remove(); };
+    script.onload = () => {
+      loading = false;
+      flush();
+    };
+    script.onerror = () => {
+      loading = false;
+      script.remove();
+    };
     doc.head.appendChild(script);
   }
 

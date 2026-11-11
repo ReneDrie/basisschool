@@ -23,13 +23,13 @@ Een openbaar overzicht kan later door de zichtbaarheid in GoatCounter te wijzige
 
 Voor een andere GoatCounter-site kun je in Vercel bij **Settings → Environment Variables** `VITE_GOATCOUNTER_URL=https://jouw-site.goatcounter.com` instellen. Gebruik het siteadres, zonder `/count`. Dit is een openbaar adres; zet hier nooit een API-sleutel in. Stel `VITE_GOATCOUNTER_URL` in op `off` om analytics uit te schakelen. Vite verwerkt deze instelling tijdens het bouwen, dus maak na een wijziging een nieuwe deployment.
 
-| Telling in GoatCounter | Betekenis |
-| --- | --- |
-| `/` — Kleine Ontdekkers | De app is geladen met internet, of kwam tijdens dezelfde opening weer online. GoatCounter toont bezoeken en een schatting van bezoekers. |
-| `home-screen-open` | De app is geladen vanaf het beginscherm, inclusief iPad/Safari. Dit telt openingen, geen unieke installaties. |
-| `app-installed` | De browser meldde een geslaagde installatie. Dit werkt alleen in browsers met `appinstalled`; Safari/iPad meldt deze gebeurtenis niet. |
-| `game-started/group/4/game/winkel` | Een rondje Eilandwinkel is gestart in groep 4. |
-| `round-completed/group/4/game/winkel` | Een rondje Eilandwinkel is met internet afgerond in groep 4 en succesvol lokaal opgeslagen. Zonder namen, antwoorden of scores. |
+| Telling in GoatCounter                | Betekenis                                                                                                                                |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `/` — Kleine Ontdekkers               | De app is geladen met internet, of kwam tijdens dezelfde opening weer online. GoatCounter toont bezoeken en een schatting van bezoekers. |
+| `home-screen-open`                    | De app is geladen vanaf het beginscherm, inclusief iPad/Safari. Dit telt openingen, geen unieke installaties.                            |
+| `app-installed`                       | De browser meldde een geslaagde installatie. Dit werkt alleen in browsers met `appinstalled`; Safari/iPad meldt deze gebeurtenis niet.   |
+| `game-started/group/4/game/winkel`    | Een rondje Eilandwinkel is gestart in groep 4.                                                                                           |
+| `round-completed/group/4/game/winkel` | Een rondje Eilandwinkel is met internet afgerond in groep 4 en succesvol lokaal opgeslagen. Zonder namen, antwoorden of scores.          |
 
 Per start of afronding verstuurt de app één gebeurtenis met het spel en de groep, bijvoorbeeld `round-completed/group/4/game/winkel`. De losse totalen per spel, per groep en de algemene `round-completed` worden niet meer verstuurd. Filter op `game-started/group/4/game/` om gestarte spellen in groep 4 te vergelijken, of op `round-completed/group/4/game/` voor afgeronde rondjes. Voor een speltotaal over alle groepen tel je de bijbehorende groepsregels op. Starts en afrondingen zijn afzonderlijke tellingen; tel die niet bij elkaar op als aantal rondjes.
 
@@ -95,14 +95,14 @@ De kinderschermen hebben geen websitefooter, promotieteksten, bijschriften of zi
 
 De Wereldkaart op het eiland toont zes gebieden. Ontgrendelde gebieden zijn te bezoeken; het eerstvolgende gebied toont hoeveel rondjes er nog nodig zijn, latere gebieden zijn ‘Nog geheim’. Elk gebied groeit in zes stappen. De eerste zes schatten en hun mijlpalen zijn behouden, zodat oude profielen meteen dezelfde beloningen terugzien.
 
-| Gebied | Gaat open na | Laatste schat na |
-| --- | ---: | ---: |
-| Groene tuin | 0 | 20 |
-| Strandbaai | 25 | 50 |
-| Bloesembos | 60 | 90 |
-| Sterrenheuvel | 100 | 150 |
-| Sneeuwtoppen | 165 | 240 |
-| Wolkenrijk | 260 | 360 |
+| Gebied        | Gaat open na | Laatste schat na |
+| ------------- | -----------: | ---------------: |
+| Groene tuin   |            0 |               20 |
+| Strandbaai    |           25 |               50 |
+| Bloesembos    |           60 |               90 |
+| Sterrenheuvel |          100 |              150 |
+| Sneeuwtoppen  |          165 |              240 |
+| Wolkenrijk    |          260 |              360 |
 
 Bij het vrijspelen van een nieuw gebied verschijnt een melding na de les. Het eiland opent daarna op dat gebied. Eerdere gebieden en schatten blijven beschikbaar. De Schattentab toont zes beloningen tegelijk, met een eilandkiezer voor de andere gebieden.
 
@@ -145,12 +145,12 @@ Kaarten komen in een gemengde volgorde in beeld. Tik op een kaart om die aan je 
 
 Via **Lessen → Ontdekken → Koppelplein** zijn er twee nieuwe spelvormen: **Koppelen**, met de kaarten zichtbaar, en **Memory**, met acht dichte kaarten. Bij groep 3 en 5 opent Ontdekken direct de spelkeuze, omdat dit daar het enige onderwerp is. Een bord heeft vier paren; na zes borden in groep 2, acht in groep 3 of tien in groep 4 en 5 volgt de gebruikelijke ster.
 
-| Groep | Wat hoort bij elkaar? | Borden per spelvorm |
-| --- | --- | ---: |
-| 2 | Aantallen en cijfers; voorwerpen en hun schaduwen | 140 |
-| 3 | Plaatjes en gelezen woorden; sommen en uitkomsten | 140 |
-| 4 | Keersommen en uitkomsten; enkelvoud en meervoud; klokken en tijden | 210 |
-| 5 | Breukplaatjes en breuken; lengtematen en inhoudsmaten; woorden en betekenissen | 210 |
+| Groep | Wat hoort bij elkaar?                                                          | Borden per spelvorm |
+| ----- | ------------------------------------------------------------------------------ | ------------------: |
+| 2     | Aantallen en cijfers; voorwerpen en hun schaduwen                              |                 140 |
+| 3     | Plaatjes en gelezen woorden; sommen en uitkomsten                              |                 140 |
+| 4     | Keersommen en uitkomsten; enkelvoud en meervoud; klokken en tijden             |                 210 |
+| 5     | Breukplaatjes en breuken; lengtematen en inhoudsmaten; woorden en betekenissen |                 210 |
 
 Dit zijn samen 1.400 verschillende borden. Iedere ronde verdeelt de oefensoorten gelijkmatig. De kaarten worden opnieuw gemengd en de bestaande vraag- en begripsgeschiedenis spreidt eerdere borden, ook wanneer hetzelfde bord met een andere spelvorm terugkomt. Profielen en reservekopieën blijven compatibel.
 
@@ -160,12 +160,12 @@ Alle plaatjes zijn bestaande eigen vectorillustraties. Drie nieuwe luisterfragme
 
 ## Wat zit erin?
 
-| Groep | Oefeningen |
-| --- | --- |
-| 2 | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
-| 3 | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters, korte leesvragen en Koppelplein |
-| 4 | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
-| 5 | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken, tabellen/grafieken en Koppelplein |
+| Groep | Oefeningen                                                                                                                            |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 2     | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
+| 3     | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters, korte leesvragen en Koppelplein                                         |
+| 4     | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein     |
+| 5     | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken, tabellen/grafieken en Koppelplein                            |
 
 De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Ga spelen kiest het volgende spel; onder Lessen kiezen kinderen zelf een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Binnen de groep groeit de uitdaging per spel mee; zie ‘Geleidelijke uitdaging per eiland en spel’.
 
@@ -292,12 +292,12 @@ De eigen appiconen zijn reproduceerbaar met `python3 scripts/generate-icons.py` 
 
 **Lessen → Ontdekken → Speurneus** toont vier gehusselde kaarten waarvan er precies één afwijkt van de gevraagde regel. Na een fout antwoord blijft het bord staan en verschijnt een hint.
 
-| Groep | Getallentrein | Speurneus, stap 1 / stap 2 |
-| --- | --- | --- |
-| 2 | Drie of vier getallen tot 10 | Dieren en fruit / een ander aantal |
-| 3 | Vier getallen tot 20 | Woorden bij een groep / sommen met een andere uitkomst |
-| 4 | Vier getallen tot 100 | Een getal buiten de tafel / enkelvoud tussen meervouden |
-| 5 | Getallen tot 1.000, daarna breuken | Een afwijkende breuk / een afwijkende lengtemaat |
+| Groep | Getallentrein                      | Speurneus, stap 1 / stap 2                              |
+| ----- | ---------------------------------- | ------------------------------------------------------- |
+| 2     | Drie of vier getallen tot 10       | Dieren en fruit / een ander aantal                      |
+| 3     | Vier getallen tot 20               | Woorden bij een groep / sommen met een andere uitkomst  |
+| 4     | Vier getallen tot 100              | Een getal buiten de tafel / enkelvoud tussen meervouden |
+| 5     | Getallen tot 1.000, daarna breuken | Een afwijkende breuk / een afwijkende lengtemaat        |
 
 Beide spellen hebben eigen oefengeschiedenis, twee niveaus per groep, de gebruikelijke beloningen en 24 gedeelde lokale opdracht- en hintfragmenten. Bestaande profielen en reservekopieën blijven bruikbaar. De inhoud, beoordelingsregels, verwisselen van treinkaartjes, spreiding van opdrachten en reservekopieën worden gecontroleerd in `tests/playful.test.ts`.
 
@@ -305,12 +305,12 @@ Beide spellen hebben eigen oefengeschiedenis, twee niveaus per groep, de gebruik
 
 Onder **Lessen → Taal & lezen** staat **Woordfabriek** voor groep 2–5 en **Zinnenbouwer** vanaf groep 3. Beide spellen ondersteunen slepen met muis of vinger, twee keer tikken en het toetsenbord. Kaartjes kunnen worden verwisseld, vervangen of teruggelegd. Herhaalde letters zijn uitwisselbaar: de beoordeling gebruikt het opgebouwde woord, niet de identiteit van een letterkaartje.
 
-| Groep | Woordfabriek, stap 1 / stap 2 | Zinnenbouwer, stap 1 / stap 2 |
-| --- | --- | --- |
-| 2 | Korte woorden nabouwen / woorden met vier letters, met plaatje en voorbeeld | — |
-| 3 | Woorden bij plaatjes / langere woorden en medeklinkercombinaties | Korte zinnen / langere zinnen over dieren |
-| 4 | Meervouden bouwen / langere woorden bij plaatjes | Zinnen met beschrijvingen / zinnen met plaatsen en vragen |
-| 5 | Samengestelde woorden / moeilijkere spelling bij omschrijvingen | Langere zinnen / bijzinnen met komma's |
+| Groep | Woordfabriek, stap 1 / stap 2                                               | Zinnenbouwer, stap 1 / stap 2                             |
+| ----- | --------------------------------------------------------------------------- | --------------------------------------------------------- |
+| 2     | Korte woorden nabouwen / woorden met vier letters, met plaatje en voorbeeld | —                                                         |
+| 3     | Woorden bij plaatjes / langere woorden en medeklinkercombinaties            | Korte zinnen / langere zinnen over dieren                 |
+| 4     | Meervouden bouwen / langere woorden bij plaatjes                            | Zinnen met beschrijvingen / zinnen met plaatsen en vragen |
+| 5     | Samengestelde woorden / moeilijkere spelling bij omschrijvingen             | Langere zinnen / bijzinnen met komma's                    |
 
 De knop **Luister naar het woord/de zin** speelt het doelwoord of de voorbeeldzin af. Bij Zinnenbouwer bouwen kinderen de gesproken zin na; dat maakt de bedoelde volgorde duidelijk, ook wanneer met dezelfde woorden andere zinnen mogelijk zijn. Een voorbeeld laten zien geldt vanaf groep 3 als hulp. Groep 2 krijgt het voorbeeld standaard als onderdeel van de oefening in letterherkenning. Het model verdwijnt bij de volgende opdracht. Hoofdletters staan op de woordkaartjes; punten, komma's en vraagtekens zijn losse kaartjes.
 
@@ -322,17 +322,17 @@ Opdrachten, hints, doelwoorden en zinnen zijn lokaal ingesproken en worden meege
 
 **Lessen → Rekenen → Rekenbus** is beschikbaar in groep 2–4. Bij elke halte verplaatsen kinderen passagiers tussen de bus en het perron, met slepen, tikken of het toetsenbord. Verplaatsingen kunnen ongedaan worden gemaakt. Bij te veel uitstappers kunnen ze passagiers terugzetten; de volgende halte gaat pas open wanneer het gevraagde aantal is verplaatst. Na de laatste halte kiezen kinderen hoeveel passagiers nog in de bus zitten. Een hele rit kan opnieuw.
 
-| Groep | Klankstudio, stap 1 / stap 2 | Rekenbus, stap 1 / stap 2 |
-| --- | --- | --- |
-| 2 | Korte woorden / woorden met lange klinkers en tweetekenklanken | Instappen tot 5 / in- en uitstappen tot 10 |
-| 3 | Lange klinkers en tweetekenklanken / medeklinkercombinaties | Eén halte tot 10 / twee haltes tot 20 |
-| 4 | — | Twee haltes tot 20 / drie haltes tot 30 |
+| Groep | Klankstudio, stap 1 / stap 2                                   | Rekenbus, stap 1 / stap 2                  |
+| ----- | -------------------------------------------------------------- | ------------------------------------------ |
+| 2     | Korte woorden / woorden met lange klinkers en tweetekenklanken | Instappen tot 5 / in- en uitstappen tot 10 |
+| 3     | Lange klinkers en tweetekenklanken / medeklinkercombinaties    | Eén halte tot 10 / twee haltes tot 20      |
+| 4     | —                                                              | Twee haltes tot 20 / drie haltes tot 30    |
 
 Beide spellen hebben twee niveaus, lokale audio, eigen oefengeschiedenis en dezelfde sterren en felicitaties als de andere spellen. De bestaande profielen en reservekopieën blijven bruikbaar. `tests/sound-bus.test.ts` controleert de klankreeksen, plaatjes, rekenritten, over- en ondergrenzen, omkeerbare passagiersverplaatsingen, variatie, beloningen en audiobestanden.
 
 ### Losse klanken maken
 
-De spraakklanken worden apart gegenereerd; gewone tekst-naar-spraak zou bijvoorbeeld de letternaam ‘em’ kunnen uitspreken in plaats van de klank /m/. De auteurstool gebruikt [IPA-uitspraak met AVSpeechUtterance](https://developer.apple.com/documentation/avfaudio/avspeechutterance/init(attributedstring:)) en schrijft alleen bestanden. De app zelf gebruikt geen spraakdienst, microfoon of native macOS-code.
+De spraakklanken worden apart gegenereerd; gewone tekst-naar-spraak zou bijvoorbeeld de letternaam ‘em’ kunnen uitspreken in plaats van de klank /m/. De auteurstool gebruikt [IPA-uitspraak met AVSpeechUtterance](<https://developer.apple.com/documentation/avfaudio/avspeechutterance/init(attributedstring:)>) en schrijft alleen bestanden. De app zelf gebruikt geen spraakdienst, microfoon of native macOS-code.
 
 ```sh
 node --experimental-strip-types scripts/generate-phonemes.mjs
@@ -356,10 +356,10 @@ De proefvraag heet voor kinderen ‘Een kleine uitdaging’. De beschrijving bij
 
 Onder **Lessen → Ontdekken → Natuurmissies** staan voor groep 2–5 afwisselend keuzevragen, dieren of plantendelen bij een passende plek of functie leggen, en stappen op volgorde zetten. Kaartjes volgen zichtbaar de muis of vinger; bij de schermrand schuift de pagina mee. Tikken en toetsenbordbediening werken ook. Geplaatste kaartjes kunnen worden vervangen, verwisseld en teruggelegd. **Missie klaar!** controleert een volledig bord; na een fout blijft het bewerkbaar.
 
-| Groep | Stap 1 | Stap 2 |
-| --- | --- | --- |
-| 2 | Dieren herkennen en naar hun plek brengen | Natuurvragen, groeistappen en seizoenen |
-| 3 | Dieren, planten en hun omgeving herkennen | Levenscycli, eenvoudige voedselketens en natuurverschijnselen |
+| Groep  | Stap 1                                             | Stap 2                                                           |
+| ------ | -------------------------------------------------- | ---------------------------------------------------------------- |
+| 2      | Dieren herkennen en naar hun plek brengen          | Natuurvragen, groeistappen en seizoenen                          |
+| 3      | Dieren, planten en hun omgeving herkennen          | Levenscycli, eenvoudige voedselketens en natuurverschijnselen    |
 | 4 en 5 | Plantendelen en hun functies, natuurverschijnselen | Voedselketens, waterkringloop, bestuiving en eenvoudig onderzoek |
 
 Vragen, hints, aanwijzingen, antwoordkaarten en doelplekken hebben lokale voorleesfragmenten. Cycli hebben een vast genoemd beginpunt; de voedselketen legt uit dat een pijl ‘wordt gegeten door’ betekent. Plaatjes geven nooit alleen het juiste keuzeantwoord weg. De missies gebruiken de bestaande sterren, oefengeschiedenis, felicitaties en opbouw per eiland via **Verras me!**, binnen de gekozen groep.

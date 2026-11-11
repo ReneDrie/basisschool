@@ -8,18 +8,42 @@ import type { ShopTask } from './shop.ts';
 import type { MatchingTask } from './matching.ts';
 import type { DetectiveTask, TrainTask } from './playful.ts';
 export const GROUPS = [2, 3, 4, 5] as const;
-export type Group = typeof GROUPS[number];
-export const SKILLS = ['rekenen', 'taal', 'tafels', 'lezen', 'vormen', 'klanken', 'vergelijken', 'patronen', 'klok', 'geld', 'breuken', 'grafieken', 'winkel', 'bouwen', 'verhalen', 'koppelen', 'getallentrein', 'speurneus', 'woordfabriek', 'zinnenbouwer', 'klankstudio', 'rekenbus', 'natuurmissies'] as const;
-export type Skill = typeof SKILLS[number];
+export type Group = (typeof GROUPS)[number];
+export const SKILLS = [
+  'rekenen',
+  'taal',
+  'tafels',
+  'lezen',
+  'vormen',
+  'klanken',
+  'vergelijken',
+  'patronen',
+  'klok',
+  'geld',
+  'breuken',
+  'grafieken',
+  'winkel',
+  'bouwen',
+  'verhalen',
+  'koppelen',
+  'getallentrein',
+  'speurneus',
+  'woordfabriek',
+  'zinnenbouwer',
+  'klankstudio',
+  'rekenbus',
+  'natuurmissies',
+] as const;
+export type Skill = (typeof SKILLS)[number];
 export type Difficulty = 1 | 2;
 export type World = 'rekenen' | 'taal' | 'ontdekken';
 export type Diagram =
   | { kind: 'comparison'; rows: { label: string; objects: string[] }[] }
   | { kind: 'pattern'; items: string[] }
-  | { kind:'shapes';target:string;items:string[] }
-  | { kind: 'clock'; hour: number; minute: number;face?:number }
+  | { kind: 'shapes'; target: string; items: string[] }
+  | { kind: 'clock'; hour: number; minute: number; face?: number }
   | { kind: 'money'; cents: number[] }
-  | { kind: 'fraction'; parts: number; filled: number;style?:'grid'|'bar'|'pie';reverse?:boolean }
+  | { kind: 'fraction'; parts: number; filled: number; style?: 'grid' | 'bar' | 'pie'; reverse?: boolean }
   | { kind: 'chart'; title: string; style: 'table' | 'bars'; rows: { label: string; value: number }[] }
   | { kind: 'picture'; symbol: string; label: string };
 export type Question = {
@@ -35,8 +59,8 @@ export type Question = {
   hint: string;
   rhyme?: { word: string };
   visual?: string;
-  missing?:{operation:'+'|'−'|'×';a:number;b:number;result:number};
-  visualLayout?:'rows'|'pairs'|'scatter';
+  missing?: { operation: '+' | '−' | '×'; a: number; b: number; result: number };
+  visualLayout?: 'rows' | 'pairs' | 'scatter';
   diagram?: Diagram;
   shop?: ShopTask;
   building?: BuildingTask;
@@ -56,6 +80,16 @@ export type Question = {
   openAnswer?: 'number' | 'word';
   answerMode?: 'choice' | 'open';
 };
-export type AuthoredQuestion = Omit<Question, 'group' | 'topic' | 'learningGoal' | 'difficulty'> & Partial<Pick<Question, 'learningGoal' | 'difficulty'>>;
-export type Activity = { id: Skill; title: string; subtitle: string; tag: string; color: string; symbol: string; world: World; learningGoal: string };
+export type AuthoredQuestion = Omit<Question, 'group' | 'topic' | 'learningGoal' | 'difficulty'> &
+  Partial<Pick<Question, 'learningGoal' | 'difficulty'>>;
+export type Activity = {
+  id: Skill;
+  title: string;
+  subtitle: string;
+  tag: string;
+  color: string;
+  symbol: string;
+  world: World;
+  learningGoal: string;
+};
 export const QUESTIONS_PER_ADVENTURE = { 2: 6, 3: 8, 4: 10, 5: 10 } as const satisfies Record<Group, number>;
