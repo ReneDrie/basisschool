@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, Check, ChevronLeft, LockKeyhole, Map, Move, Play, RotateCcw } from 'lucide-react';
 import { Art, AvatarArt } from '../art/Art';
-import { Island } from '../island/Island';
+import { ActivityArt, Island } from '../island/Island';
 import { islandProgress, islandRegions, type IslandReward } from '../progression';
 import { DAILY_ROUNDS } from '../learning/today';
 import type { Spot } from '../learning/island-layout';
@@ -14,6 +14,7 @@ export function IslandHome({
   today,
   celebrate,
   onPlay,
+  onMixed,
   onTreasures,
   onProfile,
   onPlace,
@@ -25,6 +26,8 @@ export function IslandHome({
   today: number;
   celebrate?: IslandReward;
   onPlay: () => void;
+  /** Starts a Grabbelton round with a question from every game. */
+  onMixed: () => void;
   onTreasures: () => void;
   onProfile: () => void;
   onPlace: (rewardId: string, spot: Spot) => void;
@@ -196,12 +199,18 @@ export function IslandHome({
                 <ArrowRight size={25} />
               </button>
               {profile && (
-                <button className="next-treasure" onClick={onTreasures}>
-                  <Art kind={progress.nextReward?.art ?? 'gem'} />
-                  <span>
-                    Nog {progress.nextAt - rounds} {progress.nextAt - rounds === 1 ? 'rondje' : 'rondjes'}
-                  </span>
-                </button>
+                <div className="home-pills">
+                  <button className="next-treasure grabbelton-pill" disabled={!loaded || disabled} onClick={onMixed}>
+                    <ActivityArt kind="grab-bag" />
+                    <span>Grabbelton</span>
+                  </button>
+                  <button className="next-treasure" onClick={onTreasures}>
+                    <Art kind={progress.nextReward?.art ?? 'gem'} />
+                    <span>
+                      Nog {progress.nextAt - rounds} {progress.nextAt - rounds === 1 ? 'rondje' : 'rondjes'}
+                    </span>
+                  </button>
+                </div>
               )}
             </div>
           )}

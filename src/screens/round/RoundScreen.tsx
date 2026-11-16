@@ -1,4 +1,5 @@
 import { ArrowLeft, Volume2, VolumeX } from 'lucide-react';
+import { isMixed, questionActivity } from '../../learning/grabbelton';
 import { topicLabel } from '../../learning/topic-labels';
 import { willRepeat, type Round } from '../../learning/round-state';
 import type { Group } from '../../content';
@@ -52,7 +53,14 @@ export function RoundScreen({
         <button className="text-button" disabled={busy || leaving} onClick={onLeave}>
           <ArrowLeft size={23} /> Lessen
         </button>
-        <span className="round-category">{topicLabel(round.activity, group)}</span>
+        <span className="round-category">
+          {!isMixed(round.activity)
+            ? topicLabel(round.activity, group)
+            : round.done
+              ? 'Grabbelton'
+              : // During the Grabbelton the label names the game of this question, so a child knows what to do.
+                `Grabbelton · ${topicLabel(questionActivity(round.activity, round.questions[round.index]), group)}`}
+        </span>
         <button className="icon-button" onClick={onToggleSound} aria-label={sound ? 'Geluid uitzetten' : 'Geluid aanzetten'}>
           {sound ? <Volume2 size={20} /> : <VolumeX size={20} />}
         </button>

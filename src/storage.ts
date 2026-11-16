@@ -190,12 +190,13 @@ export function parseBackup(text: string): Profile[] {
   if (data?.app !== 'kleine-ontdekkers' || data.version !== 1) throw new Error('Dit is geen reservekopie van Kleine Ontdekkers.');
   return validateProfiles(data.profiles);
 }
-export function reward(profile: Profile, skill: Skill, now = new Date()): Profile {
+/** One finished round. A Grabbelton round has no single game, so it adds no play count to a game. */
+export function reward(profile: Profile, skill: Skill | undefined, now = new Date()): Profile {
   return {
     ...profile,
     rounds: profile.rounds + 1,
     stars: profile.stars + 1,
-    skills: { ...profile.skills, [skill]: (profile.skills[skill] ?? 0) + 1 },
+    skills: skill ? { ...profile.skills, [skill]: (profile.skills[skill] ?? 0) + 1 } : profile.skills,
     today: countRoundToday(profile.today, now),
   };
 }

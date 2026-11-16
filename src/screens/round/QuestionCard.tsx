@@ -1,5 +1,6 @@
 import { BookOpen, CircleHelp, Leaf, RotateCcw, Sparkles, Volume2 } from 'lucide-react';
 import { Picture } from '../../art/Art';
+import { questionActivity } from '../../learning/grabbelton';
 import { revealed, type Round } from '../../learning/round-state';
 import { QuestionAnswers } from '../../questions/QuestionAnswers';
 import { QuestionVisual } from '../../questions/QuestionVisual';
@@ -25,7 +26,7 @@ export function QuestionCard({
     instruction = question.audioSequence ?? question.audio;
   return (
     <section
-      className={`question-card question-motion ${leaving ? 'question-leaving' : ''} ${round.activity.color} ${question.rhyme ? 'rhyme-question' : ''}`}
+      className={`question-card question-motion ${leaving ? 'question-leaving' : ''} ${questionActivity(round.activity, question).color} ${question.rhyme ? 'rhyme-question' : ''}`}
       inert={leaving}
     >
       {question.challengeGroup && (

@@ -8,10 +8,13 @@ export function LessonsPage({
   group,
   disabled,
   onChoose,
+  onMixed,
 }: {
   group: Group;
   disabled: boolean;
   onChoose: (activity: Activity) => void;
+  /** Starts a Grabbelton round with a question from every game. */
+  onMixed: () => void;
 }) {
   const [world, setWorld] = useState<World | null>(null);
   useEffect(() => setWorld(null), [group]);
@@ -39,32 +42,44 @@ export function LessonsPage({
         <span className="group-badge">Groep {group}</span>
       </div>
       {!world ? (
-        <div className="world-doors">
-          {worlds
-            .filter((w) => available.some((a) => a.world === w.id))
-            .map((w) => (
-              <button
-                className={`world-door door-${w.id}`}
-                key={w.id}
-                onClick={() => {
-                  const topics = available.filter((a) => a.world === w.id);
-                  if (topics.length === 1) onChoose(topics[0]);
-                  else setWorld(w.id);
-                }}
-              >
-                <div className="door-art">
-                  <ActivityArt kind={w.id === 'rekenen' ? '123' : w.id === 'taal' ? 'Aa' : 'shapes'} />
-                  <span className="door-spark" aria-hidden="true">
-                    ✦
+        <>
+          <div className="world-doors">
+            {worlds
+              .filter((w) => available.some((a) => a.world === w.id))
+              .map((w) => (
+                <button
+                  className={`world-door door-${w.id}`}
+                  key={w.id}
+                  onClick={() => {
+                    const topics = available.filter((a) => a.world === w.id);
+                    if (topics.length === 1) onChoose(topics[0]);
+                    else setWorld(w.id);
+                  }}
+                >
+                  <div className="door-art">
+                    <ActivityArt kind={w.id === 'rekenen' ? '123' : w.id === 'taal' ? 'Aa' : 'shapes'} />
+                    <span className="door-spark" aria-hidden="true">
+                      ✦
+                    </span>
+                  </div>
+                  <strong>{w.id === 'taal' ? 'Taal & lezen' : w.id === 'ontdekken' ? 'Ontdekken' : 'Rekenen'}</strong>
+                  <span className="door-go">
+                    <Play size={20} fill="currentColor" />
                   </span>
-                </div>
-                <strong>{w.id === 'taal' ? 'Taal & lezen' : w.id === 'ontdekken' ? 'Ontdekken' : 'Rekenen'}</strong>
-                <span className="door-go">
-                  <Play size={20} fill="currentColor" />
-                </span>
-              </button>
-            ))}
-        </div>
+                </button>
+              ))}
+          </div>
+          <button className="grabbelton-door" onClick={onMixed} disabled={disabled}>
+            <ActivityArt kind="grab-bag" />
+            <span>
+              <strong>Grabbelton</strong>
+              <small>Van elk spel één opdracht</small>
+            </span>
+            <span className="door-go">
+              <Play size={20} fill="currentColor" />
+            </span>
+          </button>
+        </>
       ) : (
         <div className="lesson-tiles">
           {available

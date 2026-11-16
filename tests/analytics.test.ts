@@ -184,6 +184,9 @@ test('Every offered game and year can be counted, with distinct matching, memory
   assert.equal(fixture.counts.at(-1).path, 'game-started/group/3/game/memory');
   track('game-started', { skill: 'koppelen', group: 3 });
   assert.equal(fixture.counts.at(-1).path, 'game-started/group/3/game/koppelplein-mix');
+  track('round-completed', { skill: 'grabbelton', group: 2 });
+  assert.equal(fixture.counts.at(-1).path, 'round-completed/group/2/game/grabbelton');
+  assert.equal(fixture.counts.at(-1).title, 'Afgerond · Grabbelton · Groep 2');
 });
 
 test('Invalid game contexts and offline games do not leak arbitrary caller data', () => {

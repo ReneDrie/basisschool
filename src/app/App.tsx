@@ -9,6 +9,7 @@ import { ParentGate } from '../dialogs/ParentGate';
 import { ParentsDialog } from '../dialogs/ParentsDialog';
 import { ProfilesDialog } from '../dialogs/ProfilesDialog';
 import { makeAdaptiveRound, type PracticeResult } from '../learning/adaptive';
+import { GRABBELTON, isMixed, makeMixedRound, practiceByTopic, type PlayActivity } from '../learning/grabbelton';
 import { resetRegion } from '../learning/island-layout';
 import { nextActivity } from '../learning/next-activity';
 import { newRound, willRepeat, type Round } from '../learning/round-state';
@@ -118,7 +119,14 @@ export function App() {
     }
     void start(nextActivity(currentGroup, profile.skills, profile.rounds));
   }
-  async function start(activity: Activity, difficulty?: Difficulty) {
+  function playMixed() {
+    if (!profile) {
+      setDialog('profiles');
+      return;
+    }
+    void start(GRABBELTON);
+  }
+  async function start(activity: PlayActivity, difficulty?: Difficulty) {
     if (busy) return;
     if (updating) {
       setMessage('Wacht even tot het controleren of laden van de app klaar is.');
@@ -135,16 +143,17 @@ export function App() {
     }
     setBusy(true);
     try {
-      const key = `${currentGroup}:${activity.id}` as const;
-      const questions = makeAdaptiveRound(
-        currentGroup,
-        activity.id,
-        profile.rounds,
-        profile.practice?.[key],
-        difficulty,
-        profile.recentQuestions?.[key],
-        profile.recentConcepts?.[key],
-      );
+      const questions = isMixed(activity)
+        ? makeMixedRound(currentGroup, profile)
+        : makeAdaptiveRound(
+            currentGroup,
+            activity.id,
+            profile.rounds,
+            profile.practice?.[`${currentGroup}:${activity.id}`],
+            difficulty,
+            profile.recentQuestions?.[`${currentGroup}:${activity.id}`],
+            profile.recentConcepts?.[`${currentGroup}:${activity.id}`],
+          );
       speech.unlockAudio(questions[0]);
       await updateProfile((p) => rememberQuestions(p, questions));
       speech.stop();
@@ -198,7 +207,16 @@ export function App() {
         if (finishGuard.current) return;
         finishGuard.current = true;
         setBusy(true);
-        await updateProfile((p) => recordPractice(reward(p, round.activity.id), currentGroup, round.activity.id, results));
+        const activity = round.activity;
+        await updateProfile((p) =>
+          isMixed(activity)
+            ? // Each Grabbelton answer counts toward the game it came from.
+              [...practiceByTopic(questions, results)].reduce(
+                (next, [topic, topicResults]) => recordPractice(next, currentGroup, topic, topicResults),
+                reward(p, undefined),
+              )
+            : recordPractice(reward(p, activity.id), currentGroup, activity.id, results),
+        );
       }
       setLeaving(true);
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -400,13 +418,19 @@ export function App() {
             today={today}
             celebrate={celebrate}
             onPlay={playNext}
+            onMixed={playMixed}
             onTreasures={() => navigate('treasures')}
             onProfile={() => setDialog('profiles')}
             onPlace={(rewardId, spot) => changeLayout((layout) => ({ ...layout, [rewardId]: spot }))}
             onResetLayout={(regionId) => changeLayout((layout) => resetRegion(layout, regionId))}
           />
         ) : page === 'lessons' ? (
-          <LessonsPage group={currentGroup} disabled={!loaded || updating || busy} onChoose={chooseActivity} />
+          <LessonsPage
+            group={currentGroup}
+            disabled={!loaded || updating || busy}
+            onChoose={chooseActivity}
+            onMixed={playMixed}
+          />
         ) : (
           <TreasuresPage rounds={profile?.rounds ?? 0} disabled={!loaded || updating || busy} onPlay={playNext} />
         )}

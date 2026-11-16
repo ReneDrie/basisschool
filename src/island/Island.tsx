@@ -491,6 +491,19 @@ export function ActivityArt({ kind }: { kind: string }) {
             ?
           </text>
         </>
+      ) : kind === 'grab-bag' ? (
+        <>
+          <circle cx="90" cy="42" r="17" fill="#92bcd1" />
+          <rect x="112" y="18" width="32" height="32" rx="8" fill="#b3a1ce" transform="rotate(14 128 34)" />
+          <text x="128" y="45" fontSize="22" fontWeight="800" fill="#fff" textAnchor="middle" transform="rotate(14 128 34)">
+            A
+          </text>
+          <path d="M136 30l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z" fill="#f3cf78" />
+          <path d="M74 60q-22 48 10 58h52q32-10 10-58z" fill="#e9a86b" />
+          <path d="M70 56h80q4 0 4 5t-4 5H70q-4 0-4-5t4-5z" fill="#c9824a" />
+          <path d="M104 66q-6 10-14 12m26-12q6 10 14 12" stroke="#c9824a" strokeWidth="4" strokeLinecap="round" fill="none" />
+          <path d="M96 92h28" stroke="#f6c899" strokeWidth="5" strokeLinecap="round" />
+        </>
       ) : kind === 'shapes' ? (
         <>
           <circle cx="72" cy="70" r="29" fill="#92bcd1" />

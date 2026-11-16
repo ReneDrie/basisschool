@@ -9,6 +9,19 @@ test('Ga spelen starts a round with one tap', async ({ page }) => {
   await expect(page.locator('.question-heading h1')).not.toBeEmpty();
 });
 
+test('The Grabbelton starts a mixed round from the island and from Lessen', async ({ page }) => {
+  await openApp(page);
+  await createProfile(page, 'Noor', 4);
+  await page.getByRole('button', { name: 'Grabbelton' }).click();
+  await expect(page.locator('.question-number')).toHaveText('OPDRACHT 1');
+  await expect(page.locator('.round-category')).toHaveText(/^Grabbelton · .+/);
+  await expect(page.locator('.round-progress')).toContainText('1 van 10');
+  await page.getByRole('button', { name: 'Lessen' }).click();
+  await page.getByRole('button', { name: 'Rondje verlaten' }).click();
+  await page.getByRole('button', { name: 'Grabbelton' }).click();
+  await expect(page.locator('.round-category')).toHaveText(/^Grabbelton · .+/);
+});
+
 test('A full round shows the answer after two wrong tries, earns a star and a treasure', async ({ page }) => {
   await openApp(page);
   await createProfile(page, 'Noor', 2);

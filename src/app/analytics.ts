@@ -14,7 +14,7 @@ type AnalyticsWindow = Window & {
 };
 
 export type AnalyticsEvent = 'home-screen-open' | 'app-installed' | 'round-completed' | 'game-started';
-type GameContext = { skill: Skill; group: Group; difficulty?: Difficulty };
+type GameContext = { skill: Skill | 'grabbelton'; group: Group; difficulty?: Difficulty };
 const titles: Record<AnalyticsEvent, string> = {
   'home-screen-open': 'Geopend vanaf het beginscherm',
   'app-installed': 'Installatie gemeld door de browser',
@@ -27,6 +27,11 @@ function eventCounts(event: AnalyticsEvent, game?: GameContext): Count[] {
   const add = (path: string, title: string) => result.push({ path, title, referrer: '', event: true, no_session: true });
   if (event !== 'game-started' && event !== 'round-completed') add(event, titles[event]);
   if ((event === 'game-started' || event === 'round-completed') && game && GROUPS.includes(game.group)) {
+    const action = event === 'game-started' ? 'Gestart' : 'Afgerond';
+    if (game.skill === 'grabbelton') {
+      add(`${event}/group/${game.group}/game/grabbelton`, `${action} · Grabbelton · Groep ${game.group}`);
+      return result;
+    }
     const activity = activities(game.group).find((a) => a.id === game.skill);
     if (!activity) return result;
     // Resolve labels from the catalog, never from profile data or arbitrary caller text.
@@ -34,7 +39,6 @@ function eventCounts(event: AnalyticsEvent, game?: GameContext): Count[] {
     const mixed = game.skill === 'koppelen' && game.difficulty === undefined;
     const key = mixed ? 'koppelplein-mix' : memory ? 'memory' : game.skill;
     const label = game.skill === 'koppelen' ? (mixed ? 'Koppelen & Memory' : memory ? 'Memory' : 'Koppelen') : activity.title;
-    const action = event === 'game-started' ? 'Gestart' : 'Afgerond';
     add(`${event}/group/${game.group}/game/${key}`, `${action} · ${label} · Groep ${game.group}`);
   }
   return result;

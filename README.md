@@ -33,7 +33,7 @@ Voor een andere GoatCounter-site kun je in Vercel bij **Settings → Environment
 
 Per start of afronding verstuurt de app één gebeurtenis met het spel en de groep, bijvoorbeeld `round-completed/group/4/game/winkel`. De losse totalen per spel, per groep en de algemene `round-completed` worden niet meer verstuurd. Filter op `game-started/group/4/game/` om gestarte spellen in groep 4 te vergelijken, of op `round-completed/group/4/game/` voor afgeronde rondjes. Voor een speltotaal over alle groepen tel je de bijbehorende groepsregels op. Starts en afrondingen zijn afzonderlijke tellingen; tel die niet bij elkaar op als aantal rondjes.
 
-Koppelen en Memory hebben afzonderlijke spelcodes (`koppelen` en `memory`). Gemengde Koppelplein-rondjes hebben de spelcode `koppelplein-mix`. Deze tellingen meten rondjes, geen unieke kinderen. De groep is de gekozen profielgroep, geen klasnaam of school. Starts tellen pas nadat een rondje succesvol is voorbereid; afrondingen pas na het bewaren van de beloning. Oudere bezoeken en offline rondjes krijgen geen uitsplitsing achteraf.
+Koppelen en Memory hebben afzonderlijke spelcodes (`koppelen` en `memory`). Gemengde Koppelplein-rondjes hebben de spelcode `koppelplein-mix`; de Grabbelton heeft `grabbelton`. Deze tellingen meten rondjes, geen unieke kinderen. De groep is de gekozen profielgroep, geen klasnaam of school. Starts tellen pas nadat een rondje succesvol is voorbereid; afrondingen pas na het bewaren van de beloning. Oudere bezoeken en offline rondjes krijgen geen uitsplitsing achteraf.
 
 Bestaande GoatCounter-gegevens blijven behouden. Gebruik de regels met zowel `/group/` als `/game/` om ook over de eerdere periode zonder dubbeltelling te vergelijken. Eerdere appversies kunnen de oude samenvattingsregels nog aanvullen totdat gebruikers hun app bijwerken.
 
@@ -52,6 +52,12 @@ De app opent op het eiland en heeft drie vaste tabs met grote pictogrammen:
 - **Schatten:** je verdiende stickers en hoeveel rondjes je nog nodig hebt voor de volgende.
 
 **Ga spelen** kiest het spel zelf (`src/learning/next-activity.ts`). De rondjes wisselen tussen Rekenen, Taal & lezen en Ontdekken; binnen dat vak komt het minst gespeelde onderwerp eerst. Zo krijgt een kind afwisseling zonder te hoeven kiezen of lezen. Zelf kiezen blijft mogelijk via Lessen.
+
+### Grabbelton: alle spellen door elkaar
+
+De **Grabbelton** staat op het eiland naast de schattenknop en als vierde deur onder **Lessen**. Een Grabbelton-rondje heeft de gewone lengte (zes, acht of tien opdrachten), maar elke opdracht komt uit een ander spel van de groep, in willekeurige volgorde (`src/learning/grabbelton.ts`). Iedere groep heeft minstens zoveel spellen als opdrachten, dus geen spel komt twee keer voor. Bovenaan staat ‘Grabbelton · Winkel’ enzovoort, zodat een kind weet welk spel het is; de kaart krijgt de kleur van dat spel.
+
+Elke opdracht komt uit de eigen, meegroeiende ronde van dat spel, dus het niveau en de herhalingsgeschiedenis per spel blijven gelden. Koppelplein doet alleen mee met Koppelen: een memorybord duurt veel langer dan één opdracht. Per rondje zijn er maximaal drie open vragen. Na afloop telt elk antwoord mee bij het eigen spel in het oudergedeelte. Het rondje levert één ster op, maar telt niet als gespeeld rondje voor één spel, zodat ‘Ga spelen’ zijn afwisseling houdt. In GoatCounter heet het spel `grabbelton`.
 
 Wil een kind zelf een vaste stap kiezen, dan zet een ouder bij **Voor ouders → Profiel & niveau** het vinkje ‘Mijn kind kiest zelf stap 1 of stap 2’ aan. Deze keuze hoort bij het profiel en gaat mee in reservekopieën. Daarna verschijnt bij een onderwerp weer stap 1, stap 2 of Verras me.
 

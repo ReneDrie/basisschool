@@ -1,5 +1,6 @@
 import type { PracticeResult } from './adaptive.ts';
-import type { Activity, Difficulty, Question } from './model.ts';
+import type { PlayActivity } from './grabbelton.ts';
+import type { Difficulty, Question } from './model.ts';
 
 /**
  * One round in progress.
@@ -9,7 +10,7 @@ import type { Activity, Difficulty, Question } from './model.ts';
 export type Round = {
   results: PracticeResult[];
   difficulty?: Difficulty;
-  activity: Activity;
+  activity: PlayActivity;
   questions: Question[];
   base: number;
   index: number;
@@ -26,7 +27,7 @@ export type Round = {
 
 export const MAX_REPEATS = 2;
 
-export function newRound(activity: Activity, questions: Question[], previousRounds: number, difficulty?: Difficulty): Round {
+export function newRound(activity: PlayActivity, questions: Question[], previousRounds: number, difficulty?: Difficulty): Round {
   return {
     results: [],
     activity,
