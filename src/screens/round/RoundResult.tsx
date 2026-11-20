@@ -1,6 +1,7 @@
 import { ArrowRight, RotateCcw, Star } from 'lucide-react';
 import { Art, AvatarArt } from '../../art/Art';
 import { stickers } from '../../content';
+import { discoveryTip } from '../../learning/discovery-path';
 import { DAILY_ROUNDS } from '../../learning/today';
 import type { Round } from '../../learning/round-state';
 import type { discoveriesBetween } from '../../progression';
@@ -21,6 +22,7 @@ export function RoundResult({
   onShowIsland: () => void;
   onReplay: () => void;
 }) {
+  const tip = round.activity.id === 'ontdekpad' ? discoveryTip(round.questions) : undefined;
   return (
     <section className="result-card">
       <div className="confetti" aria-hidden="true">
@@ -64,6 +66,15 @@ export function RoundResult({
         <div className="new-region">
           <Art kind="gem" />
           <strong>Een nieuwe verkennersrang!</strong>
+        </div>
+      )}
+      {tip && (
+        <div className="new-region discovery-tip">
+          <Art kind="discovery-path" />
+          <div>
+            <strong>Doe-opdracht: {tip.title}</strong>
+            <p>{tip.tip}</p>
+          </div>
         </div>
       )}
       {today === DAILY_ROUNDS && (

@@ -191,7 +191,11 @@ export function App() {
     speech.stop();
     const question = round.questions[round.index];
     const questions = willRepeat(round)
-      ? [...round.questions, { ...question, choices: shuffle(question.choices) }]
+      ? // Klopt and Klopt niet keep their places; other answers get a new order.
+        [
+          ...round.questions,
+          { ...question, choices: question.choices.length === 2 ? question.choices : shuffle(question.choices) },
+        ]
       : round.questions;
     const last = round.index === questions.length - 1;
     // A repeated question is extra practice; the adaptive history keeps one result per planned question.

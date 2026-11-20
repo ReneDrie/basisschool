@@ -16,6 +16,16 @@ const catalog: Record<Skill, Activity> = {
     world: 'ontdekken',
     learningGoal: 'Natuurlijke processen herkennen, verbanden leggen en eenvoudig onderzoek begrijpen.',
   },
+  ontdekpad: {
+    id: 'ontdekpad',
+    title: 'Het Ontdekpad',
+    subtitle: 'Lees een weetje en ontdek of het klopt',
+    tag: 'Weetjes & begrijpend lezen',
+    color: 'green',
+    symbol: 'discovery-path',
+    world: 'ontdekken',
+    learningGoal: 'Een kort informatief stukje lezen en uitspraken en vragen erover beantwoorden.',
+  },
   klankstudio: {
     id: 'klankstudio',
     title: 'De Klankstudio',
@@ -252,6 +262,7 @@ export function activities(group: Group): Activity[] {
     'natuurmissies',
     ...(group >= 3 ? ['zinnenbouwer' as const] : []),
     ...(group <= 4 ? ['rekenbus' as const] : []),
+    ...(group >= 4 ? ['ontdekpad' as const] : []),
   ];
   return ids.map((id) => {
     const activity = { ...catalog[id] };

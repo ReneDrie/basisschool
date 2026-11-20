@@ -370,6 +370,7 @@ export function ActivityArt({ kind }: { kind: string }) {
   return (
     <svg viewBox="0 0 220 125" aria-hidden="true" className="activity-art">
       {kind === 'nature-mission' ||
+      kind === 'discovery-path' ||
       kind === 'sound-studio' ||
       kind === 'number-bus' ||
       kind === 'word-factory' ||

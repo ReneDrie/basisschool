@@ -57,6 +57,7 @@ export const ART_KINDS = [
   ...NATURE_ART_KINDS,
   ...RHYME_ART_KINDS,
   'sound-studio',
+  'discovery-path',
   'number-bus',
   'word-factory',
   'sentence-builder',

@@ -55,7 +55,8 @@ export function RoundScreen({
         </button>
         <span className="round-category">
           {!isMixed(round.activity)
-            ? topicLabel(round.activity, group)
+            ? // On the Ontdekpad the label also names the theme of this fact.
+              [topicLabel(round.activity, group), !round.done && round.questions[round.index]?.theme].filter(Boolean).join(' · ')
             : round.done
               ? 'Grabbelton'
               : // During the Grabbelton the label names the game of this question, so a child knows what to do.

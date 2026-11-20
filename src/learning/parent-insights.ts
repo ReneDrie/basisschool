@@ -30,6 +30,7 @@ export const homeTips: Record<Skill, string> = {
   breuken: 'Verdeel samen een pannenkoek of reep: hoeveel stukjes is een half, en hoeveel een kwart?',
   grafieken: 'Turf samen iets, zoals de kleuren van auto’s op straat, en kijk welke het vaakst voorkomt.',
   natuurmissies: 'Ga naar buiten en zoek dieren, bladeren of bloemen. Praat over wat ze nodig hebben.',
+  ontdekpad: 'Lees samen een stukje uit een informatieboek of de krant. Noem om de beurt iets wat klopt of juist niet klopt.',
   klankstudio: 'Zeg een kort woord in losse klanken, zoals m-aa-n, en laat je kind het woord raden.',
   rekenbus: 'Speel bus met knuffels: er stappen er 2 in en 1 uit. Hoeveel zitten er nu in?',
   woordfabriek: 'Leg met magneetletters samen een woord, schud de letters en laat je kind het opnieuw bouwen.',

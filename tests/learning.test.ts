@@ -37,8 +37,10 @@ test('Every advertised topic has a complete bank with unique IDs, answers and le
           !question.bus &&
           !question.nature
         ) {
-          assert.equal(question.choices.length, 4, question.id);
-          assert.equal(new Set(question.choices).size, 4, question.id);
+          // Ontdekpad claims are answered with Klopt or Klopt niet; every other question has four choices.
+          const size = question.topic === 'ontdekpad' && question.difficulty === 1 ? 2 : 4;
+          assert.equal(question.choices.length, size, question.id);
+          assert.equal(new Set(question.choices).size, size, question.id);
           assert.equal(question.choices.filter((choice) => choice === question.answer).length, 1, question.id);
         } else assert.equal(question.choices.length, 0);
         assert.ok(question.hint.length > 5);

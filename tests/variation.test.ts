@@ -102,7 +102,7 @@ test('Every generated candidate has correct answers, bounded numbers, unambiguou
           !q.bus &&
           !q.nature
         ) {
-          assert.equal(new Set(q.choices).size, 4, q.id);
+          assert.equal(new Set(q.choices).size, q.topic === 'ontdekpad' && q.difficulty === 1 ? 2 : 4, q.id);
           assert.ok(q.choices.includes(q.answer), q.id);
         }
         if (q.missing) {

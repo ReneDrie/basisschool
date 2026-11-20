@@ -98,6 +98,13 @@
   color: #7e6b40;
   margin-top: 2px;
 }
+.discovery-tip {
+  border-color: #b9cfa9;
+  background: #eef5e4;
+}
+.discovery-tip p {
+  color: #566f4b;
+}
 .island-toolbar {
   display: flex;
   align-items: center;

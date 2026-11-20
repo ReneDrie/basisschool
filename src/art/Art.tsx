@@ -126,6 +126,19 @@ export function ArtShape({ kind }: { kind: string }): ReactNode {
 }
 function ShapeDrawing({ kind }: { kind: string }): ReactNode {
   if (kind.startsWith('nature-')) return <NatureShape kind={kind} />;
+  if (kind === 'discovery-path')
+    return (
+      <>
+        <path d="M18 95q4-24 30-27t28-36" fill="none" stroke={ink} strokeWidth="18" />
+        <path d="M18 95q4-24 30-27t28-36" fill="none" stroke={cream} strokeWidth="13" />
+        <path d="M27 62V14" stroke={ink} strokeWidth="6" />
+        <path d="M10 17h28l7 7-7 7H10z" fill={green} stroke={ink} strokeWidth="2" />
+        <path d="M45 38H18l-6 6 6 6h27z" fill={gold} stroke={ink} strokeWidth="2" />
+        <circle cx="74" cy="70" r="13" fill={cream} stroke={ink} strokeWidth="3.5" />
+        <path d="M68 70l4 4 8-9" fill="none" stroke={green} strokeWidth="3.5" />
+        <path d="M83 80l9 9" stroke={ink} strokeWidth="6" />
+      </>
+    );
   if (kind === 'sound-studio')
     return (
       <g stroke={ink} strokeWidth="2.5" strokeLinecap="round">

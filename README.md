@@ -166,12 +166,12 @@ Alle plaatjes zijn bestaande eigen vectorillustraties. Drie nieuwe luisterfragme
 
 ## Wat zit erin?
 
-| Groep | Oefeningen                                                                                                                            |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| 2     | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein |
-| 3     | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters, korte leesvragen en Koppelplein                                         |
-| 4     | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein     |
-| 5     | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken, tabellen/grafieken en Koppelplein                            |
+| Groep | Oefeningen                                                                                                                                   |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2     | Tellen, rijmen, vormen herkennen en tellen, beginklanken, vergelijken, patronen, Eilandwinkel, Bouwplaats, Verhalenpad en Koppelplein        |
+| 3     | Rekenen tot 20, woorden bij plaatjes, eerste/laatste letters, korte leesvragen en Koppelplein                                                |
+| 4     | Optellen en aftrekken, tafels, spelling, begrijpend lezen, klokkijken, geld, Eilandwinkel, Bouwplaats, Verhalenpad, Koppelplein en Ontdekpad |
+| 5     | Rekenen tot 1.000, tafels en delen, spelling, begrijpend lezen, breuken, tabellen/grafieken, Koppelplein en Ontdekpad                        |
 
 De inhoud is een eerste oefenaanbod, geen volledige leerlijn. Ga spelen kiest het volgende spel; onder Lessen kiezen kinderen zelf een vak (Rekenen, Taal & lezen of Ontdekken), daarna een onderwerp. De ouder kiest de groep en kan die wijzigen. Binnen de groep groeit de uitdaging per spel mee; zie ‘Geleidelijke uitdaging per eiland en spel’.
 
@@ -394,6 +394,19 @@ node --experimental-strip-types scripts/generate-audio.mjs --prefix=nature- --en
 ```
 
 De opdrachten zijn zelf geschreven. Bij het controleren van de inhoud zijn onder meer de [vlinderlevensloop van Universiteit Utrecht](https://www.uu.nl/botanischetuinen/de-levensloop-van-de-vlinder), [kikkerontwikkeling bij SchoolTV](https://schooltv.nl/video-item/kikkers-van-kikkerdril-tot-kikker), [seizoenen bij het KNMI](https://www.knmi.nl/kennis-en-datacentrum/uitleg/seizoenen), [de koolmees bij Vogelbescherming](https://www.vogelbescherming.nl/beleefdelente/koolmees/achtergrond-koolmees/) en [fotosynthese bij SchoolTV](https://schooltv.nl/video-item/clipphanger-wat-is-fotosynthese) geraadpleegd.
+
+## Ontdekpad voor groep 4 en 5
+
+Onder **Lessen → Ontdekken → Ontdekpad** lezen kinderen in groep 4 en 5 korte weetjes over één thema. Het spel werkt zoals de minipaden die veel scholen gebruiken: bij elk weetje zeggen kinderen of uitspraken kloppen en beantwoorden ze een vraag. Na het rondje volgt een doe-opdracht voor thuis.
+
+- Er zijn acht thema's met elk vijf weetjes: Sinterklaas (1 november t/m 5 december), Herfst (15 september t/m 30 november), Winter (6 december t/m februari), Bijen (maart t/m september), en het hele jaar door Brandweer, Brood, Zeehonden en De ruimte.
+- Een rondje volgt één thema. De weetjes staan op hun eigen volgorde en na elk weetje komen de vragen erover. Bovenaan staat ‘Ontdekpad · Herfst’ enzovoort.
+- Gekozen wordt het thema dat past bij de datum en het langst niet gespeeld is. Bij een gelijke stand gaat een seizoensthema voor.
+- Stap 1 zijn uitspraken met **Klopt** en **Klopt niet**. **Klopt** staat altijd links, ook als een vraag terugkomt. Stap 2 is een vraag met vier antwoorden. ‘Verras me!’ mengt ze, net als bij de andere spellen.
+- Met een vaste stap 2 is een thema te klein voor een heel rondje. Het rondje neemt dan stap 2-vragen uit meerdere thema's, per thema bij elkaar. In dat geval is er geen doe-opdracht.
+- De hint noemt een woord uit het weetje: ‘Lees de zin met ‘nacht’ nog eens goed.’ Er is geen voorleesaudio; kinderen in groep 4 en 5 lezen zelf.
+
+De teksten zijn zelf geschreven. Het materiaal van de Webpaden en minipaden (webje.yurls.net) valt onder CC BY-NC-ND en is daarom niet overgenomen. De inhoud staat in `src/learning/discovery-path.ts` en de controles in `tests/discovery-path.test.ts`. Een nieuw thema heeft vijf weetjes; elk weetje heeft één uitspraak die klopt, één die niet klopt en een vraag. Elk hintwoord moet letterlijk in het weetje staan; de test controleert dat.
 
 ## Een rondje verlaten
 

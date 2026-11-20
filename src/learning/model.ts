@@ -33,6 +33,7 @@ export const SKILLS = [
   'klankstudio',
   'rekenbus',
   'natuurmissies',
+  'ontdekpad',
 ] as const;
 export type Skill = (typeof SKILLS)[number];
 export type Difficulty = 1 | 2;
@@ -73,6 +74,8 @@ export type Question = {
   train?: TrainTask;
   detective?: DetectiveTask;
   passage?: string;
+  /** The Ontdekpad theme a passage belongs to, shown above the question. */
+  theme?: string;
   audio?: string;
   audioSequence?: string[];
   hintAudio?: string;

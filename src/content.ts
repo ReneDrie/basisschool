@@ -1,4 +1,5 @@
 import { natureBank } from './learning/nature.ts';
+import { discoveryBank, makeDiscoveryRound } from './learning/discovery-path.ts';
 import { busBank } from './learning/bus.ts';
 import { soundStudioBank } from './learning/sound-studio.ts';
 import { wordFactoryBank, sentenceBuilderBank } from './learning/language.ts';
@@ -34,29 +35,31 @@ export function questionBank(group: Group, skill: Skill): Question[] {
   const authored =
     skill === 'natuurmissies'
       ? natureBank(group)
-      : skill === 'klankstudio' && (group === 2 || group === 3)
-        ? soundStudioBank(group)
-        : skill === 'rekenbus' && group !== 5
-          ? busBank(group)
-          : skill === 'woordfabriek'
-            ? wordFactoryBank(group)
-            : skill === 'zinnenbouwer' && group !== 2
-              ? sentenceBuilderBank(group)
-              : skill === 'getallentrein'
-                ? trainBank(group)
-                : skill === 'speurneus'
-                  ? detectiveBank(group)
-                  : skill === 'koppelen'
-                    ? matchingBank(group)
-                    : skill === 'verhalen' && (group === 2 || group === 4)
-                      ? storiesBank(group)
-                      : skill === 'bouwen' && (group === 2 || group === 4)
-                        ? buildingBank(group)
-                        : skill === 'winkel' && (group === 2 || group === 4)
-                          ? shopBank(group)
-                          : group === 3
-                            ? group3Bank[skill]!
-                            : (newTopics[skill] ?? legacyBank(group, skill));
+      : skill === 'ontdekpad'
+        ? discoveryBank(group)
+        : skill === 'klankstudio' && (group === 2 || group === 3)
+          ? soundStudioBank(group)
+          : skill === 'rekenbus' && group !== 5
+            ? busBank(group)
+            : skill === 'woordfabriek'
+              ? wordFactoryBank(group)
+              : skill === 'zinnenbouwer' && group !== 2
+                ? sentenceBuilderBank(group)
+                : skill === 'getallentrein'
+                  ? trainBank(group)
+                  : skill === 'speurneus'
+                    ? detectiveBank(group)
+                    : skill === 'koppelen'
+                      ? matchingBank(group)
+                      : skill === 'verhalen' && (group === 2 || group === 4)
+                        ? storiesBank(group)
+                        : skill === 'bouwen' && (group === 2 || group === 4)
+                          ? buildingBank(group)
+                          : skill === 'winkel' && (group === 2 || group === 4)
+                            ? shopBank(group)
+                            : group === 3
+                              ? group3Bank[skill]!
+                              : (newTopics[skill] ?? legacyBank(group, skill));
   const questions: Question[] = [...authored, ...extendedContent(group, skill)].map((question) => ({
     ...question,
     group,
@@ -101,6 +104,7 @@ export function makeRound(
       for (const q of bank) concepts.set(questionKey({ ...q, prompt: 'Welke kleur komt op de lege plek?' }), repetitionKey(q));
     recentConcepts = recent.flatMap((key) => (concepts.has(key) ? [concepts.get(key)!] : []));
   }
+  if (skill === 'ontdekpad') return makeDiscoveryRound(bank, difficulty, recent, recentConcepts, options);
   return buildRound(bank, difficulty, recent, recentConcepts, options);
 }
 export function availableLevels(group: Group, skill: Skill): Difficulty[] {

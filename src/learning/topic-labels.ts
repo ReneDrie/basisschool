@@ -4,6 +4,7 @@ import type { Activity, Group, Skill } from './model.ts';
 export function topicLabel(activity: Activity, group: Group): string {
   const labels: Record<Skill, string> = {
     natuurmissies: 'Natuurmissies',
+    ontdekpad: 'Ontdekpad',
     klankstudio: 'Klankstudio',
     rekenbus: 'Rekenbus',
     woordfabriek: 'Woordfabriek',
